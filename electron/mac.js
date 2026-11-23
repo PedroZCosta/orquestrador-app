@@ -21,6 +21,9 @@
 //   5. Sem o electron-updater (sem assinatura da Apple ele não instala): a
 //      atualização é pelo botão, gerando o app de novo a partir da pasta do
 //      código (electron/atualizacaoDoMac.js).
+//   6. Modo invisível: janela sem sombra nem bolinhas, em todas as mesas e
+//      sobre apps em tela cheia; permissão de Gravação de Tela (consulta e
+//      atalho para os Ajustes do Sistema).
 
 const { execFileSync } = require("node:child_process");
 const os = require("node:os");
@@ -53,6 +56,66 @@ function ajustarOpcoesDaJanela(opcoes, principal) {
     titleBarStyle: "hidden",
     trafficLightPosition: principal ? SEMAFORO_DA_JANELA_PRINCIPAL : SEMAFORO_DAS_JANELAS_PEQUENAS,
   };
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// Modo invisível e Gravação de Tela.
+// ──────────────────────────────────────────────────────────────────────────
+
+// Painel "Gravação de Tela" em Privacidade e Segurança dos Ajustes do Sistema.
+const AJUSTES_DA_GRAVACAO_DE_TELA = "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture";
+
+/**
+ * No Mac, prepara a janela principal para o modo invisível: sem a sombra (que
+ * na janela transparente aparece como contorno fino e sombra em volta), sem
+ * as 3 bolinhas e visível em todas as mesas (Spaces), inclusive sobre apps em
+ * tela cheia. Sem skipTransformProcessType: o app é uma aplicação comum (com
+ * ícone no Dock), e o Electron só flutua sobre a tela cheia trocando o tipo do
+ * processo; com isso o ícone do Dock some enquanto o modo estiver ligado (como
+ * o skipTaskbar do Windows) e volta ao sair. Devolve o estado anterior para
+ * restaurarJanelaDoModoInvisivelNoMac, ou null fora do Mac (sem mexer em nada).
+ */
+function aplicarJanelaDoModoInvisivelNoMac(janela, plataforma = process.platform) {
+  if (plataforma !== "darwin") return null;
+  const anterior = { sombra: janela.hasShadow() };
+  janela.setHasShadow(false);
+  janela.invalidateShadow();
+  janela.setWindowButtonVisibility(false);
+  janela.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  return anterior;
+}
+
+/**
+ * Desfaz aplicarJanelaDoModoInvisivelNoMac: só na mesa atual (o ícone do Dock
+ * volta), bolinhas visíveis de novo (a janela principal sempre as mostra; o
+ * Electron não tem getter) e a sombra como estava. Sem `anterior` (fora do
+ * Mac) não faz nada.
+ */
+function restaurarJanelaDoModoInvisivelNoMac(janela, anterior, plataforma = process.platform) {
+  if (plataforma !== "darwin" || !anterior) return;
+  janela.setVisibleOnAllWorkspaces(false);
+  janela.setWindowButtonVisibility(true);
+  janela.setHasShadow(anterior.sombra);
+  janela.invalidateShadow();
+}
+
+/**
+ * Permissão de Gravação de Tela ("granted", "denied", "not-determined",
+ * "restricted" ou "unknown"). Sem ela, o desktopCapturer falha com "Failed to
+ * get sources". Fora do Mac não há essa permissão: devolve "granted".
+ */
+function permissaoDaTela(systemPreferences, plataforma = process.platform) {
+  if (plataforma !== "darwin") return "granted";
+  return systemPreferences.getMediaAccessStatus("screen");
+}
+
+/**
+ * No Mac, abre os Ajustes do Sistema no painel da Gravação de Tela (não é o
+ * navegador). Fora do Mac não faz nada.
+ */
+async function abrirAjustesDaTela(shell, plataforma = process.platform) {
+  if (plataforma !== "darwin") return;
+  await shell.openExternal(AJUSTES_DA_GRAVACAO_DE_TELA);
 }
 
 /**
@@ -209,6 +272,10 @@ function historicoDoRepositorio(pacote, ehPasta) {
 module.exports = {
   ehMac,
   ajustarOpcoesDaJanela,
+  aplicarJanelaDoModoInvisivelNoMac,
+  restaurarJanelaDoModoInvisivelNoMac,
+  permissaoDaTela,
+  abrirAjustesDaTela,
   menuDoApp,
   carregarPathDoShell,
   claudeCodeDoPath,

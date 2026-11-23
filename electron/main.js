@@ -83,6 +83,7 @@ const {
   screen,
   session,
   shell,
+  systemPreferences,
   Tray,
   utilityProcess,
   WebContentsView,
@@ -1419,6 +1420,12 @@ function entrarNoModoInvisivel() {
   // Maximizada fica como está (cobre o monitor); os bounds só são restaurados se não estava.
   janela.setAlwaysOnTop(true, "screen-saver");
   janela.setContentProtection(true);
+  // No Mac: sem contorno, sombra e bolinhas; em todas as mesas e sobre a tela cheia (electron/mac.js).
+  try {
+    anterior.janelaDoMac = mac.aplicarJanelaDoModoInvisivelNoMac(janela);
+  } catch (erro) {
+    registrarNoLog("app", `Falha ao ajustar a janela do Mac para o modo invisível: ${erro.message || erro}`);
+  }
   // Some da barra de tarefas; no Windows o Alt+Tab acompanha o skipTaskbar na maioria dos casos
   // (não há API JS dedicada para janela-ferramenta sem módulo nativo).
   janela.setSkipTaskbar(true);
@@ -1454,6 +1461,11 @@ function sairDoModoInvisivel() {
   if (oculto) janela.webContents.send("modo-invisivel:oculto", false);
   janela.setIgnoreMouseEvents(false);
   janela.setContentProtection(false);
+  try {
+    mac.restaurarJanelaDoModoInvisivelNoMac(janela, anterior.janelaDoMac);
+  } catch (erro) {
+    registrarNoLog("app", `Falha ao restaurar a janela do Mac: ${erro.message || erro}`);
+  }
   janela.setSkipTaskbar(anterior.skipTaskbar);
   janela.setAlwaysOnTop(anterior.alwaysOnTop);
   const maximizadaAgora = maximizacoes.get(janela)?.estaMaximizada() ?? janela.isMaximized();
@@ -1508,19 +1520,44 @@ ipcMain.handle("modo-invisivel:capturar-mouse", (evento, capturar) => {
   // O rastreio pelo cursor é quem decide; o pedido da tela só o mantém em sincronia.
   modoInvisivel.rastreio.definir(capturar);
 });
-function capturarQuadroAtual() {
+// A falha vai para o log com a permissão de Gravação de Tela no Mac (sem ela, o
+// desktopCapturer só diz "Failed to get sources") e volta para quem pediu.
+async function capturarQuadroAtual() {
   if (!modoInvisivel) throw new Error("A captura de tela só funciona com o modo invisível ativo.");
-  return capturarTela({
-    desktopCapturer,
-    screen,
-    janela: modoInvisivel.janela,
-    janelaProtegida: process.platform === "win32" || process.platform === "darwin",
-    registrar: (texto) => registrarNoLog("captura", texto),
-  });
+  try {
+    return await capturarTela({
+      desktopCapturer,
+      screen,
+      janela: modoInvisivel.janela,
+      janelaProtegida: process.platform === "win32" || process.platform === "darwin",
+      registrar: (texto) => registrarNoLog("captura", texto),
+    });
+  } catch (erro) {
+    let permissao = "";
+    if (mac.ehMac) {
+      try {
+        permissao = ` (permissão de Gravação de Tela: ${mac.permissaoDaTela(systemPreferences)})`;
+      } catch {
+        permissao = " (permissão de Gravação de Tela: não foi possível consultar)";
+      }
+    }
+    registrarNoLog("captura", `Falha ao capturar a tela: ${erro.message || erro}${permissao}`);
+    throw erro;
+  }
 }
 ipcMain.handle("tela:capturar", (evento) => {
   exigirJanelaPrincipal(evento);
   return capturarQuadroAtual();
+});
+// Permissão de Gravação de Tela (no Mac; fora dele sempre "granted"), para a tela avisar antes de capturar.
+ipcMain.handle("tela:permissao", (evento) => {
+  exigirJanelaPrincipal(evento);
+  return mac.permissaoDaTela(systemPreferences);
+});
+// Abre os Ajustes do Sistema na Gravação de Tela (só no Mac; fora dele não faz nada).
+ipcMain.handle("tela:abrir-ajustes", async (evento) => {
+  exigirJanelaPrincipal(evento);
+  await mac.abrirAjustesDaTela(shell);
 });
 ipcMain.handle("modo-invisivel:capturar-agora", (evento) => {
   exigirJanelaPrincipal(evento);

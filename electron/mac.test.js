@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import mac from "./mac.js";
 
@@ -67,6 +67,65 @@ describe("electron/mac", () => {
     expect(mac.ajustarOpcoesDaJanela(opcoesDoWindows, true)).toBe(opcoesDoWindows);
     expect(mac.ajustarOpcoesDaJanela(opcoesDoWindows, false)).toBe(opcoesDoWindows);
     expect(mac.menuDoApp({ buildFromTemplate: () => "menu" }, "Orquestrador")).toBeNull();
+  });
+
+  it("no Mac, o modo invisível tira sombra e bolinhas, vai a todas as mesas e restaura ao sair", () => {
+    const janela = {
+      hasShadow: vi.fn(() => true),
+      setHasShadow: vi.fn(),
+      invalidateShadow: vi.fn(),
+      setWindowButtonVisibility: vi.fn(),
+      setVisibleOnAllWorkspaces: vi.fn(),
+    };
+
+    const anterior = mac.aplicarJanelaDoModoInvisivelNoMac(janela, "darwin");
+    expect(anterior).toEqual({ sombra: true });
+    expect(janela.setHasShadow).toHaveBeenLastCalledWith(false);
+    expect(janela.invalidateShadow).toHaveBeenCalledTimes(1);
+    expect(janela.setWindowButtonVisibility).toHaveBeenLastCalledWith(false);
+    // Sem skipTransformProcessType: só trocando o tipo do processo a janela flutua sobre a tela cheia.
+    expect(janela.setVisibleOnAllWorkspaces).toHaveBeenLastCalledWith(true, { visibleOnFullScreen: true });
+
+    mac.restaurarJanelaDoModoInvisivelNoMac(janela, anterior, "darwin");
+    expect(janela.setVisibleOnAllWorkspaces).toHaveBeenLastCalledWith(false);
+    expect(janela.setWindowButtonVisibility).toHaveBeenLastCalledWith(true);
+    expect(janela.setHasShadow).toHaveBeenLastCalledWith(true);
+    expect(janela.invalidateShadow).toHaveBeenCalledTimes(2);
+  });
+
+  it("fora do Mac, o modo invisível não mexe na janela", () => {
+    const janela = {
+      hasShadow: vi.fn(),
+      setHasShadow: vi.fn(),
+      invalidateShadow: vi.fn(),
+      setWindowButtonVisibility: vi.fn(),
+      setVisibleOnAllWorkspaces: vi.fn(),
+    };
+
+    expect(mac.aplicarJanelaDoModoInvisivelNoMac(janela, "win32")).toBeNull();
+    mac.restaurarJanelaDoModoInvisivelNoMac(janela, null, "darwin");
+    mac.restaurarJanelaDoModoInvisivelNoMac(janela, { sombra: true }, "linux");
+    for (const metodo of Object.values(janela)) expect(metodo).not.toHaveBeenCalled();
+  });
+
+  it("consulta a permissão de Gravação de Tela só no Mac", () => {
+    const systemPreferences = { getMediaAccessStatus: vi.fn(() => "denied") };
+
+    expect(mac.permissaoDaTela(systemPreferences, "darwin")).toBe("denied");
+    expect(systemPreferences.getMediaAccessStatus).toHaveBeenCalledWith("screen");
+    expect(mac.permissaoDaTela(systemPreferences, "win32")).toBe("granted");
+    expect(systemPreferences.getMediaAccessStatus).toHaveBeenCalledTimes(1);
+  });
+
+  it("abre os Ajustes do Sistema na Gravação de Tela só no Mac", async () => {
+    const shell = { openExternal: vi.fn(() => Promise.resolve()) };
+
+    await mac.abrirAjustesDaTela(shell, "linux");
+    expect(shell.openExternal).not.toHaveBeenCalled();
+    await mac.abrirAjustesDaTela(shell, "darwin");
+    expect(shell.openExternal).toHaveBeenCalledWith(
+      "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture",
+    );
   });
 
   it.runIf(noMac)("no Mac, acha o histórico na pasta dados do repositório gravado no pacote", () => {

@@ -125,6 +125,11 @@ contextBridge.exposeInMainWorld("electron", {
     capturarMouse: (capturar) => ipcRenderer.invoke("modo-invisivel:capturar-mouse", Boolean(capturar)).then(() => undefined),
     // { nome, tipoDeMidia: "image/jpeg", base64 }; rejeita fora do modo.
     capturarTela: () => ipcRenderer.invoke("tela:capturar"),
+    // Permissão de Gravação de Tela: "granted" | "denied" | "not-determined" | "restricted" | "unknown"
+    // (só o Mac pede; fora dele sempre "granted").
+    permissaoDaTela: () => ipcRenderer.invoke("tela:permissao"),
+    // No Mac abre os Ajustes do Sistema na Gravação de Tela; fora dele não faz nada.
+    abrirAjustesDaTela: () => ipcRenderer.invoke("tela:abrir-ajustes").then(() => undefined),
     // Botão "capturar agora": devolve o quadro atual (mesmo formato).
     capturarAgora: () => ipcRenderer.invoke("modo-invisivel:capturar-agora"),
     // Quadros capturados pelo atalho global Ctrl+Shift+S; devolve o cancelamento.
