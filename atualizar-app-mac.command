@@ -6,9 +6,13 @@
 # O histórico fica em ~/Library/Application Support/Orquestrador de Agentes e
 # não é tocado; só o app em /Applications é trocado.
 #
-# O app não tem assinatura da Apple (só a local, "ad-hoc"). Por isso o script
-# tira a marca de quarentena; se o macOS ainda reclamar, abra uma vez com o
-# botão direito > Abrir.
+# O app não tem assinatura da Apple, só a local: o dist:mac assina com o
+# certificado "Go SubAgents Local" (scripts/assinar-app-mac.sh), para o macOS
+# manter as permissões entre atualizações. Sem esse certificado assina "ad hoc"
+# e as permissões caem a cada atualização; para criá-lo, rode uma única vez
+# bash scripts/criar-certificado-mac.sh. Por não ser da Apple, o script tira a
+# marca de quarentena; se o macOS ainda reclamar, abra uma vez com o botão
+# direito > Abrir.
 
 cd "${0:A:h}" || exit 1
 unset ELECTRON_RUN_AS_NODE
