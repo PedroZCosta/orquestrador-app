@@ -1,0 +1,255 @@
+{
+ "id": "fumaca-T1-v1",
+ "variante": "v1",
+ "tarefa": "T1",
+ "inicio": "2026-11-23T15:48:21.611Z",
+ "carga": {
+  "leituras": [
+   "12:48  up 31 days,  5:15, 1 user, load averages: 4.93 4.73 6.03"
+  ],
+  "esperouS": 0,
+  "carga1m": 4.93
+ },
+ "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/fumaca-T1-v1-mwtfx2t8",
+ "execucao": {
+  "estourou": false,
+  "tempoS": 39,
+  "aprovacoes": 0,
+  "respostas": 0
+ },
+ "fimDoTurno": "turno_concluido",
+ "falhas": [],
+ "resposta": "Corrigido: o pedido mínimo dos cupons agora é inclusivo, então um pedido de R$ 100,00 com BEMVINDO10 é aceito. O executor rodou `npm test` e os 52 testes passaram. Eu só conferi o `git diff --stat` (2 arquivos alterados), sem rodar os testes de novo.\n\n- **Correção:** em `src/pricing/discounts.js` (linha 19), a comparação `subtotal <= coupon.minSubtotal` virou `subtotal < coupon.minSubtotal`. Como a checagem é a mesma para todos os cupons, o mínimo passa a valer inclusivo em todos os que têm mínimo. Nada mais foi alterado.\n- **Teste novo:** em `test/discounts.test.js`, \"subtotal exatamente igual ao mínimo é aceito\" avalia BEMVINDO10 com um item de R$ 100,00 e confere que foi aceito, com desconto de R$ 10,00.\n\nPendente: o teste do caso exato cobre só o BEMVINDO10; os outros cupons com mínimo (300 e 150) compartilham a mesma checagem, mas não têm teste próprio. Nenhum commit foi feito.",
+ "consumos": [
+  {
+   "principal": {
+    "entrada": 14,
+    "criacaoDeCache": 22021,
+    "leituraDeCache": 98570,
+    "saida": 1368
+   },
+   "subagentes": {
+    "entrada": 10,
+    "criacaoDeCache": 13125,
+    "leituraDeCache": 47660,
+    "saida": 1231
+   },
+   "subagentesMedidos": 1,
+   "parcial": false,
+   "indiceDeCusto": 71575,
+   "modeloDoPrincipal": "claude-sonnet-5-5"
+  }
+ ],
+ "subagentes": 1,
+ "sessoes": [
+  "e55fd8e0-265e-4b91-9059-7d4b9092813c"
+ ],
+ "checagem": {
+  "sucesso": true,
+  "motivo": "todos os critérios passaram",
+  "detalhes": {
+   "suiteDoProjeto": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.238833\n      type: 'test'\n      ...\n    # Subtest: ids sequenciais\n    ok 2 - ids sequenciais\n      ---\n      duration_ms: 0.076\n      type: 'test'\n      ...\n    1..2\nok 15 - validação\n  ---\n  duration_ms: 0.394792\n  type: 'suite'\n  ...\n1..15\n# tests 52\n# suites 14\n# pass 52\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 165.727625\n"
+   },
+   "testeOculto": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.536667\n      type: 'test'\n      ...\n    # Subtest: acima do mínimo segue igual\n    ok 4 - acima do mínimo segue igual\n      ---\n      duration_ms: 0.060541\n      type: 'test'\n      ...\n    1..4\nok 1 - T1 oculto: pedido mínimo do cupom é inclusivo\n  ---\n  duration_ms: 3.396625\n  type: 'suite'\n  ...\n1..1\n# tests 4\n# suites 1\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 50.836583\n"
+   }
+  }
+ },
+ "sucesso": true,
+ "medicao": {
+  "usd": 0.16155750000000002,
+  "usdPrincipal": 0.111649,
+  "usdSubagentes": 0.049908499999999995,
+  "indiceDeCusto": 71575,
+  "total": {
+   "entrada": 24,
+   "criacaoDeCache": 35146,
+   "leituraDeCache": 146230,
+   "saida": 2599
+  },
+  "principal": {
+   "entrada": 14,
+   "criacaoDeCache": 22021,
+   "leituraDeCache": 98570,
+   "saida": 1368
+  },
+  "subagentes": {
+   "entrada": 10,
+   "criacaoDeCache": 13125,
+   "leituraDeCache": 47660,
+   "saida": 1231
+  },
+  "mensagens": 11,
+  "subagentesLancados": 1,
+  "modelo": "claude-sonnet-5-5"
+ },
+ "transcricoes": [
+  {
+   "sessao": "e55fd8e0-265e-4b91-9059-7d4b9092813c",
+   "papel": "principal",
+   "arquivo": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-1e905e31/e55fd8e0-265e-4b91-9059-7d4b9092813c.jsonl",
+   "primeiraChamada": {
+    "entrada": 2,
+    "criacaoDeCache": 17349,
+    "leituraDeCache": 0,
+    "total": 17351
+   },
+   "anexos": {
+    "environment": 1,
+    "model": 1,
+    "language": 1,
+    "agent_listing_delta": 1,
+    "instructions": 1,
+    "session_context": 1,
+    "date": 1,
+    "credential_org": 1,
+    "remote_session_change": 1,
+    "prompt_snapshot": 2,
+    "deferred_tools_record": 1
+   },
+   "marcas": {
+    "claudeMdDoUsuario": true,
+    "regrasContext7": true,
+    "superpowers": 0,
+    "skillsListadas": 0,
+    "instrucaoV3": false,
+    "descricaoCurtaDoExecutor": false
+   }
+  },
+  {
+   "sessao": "e55fd8e0-265e-4b91-9059-7d4b9092813c",
+   "papel": "subagente agent-a35b54303e6ba3f5f.jsonl",
+   "arquivo": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-1e905e31/e55fd8e0-265e-4b91-9059-7d4b9092813c/subagents/agent-a35b54303e6ba3f5f.jsonl",
+   "primeiraChamada": {
+    "entrada": 2,
+    "criacaoDeCache": 10855,
+    "leituraDeCache": 0,
+    "total": 10857
+   },
+   "anexos": {
+    "environment": 1,
+    "model": 1,
+    "instructions": 1,
+    "session_context": 1,
+    "date": 1,
+    "credential_org": 1,
+    "remote_session_change": 1,
+    "prompt_snapshot": 2,
+    "deferred_tools_record": 2
+   },
+   "marcas": {
+    "claudeMdDoUsuario": true,
+    "regrasContext7": true,
+    "superpowers": 0,
+    "skillsListadas": 0,
+    "instrucaoV3": false,
+    "descricaoCurtaDoExecutor": false
+   }
+  }
+ ],
+ "chamadasDoIntermediario": [
+  {
+   "em": "2026-11-23T15:48:21.781Z",
+   "variante": "v1",
+   "aplicadas": [
+    "v1"
+   ],
+   "sessao": true,
+   "detalhes": {
+    "v1": {
+     "pluginsDesligados": 16,
+     "settingsOriginal": null
+    },
+    "pasta": "/tmp/bench-gosub/variantes/2026-11-23T15-48-21-778Z-69205"
+   },
+   "final": [
+    "--settings",
+    "/tmp/bench-gosub/variantes/2026-11-23T15-48-21-778Z-69205/configuracoes.json",
+    "--disable-slash-commands",
+    "-p",
+    "--input-format",
+    "stream-json",
+    "--output-format",
+    "stream-json",
+    "--verbose",
+    "--add-dir",
+    "/private/tmp/bench-gosub/dados-c/artefatos/entrada/orquestradores/1e905e31-d005-46d0-ac14-eeba99799251",
+    "--session-id",
+    "e55fd8e0-265e-4b91-9059-7d4b9092813c",
+    "--model",
+    "sonnet",
+    "--effort",
+    "medium",
+    "--agents",
+    "/var/folders/lt/fjgdf_wj2xg5kc44rc4pwcs40000gn/T/orquestrador-agentes/9128e98e-bc13-4aeb-8030-cf221adece50/agentes.json",
+    "--append-system-prompt-file",
+    "/var/folders/lt/fjgdf_wj2xg5kc44rc4pwcs40000gn/T/orquestrador-agentes/9128e98e-bc13-4aeb-8030-cf221adece50/instrucoes.txt",
+    "--strict-mcp-config",
+    "--permission-mode",
+    "dontAsk",
+    "--tools",
+    "Read",
+    "Glob",
+    "Grep",
+    "WebSearch",
+    "WebFetch",
+    "Edit",
+    "Write",
+    "NotebookEdit",
+    "PowerShell",
+    "Bash",
+    "Agent",
+    "Skill",
+    "--allowedTools",
+    "Read",
+    "Glob",
+    "Grep",
+    "WebSearch",
+    "WebFetch",
+    "Edit",
+    "Write",
+    "NotebookEdit",
+    "PowerShell",
+    "Bash",
+    "Agent",
+    "Skill",
+    "--disallowedTools",
+    "PowerShell(git commit:*)",
+    "PowerShell(git push:*)",
+    "Bash(git commit:*)",
+    "Bash(git push:*)"
+   ]
+  },
+  {
+   "em": "2026-11-23T15:48:22.584Z",
+   "variante": "v1",
+   "aplicadas": [
+    "v1"
+   ],
+   "sessao": false,
+   "detalhes": {},
+   "final": [
+    "--version"
+   ]
+  },
+  {
+   "em": "2026-11-23T15:48:22.690Z",
+   "variante": "v1",
+   "aplicadas": [
+    "v1"
+   ],
+   "sessao": false,
+   "detalhes": {},
+   "final": [
+    "auth",
+    "status"
+   ]
+  }
+ ],
+ "fim": "2026-11-23T15:49:01.159Z"
+}

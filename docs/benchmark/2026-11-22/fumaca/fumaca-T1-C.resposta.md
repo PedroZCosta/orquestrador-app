@@ -1,0 +1,5 @@
+O pedido mínimo dos cupons agora é inclusivo, e `npm test` passou com 52 de 52 testes, sem falhas. O subagente rodou os testes e eu conferi o `git diff --stat`, mas não reli os arquivos.
+
+- **Correção:** em `src/pricing/discounts.js` (linha 19), a comparação `subtotal <= coupon.minSubtotal` virou `subtotal < coupon.minSubtotal`. Como a checagem é única, vale para todos os cupons com mínimo (BEMVINDO10, DESC50, FRETEGRATIS e os demais). Nada mais foi alterado.
+- **Teste novo:** em `test/discounts.test.js`, "subtotal exatamente igual ao mínimo é aceito" cobre BEMVINDO10 com um pedido de R$ 100,00. Ele confere que o cupom é aceito e que o desconto é de R$ 10,00.
+- **Pendências:** não fiz commit, como você pediu. As alterações estão só na árvore de trabalho, 2 arquivos com 7 inserções e 1 remoção.

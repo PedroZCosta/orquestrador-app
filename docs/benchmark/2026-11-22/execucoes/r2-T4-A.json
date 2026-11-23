@@ -1,0 +1,343 @@
+{
+ "id": "r2-T4-A",
+ "rodada": 2,
+ "tarefa": "T4",
+ "config": "A",
+ "posicao": 2,
+ "tentativa": 1,
+ "prompt": "Pergunta sobre este projeto (loja-pedidos, Node sem dependências); responda em texto, sem alterar nem criar arquivos no projeto. Uma cliente de Manaus (AM) faz um pedido de 2 unidades de LIV-001 e 1 de CAN-010 com o cupom BEMVINDO10 e paga com cartão de crédito.\n(a) Quanto ela paga? Informe, em reais, o subtotal, o desconto, o frete, o imposto e o total, e explique como cada valor é calculado.\n(b) Se o gateway responder `timeout` (falha temporária) em todas as tentativas de cobrança: quantas cobranças são feitas, quanto tempo de espera há entre elas (em ms), em que status o pedido termina, o que acontece com a reserva de estoque, que mensagem a cliente recebe e se o pedido entra no relatório de vendas.\n(c) Indique os arquivos (caminho) onde estão as regras usadas nas respostas.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+ "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/r2-T4-A-mwt4uku9",
+ "inicio": "2026-11-23T10:38:29.259Z",
+ "carga": {
+  "em": "2026-11-23T10:38:29.121Z",
+  "uptime": "7:38  up 31 days, 5 mins, 1 user, load averages: 72.34 41.51 20.51",
+  "processos": [
+   "29962 1.2 14080 09:10:58 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "20258 1.0 34368 30:50 node scripts/harness.mjs",
+   "12036 0.9 323360 36:02 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "28901 0.3 6384 09-14:45:00 node /Users/pedro/Projetos/PIR_app-plano-ajustes/PIR_Backend/node_modules/.bin/nest start --watch",
+   "45827 0.2 140336 13:18 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "46130 0.0 1744 13:08 /bin/zsh -c source /Users/pedro/.claude/shell-snapshots/snapshot-zsh-1795429515456-abc8ut.sh 2>/dev/null || true && setopt NO_EXTENDED_GLOB NO_BARE_GLOB_QUAL NO_EQUALS 2>/dev/null",
+   "34898 0.0 13888 20:39 /opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python -m http.server 61993 --bind 127.0.0.1 --directory /tm",
+   "5499 0.0 32448 43:51 /Users/pedro/.nvm/versions/node/v22.21.0/bin/node --require /Users/pedro/Projetos/orquestrador-app-atualizacao/node_modules/tsx/dist/preflight.cjs --import file:///Users/pedro/Pro",
+   "5498 0.0 10768 43:51 node /private/tmp/bench-gosub/app-45b1b81/node_modules/.bin/tsx src/root.ts",
+   "34892 0.0 8960 09:06:47 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping"
+  ],
+  "pesados": [],
+  "esperouS": 0
+ },
+ "execucao": {
+  "comando": "/opt/homebrew/bin/claude -p <prompt> --output-format stream-json --verbose --session-id ee0ef5fe-9a20-4818-bc81-66edd2b65a46 --permission-mode bypassPermissions",
+  "codigoDeSaida": 0,
+  "estourou": false,
+  "init": {
+   "modelo": "claude-opus-5-5",
+   "sessao": "ee0ef5fe-9a20-4818-bc81-66edd2b65a46",
+   "versao": "2.1.322",
+   "permissao": "bypassPermissions"
+  },
+  "stderrFim": "",
+  "resultadoDoClaude": {
+   "subtype": "success",
+   "is_error": false,
+   "num_turns": 5,
+   "duration_ms": 40726,
+   "duration_api_ms": 37619,
+   "total_cost_usd": 0.536832,
+   "usage": {
+    "input_tokens": 10,
+    "cache_creation_input_tokens": 52002,
+    "cache_read_input_tokens": 169080,
+    "output_tokens": 4348,
+    "output_tokens_details": {
+     "thinking_tokens": 903
+    },
+    "server_tool_use": {
+     "web_search_requests": 0,
+     "web_fetch_requests": 0
+    },
+    "service_tier": "standard",
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 52002,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "inference_geo": "global",
+    "iterations": [
+     {
+      "input_tokens": 2,
+      "output_tokens": 2258,
+      "cache_read_input_tokens": 61214,
+      "cache_creation_input_tokens": 2054,
+      "cache_creation": {
+       "ephemeral_5m_input_tokens": 0,
+       "ephemeral_1h_input_tokens": 2054
+      },
+      "type": "message"
+     }
+    ],
+    "speed": "standard",
+    "fallback_credit": null
+   },
+   "modelUsage": {
+    "claude-opus-5-5": {
+     "inputTokens": 10,
+     "outputTokens": 4348,
+     "cacheReadInputTokens": 169080,
+     "cacheCreationInputTokens": 52002,
+     "webSearchRequests": 0,
+     "costUSD": 0.536832,
+     "contextWindow": 1000000,
+     "maxOutputTokens": 128000,
+     "thinkingTokens": 903,
+     "cacheCreationEphemeral5mInputTokens": 0,
+     "cacheCreationEphemeral1hInputTokens": 52002,
+     "canonicalModel": "claude-opus-5-5",
+     "provider": "firstParty",
+     "costBasis": "list"
+    }
+   }
+  },
+  "mensagensDoAssistenteNoStream": 8,
+  "resultadosNoStream": 1,
+  "stream": "r2-T4-A.stream.jsonl.gz"
+ },
+ "resposta": "A simulação rodou com o próprio código (`createStore`, gateway roteirizado com `timeout` e um `sleep` que só registra as esperas), sem criar nem alterar arquivos. Os números abaixo saíram dessa execução. O `npm test` também passou, com 0 falhas.\n\n## (a) Quanto ela paga\n\n| Item | Valor |\n|---|---|\n| Subtotal | **R$ 219,70** |\n| Desconto (BEMVINDO10) | **R$ 21,97** |\n| Frete | **R$ 51,60** |\n| Imposto (AM) | **R$ 39,55** |\n| **Total** | **R$ 288,88** |\n\n- **Subtotal:** soma de preço × quantidade, arredondada a 2 casas. São 2 × LIV‑001 (R$ 89,90), que dão R$ 179,80, mais 1 × CAN‑010 (R$ 39,90). Total de R$ 219,70.\n- **Desconto:** BEMVINDO10 dá 10% sobre o subtotal inteiro, porque não é restrito a uma categoria. Ele exige subtotal mínimo de R$ 100 (219,70 passa) e não tem validade. 10% de 219,70 dá R$ 21,97. O subtotal com desconto fica em R$ 197,73.\n- **Frete:** primeiro o código verifica se o frete é grátis. Não é: o subtotal com desconto (197,73) fica abaixo do limite de R$ 299,90, e o cupom não dá frete grátis. AM pertence à região norte, cuja base é R$ 32,00, mais R$ 9,80 por kg. O peso é 2 × 0,6 + 0,4 = 1,6 kg, e o código arredonda o peso para cima, então cobra 2 kg. 32 + 9,80 × 2 = R$ 51,60.\n- **Imposto:** a alíquota de AM é 20% e incide sobre o subtotal com desconto. O frete não é tributado. 197,73 × 0,20 = 39,546, arredondado para R$ 39,55.\n- **Total:** subtotal com desconto + imposto + frete = 197,73 + 39,55 + 51,60 = **R$ 288,88**.\n\n## (b) Gateway responde `timeout` em todas as tentativas\n\n- **Cobranças feitas:** **3**, o máximo configurado (`maxAttempts`), cada uma de R$ 288,88. O `timeout` é marcado como falha temporária (`retryable: true`), então o sistema tenta de novo até chegar ao limite.\n- **Espera entre elas:** **200 ms** entre a 1ª e a 2ª cobrança e **400 ms** entre a 2ª e a 3ª. Depois da 3ª não há espera. No total são 600 ms.\n- **Status final:** **`payment_failed`**. O histórico guarda o motivo `timeout`, e o campo `payment` fica `{ paymentId: null, attempts: 3, failureReason: 'timeout' }`. Esse status é final: não há como voltar para `pending` nem pagar de novo, porque `payOrder` exige `pending`.\n- **Reserva de estoque:** quando o pedido é criado, 2 unidades de LIV‑001 e 1 de CAN‑010 ficam reservadas. Com a falha, `release` desfaz a reserva e as unidades voltam a ficar disponíveis. O `onHand` não muda (fica em 20 e 30) e o `reserved` volta a 0.\n- **Mensagem à cliente:** ela recebe dois e-mails.\n  1. Quando o pedido é criado: \"Pedido ORD‑xxxx recebido\", com o valor de R$ 288,88.\n  2. Depois da falha, com o assunto **\"Pagamento do pedido ORD‑xxxx não aprovado\"**:\n     > Olá, {nome}. Não conseguimos aprovar o pagamento do pedido ORD‑xxxx (timeout). Os itens voltaram ao estoque; faça um novo pedido quando quiser.\n     >\n     > Loja Dev\n     > Dúvidas: atendimento@lojadev.example\n- **Relatório de vendas:** **não entra**. O relatório descarta os pedidos com status `payment_failed`; na simulação, `orderCount` deu 0.\n\n## (c) Onde estão as regras\n\n- `src/catalog/seed.js`: preço e peso de LIV‑001 e CAN‑010.\n- `src/pricing/coupons.js`: definição do cupom BEMVINDO10.\n- `src/pricing/discounts.js`: validação do cupom e cálculo do desconto percentual.\n- `src/pricing/pricing.js`: ordem do cálculo (subtotal, desconto, frete, imposto, total).\n- `src/pricing/shipping.js`: cálculo do frete, com arredondamento do peso para cima e regra de frete grátis.\n- `src/pricing/tax.js`: imposto sobre o subtotal com desconto.\n- `src/config.js`: dados de AM (alíquota de 20%, região norte), frete por região (base 32 e 9,80/kg), limite de frete grátis (299,90) e as regras de pagamento (`maxAttempts: 3`, `backoffMs: [200, 400]`).\n- `src/payments/paymentService.js`: lógica das novas tentativas e das esperas.\n- `src/payments/paymentGateway.js`: contrato do gateway, com `retryable` e `reason`.\n- `src/orders/orderService.js`: `payOrder`, que marca a falha, libera a reserva e emite `payment.failed`.\n- `src/orders/order.js`: status e transições do pedido.\n- `src/inventory/inventory.js`: `reserve` e `release` do estoque.\n- `src/notifications/templates.js` e `src/notifications/notifier.js`: textos e envio dos e-mails.\n- `src/reports/salesReport.js`: exclusão dos pedidos `payment_failed` do relatório.\n\n**Divergência no código:** o comentário de `coupons.js` diz que o `minSubtotal` vale \"inclusive\", mas `discounts.js:19` recusa o cupom com `subtotal <= minSubtotal`. Assim, um pedido de exatamente R$ 100,00 não ganharia o BEMVINDO10. Isso não afeta este caso, porque o subtotal é R$ 219,70.",
+ "usoDaAssinatura": {
+  "antes": {
+   "em": "2026-11-23T10:38:33.501Z",
+   "janelas": [
+    {
+     "nome": "seven_day",
+     "utilizacao": 0.55,
+     "renovaEm": "2026-11-23T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "depois": {
+   "em": "2026-11-23T10:38:33.501Z",
+   "janelas": [
+    {
+     "nome": "seven_day",
+     "utilizacao": 0.55,
+     "renovaEm": "2026-11-23T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "leituras": 1
+ },
+ "fim": "2026-11-23T10:39:12.652Z",
+ "tempoDeParedeS": 43.4,
+ "sessoes": [
+  "ee0ef5fe-9a20-4818-bc81-66edd2b65a46"
+ ],
+ "pastaDoResultado": "/private/tmp/bench-gosub/projetos/r2-T4-A-mwt4uku9",
+ "tentativasAnteriores": [],
+ "checagem": {
+  "sucesso": true,
+  "motivo": "todos os fatos presentes e nenhum arquivo alterado",
+  "detalhes": {
+   "fatos": [
+    {
+     "id": "subtotal",
+     "descricao": "subtotal R$ 219,70",
+     "ok": true
+    },
+    {
+     "id": "desconto",
+     "descricao": "desconto R$ 21,97",
+     "ok": true
+    },
+    {
+     "id": "frete",
+     "descricao": "frete R$ 51,60",
+     "ok": true
+    },
+    {
+     "id": "imposto",
+     "descricao": "imposto R$ 39,55",
+     "ok": true
+    },
+    {
+     "id": "total",
+     "descricao": "total R$ 288,88",
+     "ok": true
+    },
+    {
+     "id": "tentativas",
+     "descricao": "3 cobranças",
+     "ok": true
+    },
+    {
+     "id": "esperas",
+     "descricao": "esperas de 200 ms e 400 ms (600 ms no total)",
+     "ok": true
+    },
+    {
+     "id": "status",
+     "descricao": "status payment_failed",
+     "ok": true
+    },
+    {
+     "id": "reserva",
+     "descricao": "reserva de estoque liberada",
+     "ok": true
+    },
+    {
+     "id": "mensagem",
+     "descricao": "mensagem de pagamento não aprovado",
+     "ok": true
+    },
+    {
+     "id": "relatorio",
+     "descricao": "fora do relatório de vendas",
+     "ok": true
+    },
+    {
+     "id": "arquivo-frete",
+     "descricao": "cita src/pricing/shipping.js",
+     "ok": true
+    },
+    {
+     "id": "arquivo-imposto",
+     "descricao": "cita src/pricing/tax.js",
+     "ok": true
+    },
+    {
+     "id": "arquivo-pagamento",
+     "descricao": "cita src/payments/paymentService.js",
+     "ok": true
+    }
+   ],
+   "gitStatus": ""
+  }
+ },
+ "sucesso": true,
+ "arquivoDoDiff": "r2-T4-A.diff",
+ "arquivoDaResposta": "r2-T4-A.resposta.md",
+ "medicao": {
+  "arquivos": [
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-projetos-r2-T4-A-mwt4uku9/ee0ef5fe-9a20-4818-bc81-66edd2b65a46.jsonl",
+    "papel": "principal",
+    "tipoDeAgente": null
+   }
+  ],
+  "medicaoDoApp": {
+   "total": {
+    "entrada": 10,
+    "criacaoDeCache": 52002,
+    "leituraDeCache": 169080,
+    "saida": 4348
+   },
+   "principal": {
+    "entrada": 10,
+    "criacaoDeCache": 52002,
+    "leituraDeCache": 169080,
+    "saida": 4348
+   },
+   "subagentes": {
+    "entrada": 0,
+    "criacaoDeCache": 0,
+    "leituraDeCache": 0,
+    "saida": 0
+   },
+   "porModelo": {
+    "claude-opus-5-5": {
+     "entrada": 10,
+     "criacaoDeCache": 52002,
+     "leituraDeCache": 169080,
+     "saida": 4348
+    }
+   },
+   "ferramentas": {
+    "Bash": 3,
+    "Read": 1
+   },
+   "subagentesLancados": 0,
+   "subagentesPorTipo": {},
+   "subagentesSemChamada": [],
+   "chamadasSemSubagente": [],
+   "mensagens": 5,
+   "modeloDoPrincipal": "claude-opus-5-5",
+   "indiceDeCusto": 103661,
+   "indicePrincipal": 103661,
+   "indiceSubagentes": 0
+  },
+  "custo": {
+   "usd": 0.536832,
+   "usdPrincipal": 0.536832,
+   "usdSubagentes": 0,
+   "porModelo": {
+    "claude-opus-5-5": {
+     "usd": 0.536832,
+     "usdPrincipal": 0.536832,
+     "usdSubagentes": 0,
+     "tokens": {
+      "entrada": 10,
+      "cache5m": 0,
+      "cache1h": 52002,
+      "leituraDeCache": 169080,
+      "saida": 4348
+     },
+     "tabela": "claude-opus-5-5"
+    }
+   },
+   "modelosSemPreco": []
+  }
+ },
+ "resumo": {
+  "usd": 0.536832,
+  "usdPrincipal": 0.536832,
+  "usdSubagentes": 0,
+  "indiceDeCusto": 103661,
+  "tokens": {
+   "entrada": 10,
+   "criacaoDeCache": 52002,
+   "leituraDeCache": 169080,
+   "saida": 4348
+  },
+  "principal": {
+   "entrada": 10,
+   "criacaoDeCache": 52002,
+   "leituraDeCache": 169080,
+   "saida": 4348
+  },
+  "subagentes": {
+   "entrada": 0,
+   "criacaoDeCache": 0,
+   "leituraDeCache": 0,
+   "saida": 0
+  },
+  "modeloDoPrincipal": "claude-opus-5-5",
+  "modelos": [
+   "claude-opus-5-5"
+  ],
+  "quantidadeDeSubagentes": 0,
+  "mensagensDoModelo": 5,
+  "turnosDoUsuario": 1,
+  "turnosDoAgente": 5,
+  "tempoDeParedeS": 43.4
+ },
+ "cargaDepois": {
+  "em": "2026-11-23T10:39:13.082Z",
+  "uptime": "7:39  up 31 days, 6 mins, 1 user, load averages: 38.40 36.86 19.88",
+  "processos": [
+   "20258 0.7 32352 31:34 node scripts/harness.mjs",
+   "12036 0.5 214688 36:46 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "28901 0.5 6400 09-14:45:44 node /Users/pedro/Projetos/PIR_app-plano-ajustes/PIR_Backend/node_modules/.bin/nest start --watch",
+   "45827 0.4 129520 14:02 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "53035 0.1 27136 08:54 /Users/pedro/Projetos/orquestrador-app-otimizar-canvas/node_modules/electron/dist/Electron.app/Contents/Frameworks/Electron Helper.app/Contents/MacOS/Electron Helper --type=utili",
+   "53089 0.1 120480 08:53 /Users/pedro/Projetos/orquestrador-app-otimizar-canvas/node_modules/electron/dist/Electron.app/Contents/Frameworks/Electron Helper (Renderer).app/Contents/MacOS/Electron Helper ",
+   "46130 0.0 1584 13:52 /bin/zsh -c source /Users/pedro/.claude/shell-snapshots/snapshot-zsh-1795429515456-abc8ut.sh 2>/dev/null || true && setopt NO_EXTENDED_GLOB NO_BARE_GLOB_QUAL NO_EQUALS 2>/dev/null",
+   "34898 0.0 13808 21:23 /opt/homebrew/Cellar/python@3.15/3.15.0/Frameworks/Python.framework/Versions/3.15/Resources/Python.app/Contents/MacOS/Python -m http.server 61993 --bind 127.0.0.1 --directory /tm",
+   "5499 0.0 30288 44:35 /Users/pedro/.nvm/versions/node/v22.21.0/bin/node --require /Users/pedro/Projetos/orquestrador-app-atualizacao/node_modules/tsx/dist/preflight.cjs --import file:///Users/pedro/Pro",
+   "5498 0.0 10768 44:35 node /private/tmp/bench-gosub/app-45b1b81/node_modules/.bin/tsx src/root.ts"
+  ],
+  "pesados": []
+ },
+ "avisos": [
+  "Outros orquestradores rodam nesta máquina: o uso da assinatura (antes/depois) e o tempo de parede ficam contaminados por eles."
+ ]
+}

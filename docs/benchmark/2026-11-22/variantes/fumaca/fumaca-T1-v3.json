@@ -1,0 +1,238 @@
+{
+ "id": "fumaca-T1-v3",
+ "variante": "v3",
+ "tarefa": "T1",
+ "inicio": "2026-11-23T15:50:55.219Z",
+ "carga": {
+  "leituras": [
+   "12:50  up 31 days,  5:17, 1 user, load averages: 6.80 5.50 6.16",
+   "12:50  up 31 days,  5:17, 1 user, load averages: 5.72 5.38 6.09"
+  ],
+  "esperouS": 30,
+  "carga1m": 5.72
+ },
+ "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/fumaca-T1-v3-mwtg0dci",
+ "execucao": {
+  "estourou": false,
+  "tempoS": 30,
+  "aprovacoes": 0,
+  "respostas": 0
+ },
+ "fimDoTurno": "turno_concluido",
+ "falhas": [],
+ "resposta": "Corrigido: o pedido mínimo dos cupons agora é inclusivo, e um pedido de exatamente R$ 100,00 com BEMVINDO10 é aceito. `npm test` termina com 52 de 52 testes passando.\n\n- **Correção:** em `src/pricing/discounts.js:19`, a comparação `subtotal <= coupon.minSubtotal` virou `subtotal < coupon.minSubtotal`. Como a checagem é a mesma para todos os cupons, o ajuste vale também para DESC50 e FRETEGRATIS. Nada mais mudou.\n- **Teste novo:** em `test/discounts.test.js`, um pedido de R$ 100,00 exatos com BEMVINDO10 é aceito e gera R$ 10,00 de desconto.\n\nFiz eu mesmo, sem subagentes, por ser uma mudança de uma linha. Não fiz commit.",
+ "consumos": [
+  {
+   "principal": {
+    "entrada": 10,
+    "criacaoDeCache": 23180,
+    "leituraDeCache": 128318,
+    "saida": 1212
+   },
+   "subagentes": {
+    "entrada": 0,
+    "criacaoDeCache": 0,
+    "leituraDeCache": 0,
+    "saida": 0
+   },
+   "subagentesMedidos": 0,
+   "parcial": false,
+   "indiceDeCusto": 47877,
+   "modeloDoPrincipal": "claude-sonnet-5-5"
+  }
+ ],
+ "subagentes": 0,
+ "sessoes": [
+  "477a4325-0489-4d68-a025-a7ff0ee27587"
+ ],
+ "checagem": {
+  "sucesso": true,
+  "motivo": "todos os critérios passaram",
+  "detalhes": {
+   "suiteDoProjeto": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.213625\n      type: 'test'\n      ...\n    # Subtest: ids sequenciais\n    ok 2 - ids sequenciais\n      ---\n      duration_ms: 0.07025\n      type: 'test'\n      ...\n    1..2\nok 15 - validação\n  ---\n  duration_ms: 0.363541\n  type: 'suite'\n  ...\n1..15\n# tests 52\n# suites 14\n# pass 52\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 146.232083\n"
+   },
+   "testeOculto": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.568375\n      type: 'test'\n      ...\n    # Subtest: acima do mínimo segue igual\n    ok 4 - acima do mínimo segue igual\n      ---\n      duration_ms: 0.060166\n      type: 'test'\n      ...\n    1..4\nok 1 - T1 oculto: pedido mínimo do cupom é inclusivo\n  ---\n  duration_ms: 3.69575\n  type: 'suite'\n  ...\n1..1\n# tests 4\n# suites 1\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 50.28325\n"
+   }
+  }
+ },
+ "sucesso": true,
+ "medicao": {
+  "usd": 0.11769179999999999,
+  "usdPrincipal": 0.11769179999999999,
+  "usdSubagentes": 0,
+  "indiceDeCusto": 47877,
+  "total": {
+   "entrada": 10,
+   "criacaoDeCache": 23180,
+   "leituraDeCache": 128318,
+   "saida": 1212
+  },
+  "principal": {
+   "entrada": 10,
+   "criacaoDeCache": 23180,
+   "leituraDeCache": 128318,
+   "saida": 1212
+  },
+  "subagentes": {
+   "entrada": 0,
+   "criacaoDeCache": 0,
+   "leituraDeCache": 0,
+   "saida": 0
+  },
+  "mensagens": 5,
+  "subagentesLancados": 0,
+  "modelo": "claude-sonnet-5-5"
+ },
+ "transcricoes": [
+  {
+   "sessao": "477a4325-0489-4d68-a025-a7ff0ee27587",
+   "papel": "principal",
+   "arquivo": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-a048e2f1/477a4325-0489-4d68-a025-a7ff0ee27587.jsonl",
+   "primeiraChamada": {
+    "entrada": 2,
+    "criacaoDeCache": 20003,
+    "leituraDeCache": 8574,
+    "total": 28579
+   },
+   "anexos": {
+    "hook_success": 1,
+    "hook_additional_context": 1,
+    "environment": 1,
+    "model": 1,
+    "language": 1,
+    "agent_listing_delta": 1,
+    "skill_listing": 1,
+    "instructions": 1,
+    "session_context": 1,
+    "date": 1,
+    "credential_org": 1,
+    "remote_session_change": 1,
+    "prompt_snapshot": 2,
+    "deferred_tools_record": 1
+   },
+   "marcas": {
+    "claudeMdDoUsuario": true,
+    "regrasContext7": true,
+    "superpowers": 98,
+    "skillsListadas": 1,
+    "instrucaoV3": true,
+    "descricaoCurtaDoExecutor": false
+   }
+  }
+ ],
+ "chamadasDoIntermediario": [
+  {
+   "em": "2026-11-23T15:50:55.350Z",
+   "variante": "v3",
+   "aplicadas": [
+    "v3"
+   ],
+   "sessao": true,
+   "detalhes": {
+    "agentes": {
+     "original": "/var/folders/lt/fjgdf_wj2xg5kc44rc4pwcs40000gn/T/orquestrador-agentes/087b374d-b7b1-499a-89b6-168e4c5069ac/agentes.json",
+     "nomesAntes": [
+      "executor"
+     ],
+     "nomesDepois": [
+      "executor"
+     ],
+     "bytesAntes": 2092,
+     "bytesDepois": 2554
+    },
+    "instrucoes": {
+     "original": "/var/folders/lt/fjgdf_wj2xg5kc44rc4pwcs40000gn/T/orquestrador-agentes/087b374d-b7b1-499a-89b6-168e4c5069ac/instrucoes.txt",
+     "bytesAntes": 1865,
+     "bytesExtra": 458
+    },
+    "pasta": "/tmp/bench-gosub/variantes/2026-11-23T15-50-55-349Z-72737"
+   },
+   "final": [
+    "-p",
+    "--input-format",
+    "stream-json",
+    "--output-format",
+    "stream-json",
+    "--verbose",
+    "--add-dir",
+    "/private/tmp/bench-gosub/dados-c/artefatos/entrada/orquestradores/a048e2f1-03b1-4085-b57f-b2cde7d9635c",
+    "--session-id",
+    "477a4325-0489-4d68-a025-a7ff0ee27587",
+    "--model",
+    "sonnet",
+    "--effort",
+    "medium",
+    "--agents",
+    "/tmp/bench-gosub/variantes/2026-11-23T15-50-55-349Z-72737/agentes.json",
+    "--append-system-prompt-file",
+    "/tmp/bench-gosub/variantes/2026-11-23T15-50-55-349Z-72737/instrucoes.txt",
+    "--strict-mcp-config",
+    "--permission-mode",
+    "dontAsk",
+    "--tools",
+    "Read",
+    "Glob",
+    "Grep",
+    "WebSearch",
+    "WebFetch",
+    "Edit",
+    "Write",
+    "NotebookEdit",
+    "PowerShell",
+    "Bash",
+    "Agent",
+    "Skill",
+    "--allowedTools",
+    "Read",
+    "Glob",
+    "Grep",
+    "WebSearch",
+    "WebFetch",
+    "Edit",
+    "Write",
+    "NotebookEdit",
+    "PowerShell",
+    "Bash",
+    "Agent",
+    "Skill",
+    "--disallowedTools",
+    "PowerShell(git commit:*)",
+    "PowerShell(git push:*)",
+    "Bash(git commit:*)",
+    "Bash(git push:*)"
+   ]
+  },
+  {
+   "em": "2026-11-23T15:50:56.093Z",
+   "variante": "v3",
+   "aplicadas": [
+    "v3"
+   ],
+   "sessao": false,
+   "detalhes": {},
+   "final": [
+    "--version"
+   ]
+  },
+  {
+   "em": "2026-11-23T15:50:56.149Z",
+   "variante": "v3",
+   "aplicadas": [
+    "v3"
+   ],
+   "sessao": false,
+   "detalhes": {},
+   "final": [
+    "auth",
+    "status"
+   ]
+  }
+ ],
+ "fim": "2026-11-23T15:51:25.703Z"
+}

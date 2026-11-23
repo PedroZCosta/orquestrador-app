@@ -1,0 +1,69 @@
+{
+  "id": "53339816-690e-4421-b5c3-d7adc9cd5567",
+  "nome": "bench r1-T3-C",
+  "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/r1-T3-C-mwt46tl8",
+  "sessaoId": "f7d109ca-1924-4b2e-8fd5-aa86395061ce",
+  "sessaoIniciada": true,
+  "criadoEm": "2026-11-23T10:20:00.850Z",
+  "configuracao": {
+    "motorDoOrquestrador": "claude-code",
+    "motorDosSubagentes": "claude-code",
+    "modeloDoOrquestrador": "sonnet",
+    "modeloDosSubagentes": "sonnet",
+    "ordemDeReserva": [],
+    "quantidadeDeSubagentes": {
+      "modo": "automatica",
+      "limite": 3
+    },
+    "nivelDePermissao": "edicao_e_comandos",
+    "permitirCommitEPush": false,
+    "permitirArtefatosOnline": false,
+    "navegadorDoAgente": false,
+    "esforcoDoOrquestrador": "medio",
+    "esforcoDosSubagentes": "medio",
+    "instrucoesPersonalizadas": "",
+    "subagentesProntos": "todos"
+  },
+  "turnos": [
+    {
+      "id": "2508b684-61d5-495a-acfc-c9e1607646fa",
+      "texto": "Refatoração sem mudança de comportamento neste projeto (loja-pedidos, Node sem dependências): o arredondamento e a formatação de dinheiro estão espalhados pelo código, com `Math.round(x * 100) / 100` e formatadores de \"R$\" locais repetidos em vários módulos. Centralize tudo em `src/money.js` (use `round2`, `formatBRL`, `sumMoney` e `percentOf`, ampliando-as se precisar) e troque os usos espalhados por essas funções. Regras: nenhuma saída pública pode mudar (valores, textos das mensagens, relatório, alertas), byte a byte; ao final não pode sobrar `Math.round` nem `toFixed` fora de `src/money.js`; não altere os testes existentes, que têm de continuar passando sem mudança. Rode `npm test` ao final.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+      "iniciadoEm": "2026-11-23T10:20:00.852Z",
+      "encerradoEm": "2026-11-23T10:20:41.746Z",
+      "situacao": "concluido",
+      "resposta": "Refatoração feita: `round2`, `formatBRL`, `sumMoney` e `percentOf` de `src/money.js` agora cobrem todos os usos espalhados. O `src/money.js` não precisou ser ampliado. O `npm test` passou, 51 de 51, sem alterar nenhum teste. Não comparei a saída byte a byte, só rodei a suíte. Nada foi commitado.\n\nUm grep em `src/` confirmou que `Math.round` e `toFixed` só aparecem em `src/money.js`.\n\nOs arquivos alterados foram:\n- `src/cart/cart.js`\n- `src/pricing/discounts.js`\n- `src/pricing/tax.js`\n- `src/pricing/shipping.js`\n- `src/pricing/pricing.js`\n- `src/notifications/notifier.js`\n- `src/notifications/templates.js`\n- `src/reports/salesReport.js`\n\nDetalhes que valem registrar:\n- **Arredondamento antes de formatar:** `formatBRL` arredonda antes de formatar, e os três formatadores locais que ele substituiu (relatório, template e alerta de estoque) não faziam isso. Os valores que chegam a eles já vêm arredondados, então não deve haver diferença.\n- **`lineSubtotal` em `discounts.js`:** ficou com `round2` e não com `sumMoney`, porque cada parcela é `unitPrice * quantity` e `sumMoney` soma valores já prontos.\n\nNão ficou nada pendente.",
+      "motivoDaFalha": null,
+      "uso": {
+        "duracaoMs": 40733,
+        "tokensDeEntrada": 569502,
+        "tokensDeSaida": 10062,
+        "subagentesLancados": 1
+      },
+      "subagentes": [
+        {
+          "id": "a28f0f86f50c81d30",
+          "descricao": "Centralizar dinheiro em money.js",
+          "situacao": "concluido",
+          "tokens": 26885,
+          "duracaoMs": 18122,
+          "resumo": "Refatoração feita sem alterar `src/money.js` nem os testes. Os usos espalhados agora chamam `round2`, `formatBRL`, `sumMoney` e `percentOf`.\n\n- **Testes:** `npm test` passou, 51 de 51, 0 falhas.\n- **Grep em `src/`:** `Math.round` e `toFixed` só aparecem em `src/money.js` (linhas 6 e 10).\n- **Arquivos alterados:**\n  - `src/cart/cart.js`\n  - `src/pricing/discounts.js`\n  - `src/pricing/tax.js`\n  - `src/pricing/shipping.js`\n  - `src/pricing/pricing.js`\n  - `src/notifications/notifier.js`\n  - `src/notifications/templates.js`\n  - `src/reports/salesReport.js`\n- **`lineSubtotal`:** ficou com `round2(raw)`, porque o `reduce` soma `unitPrice * quantity`. Para usar `sumMoney` seria preciso mapear antes.\n- **Equivalência não comprovada:** a saída byte a byte não foi comparada, só rodei a suíte. Dois pontos não são idênticos linha a linha:\n  - `formatBRL` arredonda antes de formatar. Isso afeta `brl` em `formatReport` e o formatador de `notifier.js`.\n  - O `price` de `templates.js` agora chama `formatBRL`, cujo `round2` roda dentro do `toFixed`, em vez de arredondar antes.\n  - Os valores que passam por esses formatadores já vêm arredondados, então não deve haver diferença.\n\nNada foi commitado."
+        }
+      ],
+      "anexos": [],
+      "modo": "execucao",
+      "decisaoDoPlano": null,
+      "perguntas": [],
+      "motor": "claude-code"
+    }
+  ],
+  "worktree": {
+    "branch": "orquestrador/53339816-690e-4421-b5c3-d7adc9cd5567",
+    "caminho": "/private/tmp/bench-gosub/dados-c/worktrees/53339816",
+    "ativo": false
+  },
+  "fila": [],
+  "instrucoesNaConversa": false,
+  "retomadaPendente": null,
+  "sessoesDosMotores": {},
+  "liberaEmDosMotores": {}
+}

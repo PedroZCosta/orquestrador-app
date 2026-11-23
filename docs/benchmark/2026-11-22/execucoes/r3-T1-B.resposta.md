@@ -1,0 +1,5 @@
+Corrigido: o pedido mínimo dos cupons agora é inclusivo, e `npm test` passa com 52 testes, 0 falhas. Sem commit, como pedido.
+
+- **Causa:** em `src/pricing/discounts.js:19`, a checagem usava `subtotal <= coupon.minSubtotal`, então um pedido de exatamente R$ 100,00 era recusado. Troquei por `<`.
+- **Alcance:** a checagem é a mesma para todos os cupons com `minSubtotal`, então BEMVINDO10, DESC50 e FRETEGRATIS foram corrigidos juntos. O comentário em `coupons.js` já descrevia o mínimo como inclusivo, então não precisou mudar.
+- **Teste novo:** em `test/discounts.test.js`, "pedido exatamente no mínimo é aceito (inclusivo)" cobre os três cupons no valor exato (100, 300 e 150). Para BEMVINDO10 ele confere também o desconto de R$ 10,00. Ele ainda confere que R$ 99,99 continua recusado com `MIN_SUBTOTAL`.

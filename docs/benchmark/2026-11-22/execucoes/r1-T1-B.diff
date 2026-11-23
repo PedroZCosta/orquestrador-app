@@ -1,0 +1,45 @@
+ src/pricing/discounts.js |  2 +-
+ test/discounts.test.js   | 17 +++++++++++++++++
+ 2 files changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/src/pricing/discounts.js b/src/pricing/discounts.js
+index 630cf16..c3027a0 100644
+--- a/src/pricing/discounts.js
++++ b/src/pricing/discounts.js
+@@ -16,7 +16,7 @@ export function evaluateCoupon(code, lines, now) {
+     return { ok: false, code: coupon.code, reason: 'EXPIRED' };
+   }
+   const subtotal = lineSubtotal(lines);
+-  if (coupon.minSubtotal !== undefined && subtotal <= coupon.minSubtotal) {
++  if (coupon.minSubtotal !== undefined && subtotal < coupon.minSubtotal) {
+     return { ok: false, code: coupon.code, reason: 'MIN_SUBTOTAL' };
+   }
+   switch (coupon.type) {
+diff --git a/test/discounts.test.js b/test/discounts.test.js
+index 035bf52..06f6e9a 100644
+--- a/test/discounts.test.js
++++ b/test/discounts.test.js
+@@ -26,6 +26,23 @@ describe('evaluateCoupon', () => {
+     assert.equal(result.reason, 'MIN_SUBTOTAL');
+   });
+ 
++  it('pedido exatamente no mínimo é aceito (inclusivo), em todos os cupons com mínimo', () => {
++    const casos = [
++      ['BEMVINDO10', [line('CAN-010', 1, 100)]],
++      ['DESC50', [line('TEC-040', 1, 300, 'eletronicos')]],
++      ['FRETEGRATIS', [line('MOU-030', 1, 150, 'eletronicos')]],
++    ];
++    for (const [code, lines] of casos) {
++      assert.equal(evaluateCoupon(code, lines, NOW).ok, true, code);
++    }
++    assert.equal(evaluateCoupon('BEMVINDO10', [line('CAN-010', 1, 100)], NOW).amount, 10);
++  });
++
++  it('um centavo abaixo do mínimo continua recusado', () => {
++    const result = evaluateCoupon('BEMVINDO10', [line('CAN-010', 1, 99.99)], NOW);
++    assert.equal(result.reason, 'MIN_SUBTOTAL');
++  });
++
+   it('valor fixo', () => {
+     const result = evaluateCoupon('DESC50', [line('TEC-040', 1, 459, 'eletronicos')], NOW);
+     assert.equal(result.amount, 50);

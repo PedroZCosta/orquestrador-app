@@ -1,0 +1,509 @@
+{
+ "id": "r3-T2-C",
+ "rodada": 3,
+ "tarefa": "T2",
+ "config": "C",
+ "posicao": 1,
+ "variante": "v2",
+ "tentativa": 1,
+ "prompt": "Implemente o cancelamento de pedidos neste projeto (loja-pedidos, Node sem dependências). Requisitos:\n1. Novo método assíncrono `OrderService#cancelOrder(orderId, reason)`, que devolve o pedido atualizado. `reason` é obrigatório (texto não vazio); sem ele, lança o erro de validação do projeto (código `VALIDATION_ERROR`). Pedido inexistente: `ORDER_NOT_FOUND`, como nos outros métodos.\n2. Só cancela pedido `pending` ou `paid`; em qualquer outro status (inclusive um pedido já cancelado) lança `DomainError` com o código `ORDER_NOT_CANCELLABLE`.\n3. Novo status `cancelled` (em `ORDER_STATUSES`); o pedido guarda `cancelReason` e `cancelledAt` (ISO, do relógio da loja) e ganha a entrada correspondente no histórico.\n4. Pedido pendente: desfaz a reserva de estoque; não há estorno.\n5. Pedido pago: estorna o valor total pelo gateway (`refund` com o `paymentId` do pagamento), uma única vez, e devolve os itens ao estoque físico. Se o gateway recusar o estorno, lança `REFUND_FAILED` e o pedido continua `paid`, sem mexer no estoque.\n6. Emite o evento `order.cancelled` com `{ orderId, email, name, reason, refunded }`, e o cliente recebe uma mensagem com o assunto `Pedido <id> cancelado` (corpo no padrão das outras mensagens).\n7. O relatório de vendas (`salesReport`) deixa de contar pedidos cancelados.\n8. Testes novos cobrindo esses casos e o README atualizado. Rode `npm test` ao final: tudo tem de passar.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+ "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/r3-T2-C-mwtgylfv",
+ "inicio": "2026-11-23T16:17:31.987Z",
+ "carga": {
+  "em": "2026-11-23T16:17:31.915Z",
+  "uptime": "13:17  up 31 days,  5:44, 1 user, load averages: 1.07 1.66 2.73",
+  "carga1m": 1.07,
+  "processos": [
+   "93205 11.0 84608 09:15 /Users/pedro/.nvm/versions/node/v22.21.0/bin/node scripts/harness.mjs --variante v2",
+   "61388 0.5 402160 36:43 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "93216 0.2 130592 09:15 /Users/pedro/.nvm/versions/node/v22.21.0/bin/node --require /Users/pedro/Projetos/orquestrador-app-atualizacao/node_modules/tsx/dist/preflight.cjs --import file:///Users/pedro/P",
+   "15269 0.1 14800 01-00:10:07 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "99831 0.0 2320 04:15 /bin/zsh -c source /Users/pedro/.claude/shell-snapshots/snapshot-zsh-1795448472175-z8kado.sh 2>/dev/null || true && setopt NO_EXTENDED_GLOB NO_BARE_GLOB_QUAL NO_EQUALS 2>/dev/null",
+   "93215 0.0 50784 09:15 node /private/tmp/bench-gosub/app-45b1b81/node_modules/.bin/tsx src/root.ts",
+   "41706 0.0 174384 54:48 /Applications/Orquestrador de Agentes.app/Contents/Frameworks/Orquestrador de Agentes Helper.app/Contents/MacOS/Orquestrador de Agentes Helper --type=utility --utility-sub-type=",
+   "15267 0.0 61424 01-00:10:07 node ./node_modules/.bin/vite --host 127.0.0.1 --port 5180 --strictPort",
+   "59433 0.0 21728 01-00:56:43 /System/Cryptexes/App/System/Library/CoreServices/PasswordManagerBrowserExtensionHelper.app/Contents/MacOS/PasswordManagerBrowserExtensionHelper chrome-extension://pejdijmo",
+   "59397 0.0 4176 01-00:56:45 /Applications/Claude.app/Contents/Helpers/chrome-native-host chrome-extension://fcoeoabgfenejglbffodgkkbkcdhcgfn/"
+  ],
+  "pesados": [],
+  "esperouS": 0,
+  "leiturasDaEspera": [],
+  "ocupadaAoComecar": false
+ },
+ "execucao": {
+  "orqId": "57f95f8a-9fd8-45ad-a203-738fd1a7f874",
+  "sessoes": [
+   "92a0b50b-03c1-4a76-baa0-e61ed31463bb"
+  ],
+  "acoes": [
+   {
+    "em": "2026-11-23T16:18:16.016Z",
+    "acao": "plano/aprovar"
+   }
+  ],
+  "estourou": false,
+  "tempoMs": 103258,
+  "worktree": "/private/tmp/bench-gosub/dados-c/worktrees/57f95f8a",
+  "pastaEfetiva": "/private/tmp/bench-gosub/dados-c/worktrees/57f95f8a",
+  "turnosDoApp": 2,
+  "contagemDeEventos": {
+   "turno_iniciado": 2,
+   "sessao_iniciada": 2,
+   "ferramenta_do_orquestrador": 4,
+   "uso_da_cota": 2,
+   "texto_do_orquestrador": 4,
+   "turno_concluido": 2,
+   "consumo_do_turno_medido": 2,
+   "plano_aprovado": 1,
+   "subagente_iniciado": 2,
+   "progresso_do_subagente": 28,
+   "texto_do_subagente": 4,
+   "subagente_concluido": 2
+  },
+  "fimDoTurno": "turno_concluido",
+  "resposta": "O cancelamento de pedidos está implementado e `npm test` passa: 61 testes, 61 ok, 0 falhas (rodei de novo ao final). Não fiz commit.\n\n**Núcleo (`src/`)**\n- **Status e pedido:** `cancelled` entrou em `ORDER_STATUSES`. `pending` e `paid` podem ir para ele. O pedido guarda `cancelReason` e `cancelledAt` e ganha a entrada no histórico (em `order.js`).\n- **`OrderService#cancelOrder(orderId, reason)`** (`orderService.js`):\n  - **Validação:** `reason` vazio dá `VALIDATION_ERROR`, pedido inexistente dá `ORDER_NOT_FOUND` e status fora de `pending`/`paid` dá `ORDER_NOT_CANCELLABLE`.\n  - **Pendente:** libera a reserva de estoque, sem estorno.\n  - **Pago:** estorna o total antes de mudar qualquer estado. Se o gateway recusar, lança `REFUND_FAILED` e o pedido segue `paid`, com o estoque intacto. Se aprovar, os itens voltam ao estoque físico.\n  - **Evento:** emite `order.cancelled` com `{ orderId, email, name, reason, refunded }`.\n- **Mensagem ao cliente:** novo template com o assunto `Pedido <id> cancelado` (`templates.js`).\n- **Relatório:** `salesReport` ignora pedidos cancelados.\n\n**Testes e README**\n- Novo `test/cancelOrder.test.js`, mais casos em `salesReport.test.js` e `notifier.test.js`. Eles cobrem os dois fluxos de cancelamento, a recusa do estorno, o estorno uma única vez, os status não canceláveis, o evento e a mensagem.\n- O `README.md` ganhou uma seção \"Cancelamento\".\n\n**Pendente**\n- `PaymentService` só tem `charge`, então `cancelOrder` chama `payments.gateway.refund` direto. Um `PaymentService.refund` seria mais limpo, mas não estava no plano e não o criei.",
+  "usoDoTurno": [
+   {
+    "duracaoMs": 22775,
+    "tokensDeEntrada": 122066,
+    "tokensDeSaida": 2568,
+    "subagentesLancados": 0
+   },
+   {
+    "duracaoMs": 59110,
+    "tokensDeEntrada": 2162770,
+    "tokensDeSaida": 45645,
+    "subagentesLancados": 2
+   }
+  ],
+  "consumos": [
+   {
+    "principal": {
+     "entrada": 8,
+     "criacaoDeCache": 25455,
+     "leituraDeCache": 96603,
+     "saida": 2568
+    },
+    "subagentes": {
+     "entrada": 0,
+     "criacaoDeCache": 0,
+     "leituraDeCache": 0,
+     "saida": 0
+    },
+    "subagentesMedidos": 0,
+    "parcial": false,
+    "indiceDeCusto": 54327,
+    "modeloDoPrincipal": "claude-sonnet-5-5"
+   },
+   {
+    "principal": {
+     "entrada": 16,
+     "criacaoDeCache": 9196,
+     "leituraDeCache": 198415,
+     "saida": 2834
+    },
+    "subagentes": {
+     "entrada": 28,
+     "criacaoDeCache": 57948,
+     "leituraDeCache": 373943,
+     "saida": 10669
+    },
+    "subagentesMedidos": 2,
+    "parcial": false,
+    "indiceDeCusto": 208725,
+    "modeloDoPrincipal": "claude-sonnet-5-5"
+   }
+  ],
+  "cotas": [
+   {
+    "em": "2026-11-23T16:17:35.750Z",
+    "janelas": [
+     {
+      "nome": "7 dias",
+      "utilizacao": 0.03,
+      "renovaEm": "2026-11-30T15:00:00.000Z",
+      "situacao": "allowed"
+     }
+    ]
+   },
+   {
+    "em": "2026-11-23T16:18:28.096Z",
+    "janelas": [
+     {
+      "nome": "7 dias",
+      "utilizacao": 0.03,
+      "renovaEm": "2026-11-30T15:00:00.000Z",
+      "situacao": "allowed"
+     }
+    ]
+   }
+  ],
+  "falhas": [],
+  "recuperacoes": [],
+  "subagentesIniciados": 2,
+  "configuracaoDoOrquestrador": {
+   "motorDoOrquestrador": "claude-code",
+   "modeloDoOrquestrador": "sonnet",
+   "esforcoDoOrquestrador": "medio",
+   "motorDosSubagentes": "claude-code",
+   "modeloDosSubagentes": "sonnet",
+   "esforcoDosSubagentes": "medio",
+   "ordemDeReserva": [],
+   "navegadorDoAgente": false,
+   "quantidadeDeSubagentes": {
+    "modo": "automatica",
+    "limite": 3
+   },
+   "nivelDePermissao": "edicao_e_comandos",
+   "permitirCommitEPush": false,
+   "permitirArtefatosOnline": false,
+   "instrucoesPersonalizadas": ""
+  },
+  "versaoDoApp": "45b1b81 (0.2.2)",
+  "porta": 3317
+ },
+ "consumoDoApp": {
+  "principal": {
+   "entrada": 24,
+   "criacaoDeCache": 34651,
+   "leituraDeCache": 295018,
+   "saida": 5402
+  },
+  "subagentes": {
+   "entrada": 28,
+   "criacaoDeCache": 57948,
+   "leituraDeCache": 373943,
+   "saida": 10669
+  },
+  "indiceDeCusto": 263052,
+  "subagentesMedidos": 2,
+  "modelos": [
+   "claude-sonnet-5-5",
+   "claude-sonnet-5-5"
+  ]
+ },
+ "resposta": "O cancelamento de pedidos está implementado e `npm test` passa: 61 testes, 61 ok, 0 falhas (rodei de novo ao final). Não fiz commit.\n\n**Núcleo (`src/`)**\n- **Status e pedido:** `cancelled` entrou em `ORDER_STATUSES`. `pending` e `paid` podem ir para ele. O pedido guarda `cancelReason` e `cancelledAt` e ganha a entrada no histórico (em `order.js`).\n- **`OrderService#cancelOrder(orderId, reason)`** (`orderService.js`):\n  - **Validação:** `reason` vazio dá `VALIDATION_ERROR`, pedido inexistente dá `ORDER_NOT_FOUND` e status fora de `pending`/`paid` dá `ORDER_NOT_CANCELLABLE`.\n  - **Pendente:** libera a reserva de estoque, sem estorno.\n  - **Pago:** estorna o total antes de mudar qualquer estado. Se o gateway recusar, lança `REFUND_FAILED` e o pedido segue `paid`, com o estoque intacto. Se aprovar, os itens voltam ao estoque físico.\n  - **Evento:** emite `order.cancelled` com `{ orderId, email, name, reason, refunded }`.\n- **Mensagem ao cliente:** novo template com o assunto `Pedido <id> cancelado` (`templates.js`).\n- **Relatório:** `salesReport` ignora pedidos cancelados.\n\n**Testes e README**\n- Novo `test/cancelOrder.test.js`, mais casos em `salesReport.test.js` e `notifier.test.js`. Eles cobrem os dois fluxos de cancelamento, a recusa do estorno, o estorno uma única vez, os status não canceláveis, o evento e a mensagem.\n- O `README.md` ganhou uma seção \"Cancelamento\".\n\n**Pendente**\n- `PaymentService` só tem `charge`, então `cancelOrder` chama `payments.gateway.refund` direto. Um `PaymentService.refund` seria mais limpo, mas não estava no plano e não o criei.",
+ "usoDaAssinatura": {
+  "antes": {
+   "em": "2026-11-23T16:17:35.750Z",
+   "janelas": [
+    {
+     "nome": "7 dias",
+     "utilizacao": 0.03,
+     "renovaEm": "2026-11-30T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "depois": {
+   "em": "2026-11-23T16:18:28.096Z",
+   "janelas": [
+    {
+     "nome": "7 dias",
+     "utilizacao": 0.03,
+     "renovaEm": "2026-11-30T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "leituras": 2
+ },
+ "fim": "2026-11-23T16:19:36.093Z",
+ "tempoDeParedeS": 103.3,
+ "sessoes": [
+  "92a0b50b-03c1-4a76-baa0-e61ed31463bb"
+ ],
+ "pastaDoResultado": "/private/tmp/bench-gosub/dados-c/worktrees/57f95f8a",
+ "tentativasAnteriores": [],
+ "checagem": {
+  "sucesso": true,
+  "motivo": "todos os critérios passaram",
+  "detalhes": {
+   "suiteDoProjeto": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.198458\n      type: 'test'\n      ...\n    # Subtest: ids sequenciais\n    ok 2 - ids sequenciais\n      ---\n      duration_ms: 0.065459\n      type: 'test'\n      ...\n    1..2\nok 16 - validação\n  ---\n  duration_ms: 0.334833\n  type: 'suite'\n  ...\n1..16\n# tests 61\n# suites 15\n# pass 61\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 140.477083\n"
+   },
+   "testeOculto": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.232334\n      type: 'test'\n      ...\n    # Subtest: o relatório de vendas ignora os cancelados\n    ok 7 - o relatório de vendas ignora os cancelados\n      ---\n      duration_ms: 7.224917\n      type: 'test'\n      ...\n    1..7\nok 1 - T2 oculto: cancelamento de pedidos\n  ---\n  duration_ms: 11.738459\n  type: 'suite'\n  ...\n1..1\n# tests 7\n# suites 1\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 58.377625\n"
+   }
+  }
+ },
+ "sucesso": true,
+ "arquivoDoDiff": "r3-T2-C.diff",
+ "arquivoDaResposta": "r3-T2-C.resposta.md",
+ "medicao": {
+  "arquivos": [
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-57f95f8a/92a0b50b-03c1-4a76-baa0-e61ed31463bb.jsonl",
+    "papel": "principal",
+    "tipoDeAgente": null
+   },
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-57f95f8a/92a0b50b-03c1-4a76-baa0-e61ed31463bb/subagents/agent-a2f1a33bd5d9f48ee.jsonl",
+    "papel": "subagente",
+    "tipoDeAgente": "executor"
+   },
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-57f95f8a/92a0b50b-03c1-4a76-baa0-e61ed31463bb/subagents/agent-a848e0cd749e3a816.jsonl",
+    "papel": "subagente",
+    "tipoDeAgente": "executor"
+   }
+  ],
+  "medicaoDoApp": {
+   "total": {
+    "entrada": 52,
+    "criacaoDeCache": 92599,
+    "leituraDeCache": 668961,
+    "saida": 16071
+   },
+   "principal": {
+    "entrada": 24,
+    "criacaoDeCache": 34651,
+    "leituraDeCache": 295018,
+    "saida": 5402
+   },
+   "subagentes": {
+    "entrada": 28,
+    "criacaoDeCache": 57948,
+    "leituraDeCache": 373943,
+    "saida": 10669
+   },
+   "porModelo": {
+    "claude-sonnet-5-5": {
+     "entrada": 52,
+     "criacaoDeCache": 92599,
+     "leituraDeCache": 668961,
+     "saida": 16071
+    }
+   },
+   "ferramentas": {
+    "Bash": 13,
+    "Agent": 2,
+    "Read": 9,
+    "Grep": 1,
+    "Edit": 9
+   },
+   "subagentesLancados": 2,
+   "subagentesPorTipo": {
+    "executor": 2
+   },
+   "subagentesSemChamada": [],
+   "chamadasSemSubagente": [],
+   "mensagens": 23,
+   "modeloDoPrincipal": "claude-sonnet-5-5",
+   "indiceDeCusto": 263052,
+   "indicePrincipal": 99850,
+   "indiceSubagentes": 163202
+  },
+  "custo": {
+   "usd": 0.5111841,
+   "usdPrincipal": 0.2221738,
+   "usdSubagentes": 0.2890103,
+   "porModelo": {
+    "claude-sonnet-5-5": {
+     "usd": 0.5111841,
+     "usdPrincipal": 0.2221738,
+     "usdSubagentes": 0.2890103,
+     "tokens": {
+      "entrada": 52,
+      "cache5m": 57948,
+      "cache1h": 34651,
+      "leituraDeCache": 668961,
+      "saida": 16071
+     },
+     "tabela": "claude-sonnet-5-5"
+    }
+   },
+   "modelosSemPreco": []
+  }
+ },
+ "resumo": {
+  "usd": 0.5111841,
+  "usdPrincipal": 0.2221738,
+  "usdSubagentes": 0.2890103,
+  "indiceDeCusto": 263052,
+  "tokens": {
+   "entrada": 52,
+   "criacaoDeCache": 92599,
+   "leituraDeCache": 668961,
+   "saida": 16071
+  },
+  "principal": {
+   "entrada": 24,
+   "criacaoDeCache": 34651,
+   "leituraDeCache": 295018,
+   "saida": 5402
+  },
+  "subagentes": {
+   "entrada": 28,
+   "criacaoDeCache": 57948,
+   "leituraDeCache": 373943,
+   "saida": 10669
+  },
+  "modeloDoPrincipal": "claude-sonnet-5-5",
+  "modelos": [
+   "claude-sonnet-5-5"
+  ],
+  "quantidadeDeSubagentes": 2,
+  "mensagensDoModelo": 23,
+  "turnosDoUsuario": 2,
+  "turnosDoAgente": null,
+  "tempoDeParedeS": 103.3
+ },
+ "cargaDepois": {
+  "em": "2026-11-23T16:19:36.560Z",
+  "uptime": "13:19  up 31 days,  5:46, 1 user, load averages: 1.29 1.54 2.53",
+  "carga1m": 1.29,
+  "processos": [
+   "93205 3.4 84928 11:20 /Users/pedro/.nvm/versions/node/v22.21.0/bin/node scripts/harness.mjs --variante v2",
+   "61388 1.6 405728 38:48 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "70235 0.1 33856 11-05:31:21 /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/worktrees/89355f65/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --pin",
+   "41706 0.0 178736 56:53 /Applications/Orquestrador de Agentes.app/Contents/Frameworks/Orquestrador de Agentes Helper.app/Contents/MacOS/Orquestrador de Agentes Helper --type=utility --utility-sub-type=",
+   "15269 0.0 14800 01-00:12:12 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "15267 0.0 61424 01-00:12:12 node ./node_modules/.bin/vite --host 127.0.0.1 --port 5180 --strictPort",
+   "59433 0.0 21728 01-00:58:48 /System/Cryptexes/App/System/Library/CoreServices/PasswordManagerBrowserExtensionHelper.app/Contents/MacOS/PasswordManagerBrowserExtensionHelper chrome-extension://pejdijmo",
+   "59397 0.0 4176 01-00:58:50 /Applications/Claude.app/Contents/Helpers/chrome-native-host chrome-extension://fcoeoabgfenejglbffodgkkbkcdhcgfn/",
+   "74002 0.0 4032 07-02:38:25 node sink.js",
+   "31528 0.0 14768 09-20:23:22 /Users/pedro/Projetos/PIR_app-plano-ajustes/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping"
+  ],
+  "pesados": []
+ },
+ "avisos": [
+  "Outros orquestradores rodam nesta máquina: o uso da assinatura (antes/depois) e o tempo de parede ficam contaminados por eles."
+ ],
+ "transcricoes": {
+  "orquestrador": {
+   "sessao": "92a0b50b-03c1-4a76-baa0-e61ed31463bb",
+   "primeiraChamada": {
+    "entrada": 2,
+    "criacaoDeCache": 19093,
+    "leituraDeCache": 8984,
+    "total": 28079
+   }
+  },
+  "executores": [
+   {
+    "arquivo": "agent-a848e0cd749e3a816.jsonl",
+    "tipo": "executor",
+    "inicio": "2026-11-23T16:18:24.063Z",
+    "primeiraChamada": {
+     "entrada": 2,
+     "criacaoDeCache": 14284,
+     "leituraDeCache": 6644,
+     "total": 20930
+    }
+   },
+   {
+    "arquivo": "agent-a2f1a33bd5d9f48ee.jsonl",
+    "tipo": "executor",
+    "inicio": "2026-11-23T16:18:29.236Z",
+    "primeiraChamada": {
+     "entrada": 2,
+     "criacaoDeCache": 12840,
+     "leituraDeCache": 7929,
+     "total": 20771
+    }
+   }
+  ],
+  "encontradas": 1,
+  "principal": {
+   "chamadasAoModelo": 9,
+   "chamadasDeFerramenta": 6,
+   "porFerramenta": {
+    "Bash": 4,
+    "Agent": 2
+   }
+  },
+  "subagentes": {
+   "chamadasAoModelo": 14,
+   "chamadasDeFerramenta": 28,
+   "porFerramenta": {
+    "Bash": 9,
+    "Read": 9,
+    "Grep": 1,
+    "Edit": 9
+   }
+  }
+ },
+ "chamadasDoIntermediario": [
+  {
+   "em": "2026-11-23T16:17:32.090Z",
+   "variante": "v2",
+   "aplicadas": [
+    "v2"
+   ],
+   "sessao": true,
+   "detalhes": {
+    "agentes": {
+     "original": "/var/folders/lt/fjgdf_wj2xg5kc44rc4pwcs40000gn/T/orquestrador-agentes/7a5aeaca-8a50-45eb-820b-ec26ee4e0d3c/agentes.json",
+     "nomesAntes": [
+      "executor"
+     ],
+     "nomesDepois": [
+      "executor"
+     ],
+     "bytesAntes": 2092,
+     "bytesDepois": 2064
+    },
+    "v2": {
+     "agentesEmbutidosNegados": [
+      "Agent(claude)",
+      "Agent(Explore)",
+      "Agent(general-purpose)",
+      "Agent(Plan)",
+      "Agent(statusline-setup)",
+      "Agent(web-fetch)"
+     ]
+    },
+    "pasta": "/tmp/bench-gosub/variantes/2026-11-23T16-17-32-089Z-5838"
+   }
+  },
+  {
+   "em": "2026-11-23T16:18:16.151Z",
+   "variante": "v2",
+   "aplicadas": [
+    "v2"
+   ],
+   "sessao": true,
+   "detalhes": {
+    "agentes": {
+     "original": "/var/folders/lt/fjgdf_wj2xg5kc44rc4pwcs40000gn/T/orquestrador-agentes/50059dbc-08c1-475f-908d-bd3f9205bbf3/agentes.json",
+     "nomesAntes": [
+      "executor"
+     ],
+     "nomesDepois": [
+      "executor"
+     ],
+     "bytesAntes": 2092,
+     "bytesDepois": 2064
+    },
+    "v2": {
+     "agentesEmbutidosNegados": [
+      "Agent(claude)",
+      "Agent(Explore)",
+      "Agent(general-purpose)",
+      "Agent(Plan)",
+      "Agent(statusline-setup)",
+      "Agent(web-fetch)"
+     ]
+    },
+    "pasta": "/tmp/bench-gosub/variantes/2026-11-23T16-18-16-150Z-6696"
+   }
+  }
+ ],
+ "cargaAlta": {
+  "antes": false,
+  "depois": false,
+  "carga1mAntes": 1.07,
+  "carga1mDepois": 1.29,
+  "esperouS": 0
+ },
+ "tempoComCargaAlta": false,
+ "arquivosDoApp": [
+  "r3-T2-C.eventos.jsonl",
+  "r3-T2-C.orquestrador.json"
+ ]
+}

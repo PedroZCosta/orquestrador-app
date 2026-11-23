@@ -1,0 +1,23 @@
+#!/bin/bash
+# Intermediário do benchmark: use via CLAUDE_CODE_BIN. Lê BENCH_VARIANTE (base, v1, v2, v3, v5, vr ou "v1,v2"),
+# reescreve os argumentos (transformar.mjs), registra em /tmp/bench-gosub/variantes.log e faz exec do Claude Code real,
+# para stdin/stdout (stream-json) passarem direto, sem buffer.
+REAL="${BENCH_CLAUDE_REAL:-/opt/homebrew/bin/claude}"
+AQUI="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+NODE="${BENCH_NODE:-$(command -v node 2>/dev/null)}"
+[ -x "$NODE" ] || NODE=/Users/pedro/.nvm/versions/node/v22.21.0/bin/node
+TMP_ARGS="$(mktemp "${TMPDIR:-/tmp}/bench-args.XXXXXX")" || exec "$REAL" "$@"
+"$NODE" "$AQUI/transformar.mjs" "$@" > "$TMP_ARGS"
+codigo=$?
+if [ $codigo -eq 2 ]; then rm -f "$TMP_ARGS"; exit 2; fi
+if [ $codigo -ne 0 ]; then
+  rm -f "$TMP_ARGS"
+  echo "[bench] transformar.mjs falhou ($codigo); BENCH_VARIANTE=${BENCH_VARIANTE:-base} NAO aplicada nesta chamada" >&2
+  printf '{"em":"%s","erro":"transformar.mjs falhou com codigo %s","variante":"%s"}\n' "$(date -u +%FT%TZ)" "$codigo" "${BENCH_VARIANTE:-base}" >> "${BENCH_LOG:-/tmp/bench-gosub/variantes.log}"
+  if [ "${BENCH_VARIANTE:-base}" = base ]; then exec "$REAL" "$@"; fi
+  exit 3
+fi
+ARGS=()
+while IFS= read -r -d '' a; do ARGS+=("$a"); done < "$TMP_ARGS"
+rm -f "$TMP_ARGS"
+exec "$REAL" "${ARGS[@]}"

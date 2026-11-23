@@ -1,0 +1,1403 @@
+{
+ "geradoEm": "2026-11-23T10:55:02.005Z",
+ "pasta": "/Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/worktrees/549e8a7f/docs/benchmark/2026-11-22/execucoes",
+ "totalDeExecucoes": 36,
+ "sucessos": 36,
+ "falhasPorConfig": {
+  "A": 0,
+  "B": 0,
+  "C": 0
+ },
+ "observacao": "Estatísticas em \"sucessosApenas\" só usam execuções bem-sucedidas. somaDasMedias soma as médias das 4 tarefas (uma tarefa sem sucesso fica fora e reduz tarefasComMedia). US$ = equivalente de API pelos preços oficiais (ver DECISOES.md).",
+ "somaDasMedias": {
+  "A": {
+   "usd": 2.6543911333333337,
+   "indiceDeCusto": 598250.6666666666,
+   "tempoDeParedeS": 422.8,
+   "tarefasComMedia": 4
+  },
+  "B": {
+   "usd": 0.7794627333333334,
+   "indiceDeCusto": 331993,
+   "tempoDeParedeS": 159.9,
+   "tarefasComMedia": 4
+  },
+  "C": {
+   "usd": 1.0727152333333336,
+   "indiceDeCusto": 503680.3333333333,
+   "tempoDeParedeS": 181.66666666666666,
+   "tarefasComMedia": 4
+  }
+ },
+ "razoesDaSomaDasMedias": {
+  "usd": {
+   "C/A": 0.40412854754613287,
+   "C/B": 1.376223887889958,
+   "B/A": 0.2936502927337988
+  },
+  "indiceDeCusto": {
+   "C/A": 0.8419218922725814,
+   "C/B": 1.5171414256726297,
+   "B/A": 0.5549396239703314
+  },
+  "tempoDeParedeS": {
+   "C/A": 0.42967518133081045,
+   "C/B": 1.1361267458828432,
+   "B/A": 0.3781929990539262
+  }
+ },
+ "porTarefa": {
+  "T1": {
+   "A": {
+    "execucoes": 3,
+    "sucessos": 3,
+    "falhas": 0,
+    "motivosDasFalhas": [],
+    "modelos": [
+     "claude-opus-5-5"
+    ],
+    "sucessosApenas": {
+     "usd": {
+      "n": 3,
+      "media": 0.3087172000000001,
+      "desvioPadrao": 0.011568712265416595,
+      "min": 0.295428,
+      "max": 0.31653780000000004
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 65963,
+      "desvioPadrao": 3067.4034622136032,
+      "min": 62773,
+      "max": 68891
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 32.36666666666667,
+      "desvioPadrao": 6.460908088909278,
+      "min": 25.7,
+      "max": 38.6
+     },
+     "entrada": {
+      "n": 3,
+      "media": 12.666666666666666,
+      "desvioPadrao": 1.1547005383792517,
+      "min": 12,
+      "max": 14
+     },
+     "criacaoDeCache": {
+      "n": 3,
+      "media": 28169.666666666668,
+      "desvioPadrao": 1016.1664889836377,
+      "min": 27038,
+      "max": 29004
+     },
+     "leituraDeCache": {
+      "n": 3,
+      "media": 198212.66666666666,
+      "desvioPadrao": 20847.817639583605,
+      "min": 183880,
+      "max": 222129
+     },
+     "saida": {
+      "n": 3,
+      "media": 2183.3333333333335,
+      "desvioPadrao": 59.197409853247244,
+      "min": 2115,
+      "max": 2219
+     },
+     "usdPrincipal": {
+      "n": 3,
+      "media": 0.3087172000000001,
+      "desvioPadrao": 0.011568712265416595,
+      "min": 0.295428,
+      "max": 0.31653780000000004
+     },
+     "usdSubagentes": {
+      "n": 3,
+      "media": 0,
+      "desvioPadrao": 0,
+      "min": 0,
+      "max": 0
+     },
+     "quantidadeDeSubagentes": {
+      "n": 3,
+      "media": 0,
+      "desvioPadrao": 0,
+      "min": 0,
+      "max": 0
+     },
+     "turnosDoUsuario": {
+      "n": 3,
+      "media": 1,
+      "desvioPadrao": 0,
+      "min": 1,
+      "max": 1
+     }
+    },
+    "todasAsExecucoes": {
+     "usd": {
+      "n": 3,
+      "media": 0.3087172000000001,
+      "desvioPadrao": 0.011568712265416595,
+      "min": 0.295428,
+      "max": 0.31653780000000004
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 65963,
+      "desvioPadrao": 3067.4034622136032,
+      "min": 62773,
+      "max": 68891
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 32.36666666666667,
+      "desvioPadrao": 6.460908088909278,
+      "min": 25.7,
+      "max": 38.6
+     }
+    },
+    "tentativasRepetidasPorErroDeApi": 0
+   },
+   "B": {
+    "execucoes": 3,
+    "sucessos": 3,
+    "falhas": 0,
+    "motivosDasFalhas": [],
+    "modelos": [
+     "claude-sonnet-5-5"
+    ],
+    "sucessosApenas": {
+     "usd": {
+      "n": 3,
+      "media": 0.13927720000000002,
+      "desvioPadrao": 0.010592062294001092,
+      "min": 0.1273614,
+      "max": 0.14762299999999998
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 61228.333333333336,
+      "desvioPadrao": 7743.169398465549,
+      "min": 52625,
+      "max": 67638
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 22.5,
+      "desvioPadrao": 4.93254498205541,
+      "min": 16.9,
+      "max": 26.2
+     },
+     "entrada": {
+      "n": 3,
+      "media": 13.333333333333334,
+      "desvioPadrao": 3.055050463303893,
+      "min": 10,
+      "max": 16
+     },
+     "criacaoDeCache": {
+      "n": 3,
+      "media": 24451.666666666668,
+      "desvioPadrao": 315.4589249543169,
+      "min": 24106,
+      "max": 24724
+     },
+     "leituraDeCache": {
+      "n": 3,
+      "media": 198572,
+      "desvioPadrao": 53041.52829623219,
+      "min": 140474,
+      "max": 244410
+     },
+     "saida": {
+      "n": 3,
+      "media": 2158.6666666666665,
+      "desvioPadrao": 423.15757506315936,
+      "min": 1687,
+      "max": 2505
+     },
+     "usdPrincipal": {
+      "n": 3,
+      "media": 0.13927720000000002,
+      "desvioPadrao": 0.010592062294001092,
+      "min": 0.1273614,
+      "max": 0.14762299999999998
+     },
+     "usdSubagentes": {
+      "n": 3,
+      "media": 0,
+      "desvioPadrao": 0,
+      "min": 0,
+      "max": 0
+     },
+     "quantidadeDeSubagentes": {
+      "n": 3,
+      "media": 0,
+      "desvioPadrao": 0,
+      "min": 0,
+      "max": 0
+     },
+     "turnosDoUsuario": {
+      "n": 3,
+      "media": 1,
+      "desvioPadrao": 0,
+      "min": 1,
+      "max": 1
+     }
+    },
+    "todasAsExecucoes": {
+     "usd": {
+      "n": 3,
+      "media": 0.13927720000000002,
+      "desvioPadrao": 0.010592062294001092,
+      "min": 0.1273614,
+      "max": 0.14762299999999998
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 61228.333333333336,
+      "desvioPadrao": 7743.169398465549,
+      "min": 52625,
+      "max": 67638
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 22.5,
+      "desvioPadrao": 4.93254498205541,
+      "min": 16.9,
+      "max": 26.2
+     }
+    },
+    "tentativasRepetidasPorErroDeApi": 0
+   },
+   "C": {
+    "execucoes": 3,
+    "sucessos": 3,
+    "falhas": 0,
+    "motivosDasFalhas": [],
+    "modelos": [
+     "claude-sonnet-5-5"
+    ],
+    "sucessosApenas": {
+     "usd": {
+      "n": 3,
+      "media": 0.1672777,
+      "desvioPadrao": 0.03994458506844202,
+      "min": 0.12184419999999999,
+      "max": 0.1968805
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 77052.66666666667,
+      "desvioPadrao": 22820.19457264406,
+      "min": 51347,
+      "max": 94923
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 20.23333333333333,
+      "desvioPadrao": 5.873102530463208,
+      "min": 13.9,
+      "max": 25.5
+     },
+     "entrada": {
+      "n": 3,
+      "media": 20,
+      "desvioPadrao": 7.211102550927978,
+      "min": 12,
+      "max": 26
+     },
+     "criacaoDeCache": {
+      "n": 3,
+      "media": 34846,
+      "desvioPadrao": 9993.399621750348,
+      "min": 23342,
+      "max": 41380
+     },
+     "leituraDeCache": {
+      "n": 3,
+      "media": 225483.66666666666,
+      "desvioPadrao": 64124.03529358811,
+      "min": 158622,
+      "max": 286465
+     },
+     "saida": {
+      "n": 3,
+      "media": 2185.3333333333335,
+      "desvioPadrao": 842.2365067683384,
+      "min": 1259,
+      "max": 2905
+     },
+     "usdPrincipal": {
+      "n": 3,
+      "media": 0.12544336666666667,
+      "desvioPadrao": 0.0032854671423305035,
+      "min": 0.12184419999999999,
+      "max": 0.1282816
+     },
+     "usdSubagentes": {
+      "n": 3,
+      "media": 0.041834333333333334,
+      "desvioPadrao": 0.036698442349006224,
+      "min": 0,
+      "max": 0.0685989
+     },
+     "quantidadeDeSubagentes": {
+      "n": 3,
+      "media": 0.6666666666666666,
+      "desvioPadrao": 0.5773502691896258,
+      "min": 0,
+      "max": 1
+     },
+     "turnosDoUsuario": {
+      "n": 3,
+      "media": 1,
+      "desvioPadrao": 0,
+      "min": 1,
+      "max": 1
+     }
+    },
+    "todasAsExecucoes": {
+     "usd": {
+      "n": 3,
+      "media": 0.1672777,
+      "desvioPadrao": 0.03994458506844202,
+      "min": 0.12184419999999999,
+      "max": 0.1968805
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 77052.66666666667,
+      "desvioPadrao": 22820.19457264406,
+      "min": 51347,
+      "max": 94923
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 20.23333333333333,
+      "desvioPadrao": 5.873102530463208,
+      "min": 13.9,
+      "max": 25.5
+     }
+    },
+    "tentativasRepetidasPorErroDeApi": 0
+   }
+  },
+  "T2": {
+   "A": {
+    "execucoes": 3,
+    "sucessos": 3,
+    "falhas": 0,
+    "motivosDasFalhas": [],
+    "modelos": [
+     "claude-opus-5-5"
+    ],
+    "sucessosApenas": {
+     "usd": {
+      "n": 3,
+      "media": 0.9277346666666668,
+      "desvioPadrao": 0.008295209225410327,
+      "min": 0.9197456000000002,
+      "max": 0.9363054000000001
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 217741.66666666666,
+      "desvioPadrao": 368.35490132932034,
+      "min": 217327,
+      "max": 218031
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 140.50000000000003,
+      "desvioPadrao": 12.732635233917607,
+      "min": 125.9,
+      "max": 149.3
+     },
+     "entrada": {
+      "n": 3,
+      "media": 24.666666666666668,
+      "desvioPadrao": 1.1547005383792515,
+      "min": 24,
+      "max": 26
+     },
+     "criacaoDeCache": {
+      "n": 3,
+      "media": 60878.666666666664,
+      "desvioPadrao": 1713.4918538858985,
+      "min": 59053,
+      "max": 62452
+     },
+     "leituraDeCache": {
+      "n": 3,
+      "media": 629333.3333333334,
+      "desvioPadrao": 41187.07445708342,
+      "min": 596565,
+      "max": 675568
+     },
+     "saida": {
+      "n": 3,
+      "media": 15737,
+      "desvioPadrao": 997.6387121598681,
+      "min": 14774,
+      "max": 16766
+     },
+     "usdPrincipal": {
+      "n": 3,
+      "media": 0.9277346666666668,
+      "desvioPadrao": 0.008295209225410327,
+      "min": 0.9197456000000002,
+      "max": 0.9363054000000001
+     },
+     "usdSubagentes": {
+      "n": 3,
+      "media": 0,
+      "desvioPadrao": 0,
+      "min": 0,
+      "max": 0
+     },
+     "quantidadeDeSubagentes": {
+      "n": 3,
+      "media": 0,
+      "desvioPadrao": 0,
+      "min": 0,
+      "max": 0
+     },
+     "turnosDoUsuario": {
+      "n": 3,
+      "media": 1,
+      "desvioPadrao": 0,
+      "min": 1,
+      "max": 1
+     }
+    },
+    "todasAsExecucoes": {
+     "usd": {
+      "n": 3,
+      "media": 0.9277346666666668,
+      "desvioPadrao": 0.008295209225410327,
+      "min": 0.9197456000000002,
+      "max": 0.9363054000000001
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 217741.66666666666,
+      "desvioPadrao": 368.35490132932034,
+      "min": 217327,
+      "max": 218031
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 140.50000000000003,
+      "desvioPadrao": 12.732635233917607,
+      "min": 125.9,
+      "max": 149.3
+     }
+    },
+    "tentativasRepetidasPorErroDeApi": 0
+   },
+   "B": {
+    "execucoes": 3,
+    "sucessos": 3,
+    "falhas": 0,
+    "motivosDasFalhas": [],
+    "modelos": [
+     "claude-sonnet-5-5"
+    ],
+    "sucessosApenas": {
+     "usd": {
+      "n": 3,
+      "media": 0.2752481666666667,
+      "desvioPadrao": 0.02662767076733022,
+      "min": 0.24931110000000006,
+      "max": 0.3025165
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 120459,
+      "desvioPadrao": 13612.358355553237,
+      "min": 107549,
+      "max": 134679
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 52.6,
+      "desvioPadrao": 6.341135544995077,
+      "min": 47.5,
+      "max": 59.7
+     },
+     "entrada": {
+      "n": 3,
+      "media": 16,
+      "desvioPadrao": 2,
+      "min": 14,
+      "max": 18
+     },
+     "criacaoDeCache": {
+      "n": 3,
+      "media": 42160,
+      "desvioPadrao": 2779.628212549297,
+      "min": 39172,
+      "max": 44669
+     },
+     "leituraDeCache": {
+      "n": 3,
+      "media": 289095,
+      "desvioPadrao": 46758.84767613505,
+      "min": 245451,
+      "max": 338445
+     },
+     "saida": {
+      "n": 3,
+      "media": 7766.666666666667,
+      "desvioPadrao": 1119.7563723120013,
+      "min": 6805,
+      "max": 8996
+     },
+     "usdPrincipal": {
+      "n": 3,
+      "media": 0.2752481666666667,
+      "desvioPadrao": 0.02662767076733022,
+      "min": 0.24931110000000006,
+      "max": 0.3025165
+     },
+     "usdSubagentes": {
+      "n": 3,
+      "media": 0,
+      "desvioPadrao": 0,
+      "min": 0,
+      "max": 0
+     },
+     "quantidadeDeSubagentes": {
+      "n": 3,
+      "media": 0,
+      "desvioPadrao": 0,
+      "min": 0,
+      "max": 0
+     },
+     "turnosDoUsuario": {
+      "n": 3,
+      "media": 1,
+      "desvioPadrao": 0,
+      "min": 1,
+      "max": 1
+     }
+    },
+    "todasAsExecucoes": {
+     "usd": {
+      "n": 3,
+      "media": 0.2752481666666667,
+      "desvioPadrao": 0.02662767076733022,
+      "min": 0.24931110000000006,
+      "max": 0.3025165
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 120459,
+      "desvioPadrao": 13612.358355553237,
+      "min": 107549,
+      "max": 134679
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 52.6,
+      "desvioPadrao": 6.341135544995077,
+      "min": 47.5,
+      "max": 59.7
+     }
+    },
+    "tentativasRepetidasPorErroDeApi": 0
+   },
+   "C": {
+    "execucoes": 3,
+    "sucessos": 3,
+    "falhas": 0,
+    "motivosDasFalhas": [],
+    "modelos": [
+     "claude-sonnet-5-5"
+    ],
+    "sucessosApenas": {
+     "usd": {
+      "n": 3,
+      "media": 0.4467708000000001,
+      "desvioPadrao": 0.03954001483307761,
+      "min": 0.4021118000000001,
+      "max": 0.4773218
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 221769.66666666666,
+      "desvioPadrao": 26171.57275238409,
+      "min": 192485,
+      "max": 242874
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 89.96666666666665,
+      "desvioPadrao": 16.442728889491956,
+      "min": 71,
+      "max": 100.2
+     },
+     "entrada": {
+      "n": 3,
+      "media": 34,
+      "desvioPadrao": 5.291502622129181,
+      "min": 28,
+      "max": 38
+     },
+     "criacaoDeCache": {
+      "n": 3,
+      "media": 79549,
+      "desvioPadrao": 4454.156598055349,
+      "min": 75458,
+      "max": 84294
+     },
+     "leituraDeCache": {
+      "n": 3,
+      "media": 530611.3333333334,
+      "desvioPadrao": 100800.67836246606,
+      "min": 420793,
+      "max": 618923
+     },
+     "saida": {
+      "n": 3,
+      "media": 13847.666666666666,
+      "desvioPadrao": 2627.0533556312353,
+      "min": 11211,
+      "max": 16465
+     },
+     "usdPrincipal": {
+      "n": 3,
+      "media": 0.21981863333333332,
+      "desvioPadrao": 0.009374890161667674,
+      "min": 0.2102182,
+      "max": 0.2289504
+     },
+     "usdSubagentes": {
+      "n": 3,
+      "media": 0.22695216666666665,
+      "desvioPadrao": 0.048433539985668336,
+      "min": 0.1731614,
+      "max": 0.2671036
+     },
+     "quantidadeDeSubagentes": {
+      "n": 3,
+      "media": 1,
+      "desvioPadrao": 0,
+      "min": 1,
+      "max": 1
+     },
+     "turnosDoUsuario": {
+      "n": 3,
+      "media": 1,
+      "desvioPadrao": 0,
+      "min": 1,
+      "max": 1
+     }
+    },
+    "todasAsExecucoes": {
+     "usd": {
+      "n": 3,
+      "media": 0.4467708000000001,
+      "desvioPadrao": 0.03954001483307761,
+      "min": 0.4021118000000001,
+      "max": 0.4773218
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 221769.66666666666,
+      "desvioPadrao": 26171.57275238409,
+      "min": 192485,
+      "max": 242874
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 89.96666666666665,
+      "desvioPadrao": 16.442728889491956,
+      "min": 71,
+      "max": 100.2
+     }
+    },
+    "tentativasRepetidasPorErroDeApi": 0
+   }
+  },
+  "T3": {
+   "A": {
+    "execucoes": 3,
+    "sucessos": 3,
+    "falhas": 0,
+    "motivosDasFalhas": [],
+    "modelos": [
+     "claude-opus-5-5"
+    ],
+    "sucessosApenas": {
+     "usd": {
+      "n": 3,
+      "media": 0.8998339333333334,
+      "desvioPadrao": 0.0737092065729467,
+      "min": 0.840914,
+      "max": 0.9824858
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 212215.33333333334,
+      "desvioPadrao": 18595.012243430585,
+      "min": 196940,
+      "max": 232921
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 207.63333333333333,
+      "desvioPadrao": 48.47600781142494,
+      "min": 151.8,
+      "max": 239
+     },
+     "entrada": {
+      "n": 3,
+      "media": 25.333333333333332,
+      "desvioPadrao": 1.1547005383792515,
+      "min": 24,
+      "max": 26
+     },
+     "criacaoDeCache": {
+      "n": 3,
+      "media": 55720,
+      "desvioPadrao": 2121.3417923569036,
+      "min": 53634,
+      "max": 57875
+     },
+     "leituraDeCache": {
+      "n": 3,
+      "media": 580929.6666666666,
+      "desvioPadrao": 38490.56014574656,
+      "min": 538730,
+      "max": 614109
+     },
+     "saida": {
+      "n": 3,
+      "media": 16889.333333333332,
+      "desvioPadrao": 2554.4512783244336,
+      "min": 15200,
+      "max": 19828
+     },
+     "usdPrincipal": {
+      "n": 3,
+      "media": 0.8998339333333334,
+      "desvioPadrao": 0.0737092065729467,
+      "min": 0.840914,
+      "max": 0.9824858
+     },
+     "usdSubagentes": {
+      "n": 3,
+      "media": 0,
+      "desvioPadrao": 0,
+      "min": 0,
+      "max": 0
+     },
+     "quantidadeDeSubagentes": {
+      "n": 3,
+      "media": 0,
+      "desvioPadrao": 0,
+      "min": 0,
+      "max": 0
+     },
+     "turnosDoUsuario": {
+      "n": 3,
+      "media": 1,
+      "desvioPadrao": 0,
+      "min": 1,
+      "max": 1
+     }
+    },
+    "todasAsExecucoes": {
+     "usd": {
+      "n": 3,
+      "media": 0.8998339333333334,
+      "desvioPadrao": 0.0737092065729467,
+      "min": 0.840914,
+      "max": 0.9824858
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 212215.33333333334,
+      "desvioPadrao": 18595.012243430585,
+      "min": 196940,
+      "max": 232921
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 207.63333333333333,
+      "desvioPadrao": 48.47600781142494,
+      "min": 151.8,
+      "max": 239
+     }
+    },
+    "tentativasRepetidasPorErroDeApi": 0
+   },
+   "B": {
+    "execucoes": 3,
+    "sucessos": 3,
+    "falhas": 0,
+    "motivosDasFalhas": [],
+    "modelos": [
+     "claude-sonnet-5-5"
+    ],
+    "sucessosApenas": {
+     "usd": {
+      "n": 3,
+      "media": 0.18814503333333335,
+      "desvioPadrao": 0.02204755944006804,
+      "min": 0.17390480000000003,
+      "max": 0.213541
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 79644,
+      "desvioPadrao": 12068.423716459412,
+      "min": 72505,
+      "max": 93578
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 43.03333333333333,
+      "desvioPadrao": 16.908676273834487,
+      "min": 32,
+      "max": 62.5
+     },
+     "entrada": {
+      "n": 3,
+      "media": 11.333333333333334,
+      "desvioPadrao": 2.3094010767585034,
+      "min": 10,
+      "max": 14
+     },
+     "criacaoDeCache": {
+      "n": 3,
+      "media": 30785.333333333332,
+      "desvioPadrao": 1991.6235420714763,
+      "min": 28898,
+      "max": 32867
+     },
+     "leituraDeCache": {
+      "n": 3,
+      "media": 173210.33333333334,
+      "desvioPadrao": 48450.41162191848,
+      "min": 144528,
+      "max": 229150
+     },
+     "saida": {
+      "n": 3,
+      "media": 4766,
+      "desvioPadrao": 1011.6219649651741,
+      "min": 4001,
+      "max": 5913
+     },
+     "usdPrincipal": {
+      "n": 3,
+      "media": 0.18814503333333335,
+      "desvioPadrao": 0.02204755944006804,
+      "min": 0.17390480000000003,
+      "max": 0.213541
+     },
+     "usdSubagentes": {
+      "n": 3,
+      "media": 0,
+      "desvioPadrao": 0,
+      "min": 0,
+      "max": 0
+     },
+     "quantidadeDeSubagentes": {
+      "n": 3,
+      "media": 0,
+      "desvioPadrao": 0,
+      "min": 0,
+      "max": 0
+     },
+     "turnosDoUsuario": {
+      "n": 3,
+      "media": 1,
+      "desvioPadrao": 0,
+      "min": 1,
+      "max": 1
+     }
+    },
+    "todasAsExecucoes": {
+     "usd": {
+      "n": 3,
+      "media": 0.18814503333333335,
+      "desvioPadrao": 0.02204755944006804,
+      "min": 0.17390480000000003,
+      "max": 0.213541
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 79644,
+      "desvioPadrao": 12068.423716459412,
+      "min": 72505,
+      "max": 93578
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 43.03333333333333,
+      "desvioPadrao": 16.908676273834487,
+      "min": 32,
+      "max": 62.5
+     }
+    },
+    "tentativasRepetidasPorErroDeApi": 0
+   },
+   "C": {
+    "execucoes": 3,
+    "sucessos": 3,
+    "falhas": 0,
+    "motivosDasFalhas": [],
+    "modelos": [
+     "claude-sonnet-5-5"
+    ],
+    "sucessosApenas": {
+     "usd": {
+      "n": 3,
+      "media": 0.2815496,
+      "desvioPadrao": 0.03258508224648207,
+      "min": 0.24531549999999996,
+      "max": 0.3084476
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 135939.33333333334,
+      "desvioPadrao": 19079.090553098522,
+      "min": 114237,
+      "max": 150072
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 50.53333333333333,
+      "desvioPadrao": 9.455333591858794,
+      "min": 40.9,
+      "max": 59.8
+     },
+     "entrada": {
+      "n": 3,
+      "media": 26.666666666666668,
+      "desvioPadrao": 4.163331998932266,
+      "min": 22,
+      "max": 30
+     },
+     "criacaoDeCache": {
+      "n": 3,
+      "media": 55108.333333333336,
+      "desvioPadrao": 2552.429496251235,
+      "min": 52684,
+      "max": 57772
+     },
+     "leituraDeCache": {
+      "n": 3,
+      "media": 314187.6666666667,
+      "desvioPadrao": 71359.91626489857,
+      "min": 232045,
+      "max": 360887
+     },
+     "saida": {
+      "n": 3,
+      "media": 7121.666666666667,
+      "desvioPadrao": 2135.3194920979236,
+      "min": 5031,
+      "max": 9299
+     },
+     "usdPrincipal": {
+      "n": 3,
+      "media": 0.16005276666666665,
+      "desvioPadrao": 0.015470020797120268,
+      "min": 0.14802999999999997,
+      "max": 0.1775058
+     },
+     "usdSubagentes": {
+      "n": 3,
+      "media": 0.12149683333333333,
+      "desvioPadrao": 0.02113577111967608,
+      "min": 0.0972855,
+      "max": 0.1362632
+     },
+     "quantidadeDeSubagentes": {
+      "n": 3,
+      "media": 1,
+      "desvioPadrao": 0,
+      "min": 1,
+      "max": 1
+     },
+     "turnosDoUsuario": {
+      "n": 3,
+      "media": 1,
+      "desvioPadrao": 0,
+      "min": 1,
+      "max": 1
+     }
+    },
+    "todasAsExecucoes": {
+     "usd": {
+      "n": 3,
+      "media": 0.2815496,
+      "desvioPadrao": 0.03258508224648207,
+      "min": 0.24531549999999996,
+      "max": 0.3084476
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 135939.33333333334,
+      "desvioPadrao": 19079.090553098522,
+      "min": 114237,
+      "max": 150072
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 50.53333333333333,
+      "desvioPadrao": 9.455333591858794,
+      "min": 40.9,
+      "max": 59.8
+     }
+    },
+    "tentativasRepetidasPorErroDeApi": 0
+   }
+  },
+  "T4": {
+   "A": {
+    "execucoes": 3,
+    "sucessos": 3,
+    "falhas": 0,
+    "motivosDasFalhas": [],
+    "modelos": [
+     "claude-opus-5-5"
+    ],
+    "sucessosApenas": {
+     "usd": {
+      "n": 3,
+      "media": 0.5181053333333333,
+      "desvioPadrao": 0.026196490856092384,
+      "min": 0.4881692,
+      "max": 0.536832
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 102330.66666666667,
+      "desvioPadrao": 1152.454915965624,
+      "min": 101637,
+      "max": 103661
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 42.300000000000004,
+      "desvioPadrao": 3.0049958402633448,
+      "min": 38.9,
+      "max": 44.6
+     },
+     "entrada": {
+      "n": 3,
+      "media": 11.333333333333334,
+      "desvioPadrao": 2.3094010767585034,
+      "min": 10,
+      "max": 14
+     },
+     "criacaoDeCache": {
+      "n": 3,
+      "media": 49520.333333333336,
+      "desvioPadrao": 4353.046327956243,
+      "min": 44494,
+      "max": 52065
+     },
+     "leituraDeCache": {
+      "n": 3,
+      "media": 198886.66666666666,
+      "desvioPadrao": 52326.22945840196,
+      "min": 168274,
+      "max": 259306
+     },
+     "saida": {
+      "n": 3,
+      "media": 4106,
+      "desvioPadrao": 211.7144303064862,
+      "min": 3955,
+      "max": 4348
+     },
+     "usdPrincipal": {
+      "n": 3,
+      "media": 0.5181053333333333,
+      "desvioPadrao": 0.026196490856092384,
+      "min": 0.4881692,
+      "max": 0.536832
+     },
+     "usdSubagentes": {
+      "n": 3,
+      "media": 0,
+      "desvioPadrao": 0,
+      "min": 0,
+      "max": 0
+     },
+     "quantidadeDeSubagentes": {
+      "n": 3,
+      "media": 0,
+      "desvioPadrao": 0,
+      "min": 0,
+      "max": 0
+     },
+     "turnosDoUsuario": {
+      "n": 3,
+      "media": 1,
+      "desvioPadrao": 0,
+      "min": 1,
+      "max": 1
+     }
+    },
+    "todasAsExecucoes": {
+     "usd": {
+      "n": 3,
+      "media": 0.5181053333333333,
+      "desvioPadrao": 0.026196490856092384,
+      "min": 0.4881692,
+      "max": 0.536832
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 102330.66666666667,
+      "desvioPadrao": 1152.454915965624,
+      "min": 101637,
+      "max": 103661
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 42.300000000000004,
+      "desvioPadrao": 3.0049958402633448,
+      "min": 38.9,
+      "max": 44.6
+     }
+    },
+    "tentativasRepetidasPorErroDeApi": 0
+   },
+   "B": {
+    "execucoes": 3,
+    "sucessos": 3,
+    "falhas": 0,
+    "motivosDasFalhas": [],
+    "modelos": [
+     "claude-sonnet-5-5"
+    ],
+    "sucessosApenas": {
+     "usd": {
+      "n": 3,
+      "media": 0.17679233333333333,
+      "desvioPadrao": 0.0059861279925619145,
+      "min": 0.16998549999999998,
+      "max": 0.18123689999999998
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 70661.66666666667,
+      "desvioPadrao": 2682.0798521545426,
+      "min": 67698,
+      "max": 72922
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 41.76666666666667,
+      "desvioPadrao": 26.98079563936789,
+      "min": 25.2,
+      "max": 72.9
+     },
+     "entrada": {
+      "n": 3,
+      "media": 10,
+      "desvioPadrao": 0,
+      "min": 10,
+      "max": 10
+     },
+     "criacaoDeCache": {
+      "n": 3,
+      "media": 33682.666666666664,
+      "desvioPadrao": 901.3491739239203,
+      "min": 32699,
+      "max": 34469
+     },
+     "leituraDeCache": {
+      "n": 3,
+      "media": 150550,
+      "desvioPadrao": 5210.215062739733,
+      "min": 144595,
+      "max": 154269
+     },
+     "saida": {
+      "n": 3,
+      "media": 2698.6666666666665,
+      "desvioPadrao": 291.3491605159235,
+      "min": 2471,
+      "max": 3027
+     },
+     "usdPrincipal": {
+      "n": 3,
+      "media": 0.17679233333333333,
+      "desvioPadrao": 0.0059861279925619145,
+      "min": 0.16998549999999998,
+      "max": 0.18123689999999998
+     },
+     "usdSubagentes": {
+      "n": 3,
+      "media": 0,
+      "desvioPadrao": 0,
+      "min": 0,
+      "max": 0
+     },
+     "quantidadeDeSubagentes": {
+      "n": 3,
+      "media": 0,
+      "desvioPadrao": 0,
+      "min": 0,
+      "max": 0
+     },
+     "turnosDoUsuario": {
+      "n": 3,
+      "media": 1,
+      "desvioPadrao": 0,
+      "min": 1,
+      "max": 1
+     }
+    },
+    "todasAsExecucoes": {
+     "usd": {
+      "n": 3,
+      "media": 0.17679233333333333,
+      "desvioPadrao": 0.0059861279925619145,
+      "min": 0.16998549999999998,
+      "max": 0.18123689999999998
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 70661.66666666667,
+      "desvioPadrao": 2682.0798521545426,
+      "min": 67698,
+      "max": 72922
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 41.76666666666667,
+      "desvioPadrao": 26.98079563936789,
+      "min": 25.2,
+      "max": 72.9
+     }
+    },
+    "tentativasRepetidasPorErroDeApi": 0
+   },
+   "C": {
+    "execucoes": 3,
+    "sucessos": 3,
+    "falhas": 0,
+    "motivosDasFalhas": [],
+    "modelos": [
+     "claude-sonnet-5-5"
+    ],
+    "sucessosApenas": {
+     "usd": {
+      "n": 3,
+      "media": 0.17711713333333334,
+      "desvioPadrao": 0.006715319014263851,
+      "min": 0.1728285,
+      "max": 0.18485620000000003
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 68918.66666666667,
+      "desvioPadrao": 3553.1172698538016,
+      "min": 65349,
+      "max": 72455
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 20.933333333333334,
+      "desvioPadrao": 1.10151410945722,
+      "min": 19.8,
+      "max": 22
+     },
+     "entrada": {
+      "n": 3,
+      "media": 9.333333333333334,
+      "desvioPadrao": 1.1547005383792517,
+      "min": 8,
+      "max": 10
+     },
+     "criacaoDeCache": {
+      "n": 3,
+      "media": 34805.666666666664,
+      "desvioPadrao": 1434.2459110394332,
+      "min": 33387,
+      "max": 36255
+     },
+     "leituraDeCache": {
+      "n": 3,
+      "media": 129291.33333333333,
+      "desvioPadrao": 25092.459152768057,
+      "min": 100325,
+      "max": 144362
+     },
+     "saida": {
+      "n": 3,
+      "media": 2494.6666666666665,
+      "desvioPadrao": 111.50485789118487,
+      "min": 2368,
+      "max": 2578
+     },
+     "usdPrincipal": {
+      "n": 3,
+      "media": 0.17711713333333334,
+      "desvioPadrao": 0.006715319014263851,
+      "min": 0.1728285,
+      "max": 0.18485620000000003
+     },
+     "usdSubagentes": {
+      "n": 3,
+      "media": 0,
+      "desvioPadrao": 0,
+      "min": 0,
+      "max": 0
+     },
+     "quantidadeDeSubagentes": {
+      "n": 3,
+      "media": 0,
+      "desvioPadrao": 0,
+      "min": 0,
+      "max": 0
+     },
+     "turnosDoUsuario": {
+      "n": 3,
+      "media": 1,
+      "desvioPadrao": 0,
+      "min": 1,
+      "max": 1
+     }
+    },
+    "todasAsExecucoes": {
+     "usd": {
+      "n": 3,
+      "media": 0.17711713333333334,
+      "desvioPadrao": 0.006715319014263851,
+      "min": 0.1728285,
+      "max": 0.18485620000000003
+     },
+     "indiceDeCusto": {
+      "n": 3,
+      "media": 68918.66666666667,
+      "desvioPadrao": 3553.1172698538016,
+      "min": 65349,
+      "max": 72455
+     },
+     "tempoDeParedeS": {
+      "n": 3,
+      "media": 20.933333333333334,
+      "desvioPadrao": 1.10151410945722,
+      "min": 19.8,
+      "max": 22
+     }
+    },
+    "tentativasRepetidasPorErroDeApi": 0
+   }
+  }
+ }
+}

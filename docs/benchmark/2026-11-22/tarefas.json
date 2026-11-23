@@ -1,0 +1,21 @@
+{
+  "sufixo": "\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+  "tarefas": {
+    "T1": {
+      "titulo": "Correção pequena: pedido mínimo do cupom inclusivo",
+      "prompt": "Bug relatado por uma cliente neste projeto (loja-pedidos, Node sem dependências): um pedido de exatamente R$ 100,00 com o cupom BEMVINDO10 foi recusado por pedido mínimo não atingido, mas a descrição do cupom diz \"para pedidos a partir de R$ 100,00\". Corrija para que o pedido mínimo dos cupons seja inclusivo (vale para todos os cupons com mínimo), sem mudar mais nada do comportamento, e acrescente um teste que cubra o caso. Rode `npm test` ao final: tudo tem de passar."
+    },
+    "T2": {
+      "titulo": "Feature em vários arquivos: cancelamento de pedidos",
+      "prompt": "Implemente o cancelamento de pedidos neste projeto (loja-pedidos, Node sem dependências). Requisitos:\n1. Novo método assíncrono `OrderService#cancelOrder(orderId, reason)`, que devolve o pedido atualizado. `reason` é obrigatório (texto não vazio); sem ele, lança o erro de validação do projeto (código `VALIDATION_ERROR`). Pedido inexistente: `ORDER_NOT_FOUND`, como nos outros métodos.\n2. Só cancela pedido `pending` ou `paid`; em qualquer outro status (inclusive um pedido já cancelado) lança `DomainError` com o código `ORDER_NOT_CANCELLABLE`.\n3. Novo status `cancelled` (em `ORDER_STATUSES`); o pedido guarda `cancelReason` e `cancelledAt` (ISO, do relógio da loja) e ganha a entrada correspondente no histórico.\n4. Pedido pendente: desfaz a reserva de estoque; não há estorno.\n5. Pedido pago: estorna o valor total pelo gateway (`refund` com o `paymentId` do pagamento), uma única vez, e devolve os itens ao estoque físico. Se o gateway recusar o estorno, lança `REFUND_FAILED` e o pedido continua `paid`, sem mexer no estoque.\n6. Emite o evento `order.cancelled` com `{ orderId, email, name, reason, refunded }`, e o cliente recebe uma mensagem com o assunto `Pedido <id> cancelado` (corpo no padrão das outras mensagens).\n7. O relatório de vendas (`salesReport`) deixa de contar pedidos cancelados.\n8. Testes novos cobrindo esses casos e o README atualizado. Rode `npm test` ao final: tudo tem de passar."
+    },
+    "T3": {
+      "titulo": "Refatoração sem mudar comportamento: dinheiro centralizado em src/money.js",
+      "prompt": "Refatoração sem mudança de comportamento neste projeto (loja-pedidos, Node sem dependências): o arredondamento e a formatação de dinheiro estão espalhados pelo código, com `Math.round(x * 100) / 100` e formatadores de \"R$\" locais repetidos em vários módulos. Centralize tudo em `src/money.js` (use `round2`, `formatBRL`, `sumMoney` e `percentOf`, ampliando-as se precisar) e troque os usos espalhados por essas funções. Regras: nenhuma saída pública pode mudar (valores, textos das mensagens, relatório, alertas), byte a byte; ao final não pode sobrar `Math.round` nem `toFixed` fora de `src/money.js`; não altere os testes existentes, que têm de continuar passando sem mudança. Rode `npm test` ao final."
+    },
+    "T4": {
+      "titulo": "Investigação com resposta em texto: total e falha de pagamento",
+      "prompt": "Pergunta sobre este projeto (loja-pedidos, Node sem dependências); responda em texto, sem alterar nem criar arquivos no projeto. Uma cliente de Manaus (AM) faz um pedido de 2 unidades de LIV-001 e 1 de CAN-010 com o cupom BEMVINDO10 e paga com cartão de crédito.\n(a) Quanto ela paga? Informe, em reais, o subtotal, o desconto, o frete, o imposto e o total, e explique como cada valor é calculado.\n(b) Se o gateway responder `timeout` (falha temporária) em todas as tentativas de cobrança: quantas cobranças são feitas, quanto tempo de espera há entre elas (em ms), em que status o pedido termina, o que acontece com a reserva de estoque, que mensagem a cliente recebe e se o pedido entra no relatório de vendas.\n(c) Indique os arquivos (caminho) onde estão as regras usadas nas respostas."
+    }
+  }
+}

@@ -1,0 +1,431 @@
+{
+ "id": "r1-T3-C",
+ "rodada": 1,
+ "tarefa": "T3",
+ "config": "C",
+ "posicao": 1,
+ "variante": "vr",
+ "tentativa": 1,
+ "prompt": "Refatoração sem mudança de comportamento neste projeto (loja-pedidos, Node sem dependências): o arredondamento e a formatação de dinheiro estão espalhados pelo código, com `Math.round(x * 100) / 100` e formatadores de \"R$\" locais repetidos em vários módulos. Centralize tudo em `src/money.js` (use `round2`, `formatBRL`, `sumMoney` e `percentOf`, ampliando-as se precisar) e troque os usos espalhados por essas funções. Regras: nenhuma saída pública pode mudar (valores, textos das mensagens, relatório, alertas), byte a byte; ao final não pode sobrar `Math.round` nem `toFixed` fora de `src/money.js`; não altere os testes existentes, que têm de continuar passando sem mudança. Rode `npm test` ao final.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+ "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/r1-T3-C-mwti0myz",
+ "inicio": "2026-11-23T16:47:06.903Z",
+ "carga": {
+  "em": "2026-11-23T16:47:06.827Z",
+  "uptime": "13:47  up 31 days,  6:14, 1 user, load averages: 2.91 2.95 2.89",
+  "carga1m": 2.91,
+  "processos": [
+   "44367 3.6 80032 01:45 /Users/pedro/.nvm/versions/node/v22.21.0/bin/node scripts/harness.mjs --variante vr",
+   "11311 0.7 388752 25:28 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "41706 0.6 179744 01:24:23 /Applications/Orquestrador de Agentes.app/Contents/Frameworks/Orquestrador de Agentes Helper.app/Contents/MacOS/Orquestrador de Agentes Helper --type=utility --utility-sub-ty",
+   "61388 0.3 386160 01:06:18 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/",
+   "32528 0.2 457728 10:28 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "15269 0.0 14592 01-00:39:42 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "15267 0.0 62496 01-00:39:42 node ./node_modules/.bin/vite --host 127.0.0.1 --port 5180 --strictPort",
+   "59433 0.0 17840 01-01:26:18 /System/Cryptexes/App/System/Library/CoreServices/PasswordManagerBrowserExtensionHelper.app/Contents/MacOS/PasswordManagerBrowserExtensionHelper chrome-extension://pejdijmo",
+   "59397 0.0 4176 01-01:26:20 /Applications/Claude.app/Contents/Helpers/chrome-native-host chrome-extension://fcoeoabgfenejglbffodgkkbkcdhcgfn/",
+   "74002 0.0 4032 07-03:05:55 node sink.js"
+  ],
+  "pesados": [],
+  "esperouS": 0,
+  "leiturasDaEspera": [],
+  "ocupadaAoComecar": false
+ },
+ "execucao": {
+  "orqId": "4899d72b-8f35-47d3-9ce8-c8c2e1cf3071",
+  "sessoes": [
+   "a553cd32-7f46-440e-ae01-b7558491849f"
+  ],
+  "acoes": [],
+  "estourou": false,
+  "tempoMs": 30776,
+  "worktree": "/private/tmp/bench-gosub/dados-c/worktrees/4899d72b",
+  "pastaEfetiva": "/private/tmp/bench-gosub/dados-c/worktrees/4899d72b",
+  "turnosDoApp": 1,
+  "contagemDeEventos": {
+   "turno_iniciado": 1,
+   "sessao_iniciada": 1,
+   "ferramenta_do_orquestrador": 1,
+   "uso_da_cota": 1,
+   "subagente_iniciado": 1,
+   "texto_do_orquestrador": 2,
+   "progresso_do_subagente": 4,
+   "texto_do_subagente": 1,
+   "subagente_concluido": 1,
+   "turno_concluido": 1,
+   "consumo_do_turno_medido": 1
+  },
+  "fimDoTurno": "turno_concluido",
+  "resposta": "A refatoração está feita e `npm test` passou (51 de 51). Não conferi a saída byte a byte contra a versão anterior além do que os testes cobrem.\n\n- **Resultado:** o arredondamento e a formatação de dinheiro agora passam por `src/money.js`. `Math.round` e `toFixed` só aparecem nesse arquivo.\n- **Arquivos alterados (8):** `salesReport.js`, `templates.js`, `notifier.js`, `pricing.js`, `shipping.js`, `tax.js`, `discounts.js` e `cart.js`. O `money.js` não precisou mudar.\n- **Formatadores de \"R$\":** os três formatadores locais (relatório, templates e alerta de estoque do notifier) viraram `formatBRL`. O subagente avaliou que a saída é a mesma, inclusive para valores negativos.\n- **Descontos:** o cálculo do cupom usa `percentOf(base, coupon.value)`.\n- **Somatórios e ordem de arredondamento:** os somatórios de `salesReport` e `cart` usam `sumMoney`. A ordem de arredondamento ficou a mesma de antes.\n- **Testes e commit:** não alterei os testes e não fiz commit.\n\nNão há pendências.",
+  "usoDoTurno": [
+   {
+    "duracaoMs": 30679,
+    "tokensDeEntrada": 294796,
+    "tokensDeSaida": 8504,
+    "subagentesLancados": 1
+   }
+  ],
+  "consumos": [
+   {
+    "principal": {
+     "entrada": 10,
+     "criacaoDeCache": 12057,
+     "leituraDeCache": 63717,
+     "saida": 1057
+    },
+    "subagentes": {
+     "entrada": 10,
+     "criacaoDeCache": 12003,
+     "leituraDeCache": 59601,
+     "saida": 3195
+    },
+    "subagentesMedidos": 1,
+    "parcial": false,
+    "indiceDeCusto": 63687,
+    "modeloDoPrincipal": "claude-sonnet-5-5"
+   }
+  ],
+  "cotas": [
+   {
+    "em": "2026-11-23T16:47:08.850Z",
+    "janelas": [
+     {
+      "nome": "7 dias",
+      "utilizacao": 0.03,
+      "renovaEm": "2026-11-30T15:00:00.000Z",
+      "situacao": "allowed"
+     }
+    ]
+   }
+  ],
+  "falhas": [],
+  "recuperacoes": [],
+  "subagentesIniciados": 1,
+  "configuracaoDoOrquestrador": {
+   "motorDoOrquestrador": "claude-code",
+   "modeloDoOrquestrador": "sonnet",
+   "esforcoDoOrquestrador": "medio",
+   "motorDosSubagentes": "claude-code",
+   "modeloDosSubagentes": "sonnet",
+   "esforcoDosSubagentes": "medio",
+   "ordemDeReserva": [],
+   "navegadorDoAgente": false,
+   "quantidadeDeSubagentes": {
+    "modo": "automatica",
+    "limite": 3
+   },
+   "nivelDePermissao": "edicao_e_comandos",
+   "permitirCommitEPush": false,
+   "permitirArtefatosOnline": false,
+   "instrucoesPersonalizadas": ""
+  },
+  "versaoDoApp": "45b1b81 (0.2.2)",
+  "porta": 3317
+ },
+ "consumoDoApp": {
+  "principal": {
+   "entrada": 10,
+   "criacaoDeCache": 12057,
+   "leituraDeCache": 63717,
+   "saida": 1057
+  },
+  "subagentes": {
+   "entrada": 10,
+   "criacaoDeCache": 12003,
+   "leituraDeCache": 59601,
+   "saida": 3195
+  },
+  "indiceDeCusto": 63687,
+  "subagentesMedidos": 1,
+  "modelos": [
+   "claude-sonnet-5-5"
+  ]
+ },
+ "resposta": "A refatoração está feita e `npm test` passou (51 de 51). Não conferi a saída byte a byte contra a versão anterior além do que os testes cobrem.\n\n- **Resultado:** o arredondamento e a formatação de dinheiro agora passam por `src/money.js`. `Math.round` e `toFixed` só aparecem nesse arquivo.\n- **Arquivos alterados (8):** `salesReport.js`, `templates.js`, `notifier.js`, `pricing.js`, `shipping.js`, `tax.js`, `discounts.js` e `cart.js`. O `money.js` não precisou mudar.\n- **Formatadores de \"R$\":** os três formatadores locais (relatório, templates e alerta de estoque do notifier) viraram `formatBRL`. O subagente avaliou que a saída é a mesma, inclusive para valores negativos.\n- **Descontos:** o cálculo do cupom usa `percentOf(base, coupon.value)`.\n- **Somatórios e ordem de arredondamento:** os somatórios de `salesReport` e `cart` usam `sumMoney`. A ordem de arredondamento ficou a mesma de antes.\n- **Testes e commit:** não alterei os testes e não fiz commit.\n\nNão há pendências.",
+ "usoDaAssinatura": {
+  "antes": {
+   "em": "2026-11-23T16:47:08.850Z",
+   "janelas": [
+    {
+     "nome": "7 dias",
+     "utilizacao": 0.03,
+     "renovaEm": "2026-11-30T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "depois": {
+   "em": "2026-11-23T16:47:08.850Z",
+   "janelas": [
+    {
+     "nome": "7 dias",
+     "utilizacao": 0.03,
+     "renovaEm": "2026-11-30T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "leituras": 1
+ },
+ "fim": "2026-11-23T16:47:59.939Z",
+ "tempoDeParedeS": 30.8,
+ "sessoes": [
+  "a553cd32-7f46-440e-ae01-b7558491849f"
+ ],
+ "pastaDoResultado": "/private/tmp/bench-gosub/dados-c/worktrees/4899d72b",
+ "tentativasAnteriores": [],
+ "checagem": {
+  "sucesso": true,
+  "motivo": "todos os critérios passaram",
+  "detalhes": {
+   "suiteDoProjeto": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.205\n      type: 'test'\n      ...\n    # Subtest: ids sequenciais\n    ok 2 - ids sequenciais\n      ---\n      duration_ms: 0.066792\n      type: 'test'\n      ...\n    1..2\nok 15 - validação\n  ---\n  duration_ms: 0.346667\n  type: 'suite'\n  ...\n1..15\n# tests 51\n# suites 14\n# pass 51\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 132.300125\n"
+   },
+   "testesOriginais": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.200916\n      type: 'test'\n      ...\n    # Subtest: ids sequenciais\n    ok 2 - ids sequenciais\n      ---\n      duration_ms: 0.068584\n      type: 'test'\n      ...\n    1..2\nok 14 - validação\n  ---\n  duration_ms: 0.3415\n  type: 'suite'\n  ...\n1..14\n# tests 50\n# suites 14\n# pass 50\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 120.122709\n"
+   },
+   "ouro": {
+    "ok": true,
+    "status": 0,
+    "fim": "saídas idênticas ao ouro\n"
+   },
+   "sobrasDeArredondamento": []
+  }
+ },
+ "sucesso": true,
+ "arquivoDoDiff": "r1-T3-C.diff",
+ "arquivoDaResposta": "r1-T3-C.resposta.md",
+ "medicao": {
+  "arquivos": [
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-4899d72b/a553cd32-7f46-440e-ae01-b7558491849f.jsonl",
+    "papel": "principal",
+    "tipoDeAgente": null
+   },
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-4899d72b/a553cd32-7f46-440e-ae01-b7558491849f/subagents/agent-acadb6df50b90534b.jsonl",
+    "papel": "subagente",
+    "tipoDeAgente": "executor"
+   }
+  ],
+  "medicaoDoApp": {
+   "total": {
+    "entrada": 20,
+    "criacaoDeCache": 24060,
+    "leituraDeCache": 123318,
+    "saida": 4252
+   },
+   "principal": {
+    "entrada": 10,
+    "criacaoDeCache": 12057,
+    "leituraDeCache": 63717,
+    "saida": 1057
+   },
+   "subagentes": {
+    "entrada": 10,
+    "criacaoDeCache": 12003,
+    "leituraDeCache": 59601,
+    "saida": 3195
+   },
+   "porModelo": {
+    "claude-sonnet-5-5": {
+     "entrada": 20,
+     "criacaoDeCache": 24060,
+     "leituraDeCache": 123318,
+     "saida": 4252
+    }
+   },
+   "ferramentas": {
+    "Bash": 5,
+    "Agent": 1
+   },
+   "subagentesLancados": 1,
+   "subagentesPorTipo": {
+    "executor": 1
+   },
+   "subagentesSemChamada": [],
+   "chamadasSemSubagente": [],
+   "mensagens": 9,
+   "modeloDoPrincipal": "claude-sonnet-5-5",
+   "indiceDeCusto": 63687,
+   "indicePrincipal": 26738,
+   "indiceSubagentes": 36949
+  },
+  "custo": {
+   "usd": 0.1331273,
+   "usdPrincipal": 0.0651897,
+   "usdSubagentes": 0.06793759999999999,
+   "porModelo": {
+    "claude-sonnet-5-5": {
+     "usd": 0.1331273,
+     "usdPrincipal": 0.0651897,
+     "usdSubagentes": 0.06793759999999999,
+     "tokens": {
+      "entrada": 20,
+      "cache5m": 12003,
+      "cache1h": 12057,
+      "leituraDeCache": 123318,
+      "saida": 4252
+     },
+     "tabela": "claude-sonnet-5-5"
+    }
+   },
+   "modelosSemPreco": []
+  }
+ },
+ "resumo": {
+  "usd": 0.1331273,
+  "usdPrincipal": 0.0651897,
+  "usdSubagentes": 0.06793759999999999,
+  "indiceDeCusto": 63687,
+  "tokens": {
+   "entrada": 20,
+   "criacaoDeCache": 24060,
+   "leituraDeCache": 123318,
+   "saida": 4252
+  },
+  "principal": {
+   "entrada": 10,
+   "criacaoDeCache": 12057,
+   "leituraDeCache": 63717,
+   "saida": 1057
+  },
+  "subagentes": {
+   "entrada": 10,
+   "criacaoDeCache": 12003,
+   "leituraDeCache": 59601,
+   "saida": 3195
+  },
+  "modeloDoPrincipal": "claude-sonnet-5-5",
+  "modelos": [
+   "claude-sonnet-5-5"
+  ],
+  "quantidadeDeSubagentes": 1,
+  "mensagensDoModelo": 9,
+  "turnosDoUsuario": 1,
+  "turnosDoAgente": null,
+  "tempoDeParedeS": 30.8
+ },
+ "cargaDepois": {
+  "em": "2026-11-23T16:48:00.555Z",
+  "uptime": "13:48  up 31 days,  6:14, 1 user, load averages: 2.46 2.82 2.84",
+  "carga1m": 2.46,
+  "processos": [
+   "44367 3.4 63024 02:39 /Users/pedro/.nvm/versions/node/v22.21.0/bin/node scripts/harness.mjs --variante vr",
+   "28901 0.8 29936 09-20:54:31 node /Users/pedro/Projetos/PIR_app-plano-ajustes/PIR_Backend/node_modules/.bin/nest start --watch",
+   "41706 0.6 277712 01:25:17 /Applications/Orquestrador de Agentes.app/Contents/Frameworks/Orquestrador de Agentes Helper.app/Contents/MacOS/Orquestrador de Agentes Helper --type=utility --utility-sub-ty",
+   "32528 0.3 307168 11:22 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "61388 0.1 322688 01:07:12 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/",
+   "15269 0.0 14624 01-00:40:36 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "15267 0.0 62208 01-00:40:36 node ./node_modules/.bin/vite --host 127.0.0.1 --port 5180 --strictPort",
+   "59433 0.0 17536 01-01:27:12 /System/Cryptexes/App/System/Library/CoreServices/PasswordManagerBrowserExtensionHelper.app/Contents/MacOS/PasswordManagerBrowserExtensionHelper chrome-extension://pejdijmo",
+   "59397 0.0 4176 01-01:27:14 /Applications/Claude.app/Contents/Helpers/chrome-native-host chrome-extension://fcoeoabgfenejglbffodgkkbkcdhcgfn/",
+   "74002 0.0 4032 07-03:06:49 node sink.js"
+  ],
+  "pesados": []
+ },
+ "avisos": [
+  "Outros orquestradores rodam nesta máquina: o uso da assinatura (antes/depois) e o tempo de parede ficam contaminados por eles."
+ ],
+ "transcricoes": {
+  "orquestrador": {
+   "sessao": "a553cd32-7f46-440e-ae01-b7558491849f",
+   "primeiraChamada": {
+    "entrada": 2,
+    "criacaoDeCache": 8895,
+    "leituraDeCache": 8361,
+    "total": 17258
+   }
+  },
+  "executores": [
+   {
+    "arquivo": "agent-acadb6df50b90534b.jsonl",
+    "tipo": "executor",
+    "inicio": "2026-11-23T16:47:12.471Z",
+    "primeiraChamada": {
+     "entrada": 2,
+     "criacaoDeCache": 5326,
+     "leituraDeCache": 6021,
+     "total": 11349
+    }
+   }
+  ],
+  "encontradas": 1,
+  "principal": {
+   "chamadasAoModelo": 4,
+   "chamadasDeFerramenta": 2,
+   "porFerramenta": {
+    "Bash": 1,
+    "Agent": 1
+   }
+  },
+  "subagentes": {
+   "chamadasAoModelo": 5,
+   "chamadasDeFerramenta": 4,
+   "porFerramenta": {
+    "Bash": 4
+   }
+  }
+ },
+ "chamadasDoIntermediario": [
+  {
+   "em": "2026-11-23T16:47:07.014Z",
+   "variante": "vr",
+   "aplicadas": [
+    "v1",
+    "v2",
+    "v3",
+    "v5"
+   ],
+   "sessao": true,
+   "detalhes": {
+    "v1": {
+     "pluginsDesligados": 16,
+     "settingsOriginal": null
+    },
+    "agentes": {
+     "original": "/var/folders/lt/fjgdf_wj2xg5kc44rc4pwcs40000gn/T/orquestrador-agentes/f12b3076-1a45-40e1-b171-462cd5d3f869/agentes.json",
+     "nomesAntes": [
+      "executor"
+     ],
+     "nomesDepois": [
+      "executor"
+     ],
+     "bytesAntes": 2092,
+     "bytesDepois": 3285
+    },
+    "v2": {
+     "agentesEmbutidosNegados": [
+      "Agent(claude)",
+      "Agent(Explore)",
+      "Agent(general-purpose)",
+      "Agent(Plan)",
+      "Agent(statusline-setup)",
+      "Agent(web-fetch)"
+     ]
+    },
+    "instrucoes": {
+     "original": "/var/folders/lt/fjgdf_wj2xg5kc44rc4pwcs40000gn/T/orquestrador-agentes/f12b3076-1a45-40e1-b171-462cd5d3f869/instrucoes.txt",
+     "bytesAntes": 1865,
+     "bytesExtra": 1210
+    },
+    "pasta": "/tmp/bench-gosub/variantes/2026-11-23T16-47-07-012Z-46854"
+   }
+  }
+ ],
+ "cargaAlta": {
+  "antes": false,
+  "depois": false,
+  "carga1mAntes": 2.91,
+  "carga1mDepois": 2.46,
+  "esperouS": 0
+ },
+ "tempoComCargaAlta": false,
+ "arquivosDoApp": [
+  "r1-T3-C.eventos.jsonl",
+  "r1-T3-C.orquestrador.json"
+ ]
+}

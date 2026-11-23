@@ -1,0 +1,451 @@
+{
+ "id": "r2-T3-C",
+ "rodada": 2,
+ "tarefa": "T3",
+ "config": "C",
+ "posicao": 1,
+ "variante": "vr",
+ "tentativa": 1,
+ "prompt": "Refatoração sem mudança de comportamento neste projeto (loja-pedidos, Node sem dependências): o arredondamento e a formatação de dinheiro estão espalhados pelo código, com `Math.round(x * 100) / 100` e formatadores de \"R$\" locais repetidos em vários módulos. Centralize tudo em `src/money.js` (use `round2`, `formatBRL`, `sumMoney` e `percentOf`, ampliando-as se precisar) e troque os usos espalhados por essas funções. Regras: nenhuma saída pública pode mudar (valores, textos das mensagens, relatório, alertas), byte a byte; ao final não pode sobrar `Math.round` nem `toFixed` fora de `src/money.js`; não altere os testes existentes, que têm de continuar passando sem mudança. Rode `npm test` ao final.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+ "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/r2-T3-C-mwti4nlt",
+ "inicio": "2026-11-23T16:50:14.347Z",
+ "carga": {
+  "em": "2026-11-23T16:50:14.273Z",
+  "uptime": "13:50  up 31 days,  6:17, 1 user, load averages: 2.47 2.71 2.79",
+  "carga1m": 2.47,
+  "processos": [
+   "44367 3.5 65856 04:53 /Users/pedro/.nvm/versions/node/v22.21.0/bin/node scripts/harness.mjs --variante vr",
+   "32528 0.4 365600 13:36 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "61388 0.2 326656 01:09:26 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/",
+   "41706 0.0 283184 01:27:31 /Applications/Orquestrador de Agentes.app/Contents/Frameworks/Orquestrador de Agentes Helper.app/Contents/MacOS/Orquestrador de Agentes Helper --type=utility --utility-sub-ty",
+   "15269 0.0 14640 01-00:42:50 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "15267 0.0 62304 01-00:42:50 node ./node_modules/.bin/vite --host 127.0.0.1 --port 5180 --strictPort",
+   "59433 0.0 18320 01-01:29:26 /System/Cryptexes/App/System/Library/CoreServices/PasswordManagerBrowserExtensionHelper.app/Contents/MacOS/PasswordManagerBrowserExtensionHelper chrome-extension://pejdijmo",
+   "59397 0.0 4176 01-01:29:28 /Applications/Claude.app/Contents/Helpers/chrome-native-host chrome-extension://fcoeoabgfenejglbffodgkkbkcdhcgfn/",
+   "74002 0.0 4032 07-03:09:03 node sink.js",
+   "31528 0.0 14640 09-20:54:00 /Users/pedro/Projetos/PIR_app-plano-ajustes/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping"
+  ],
+  "pesados": [],
+  "esperouS": 0,
+  "leiturasDaEspera": [],
+  "ocupadaAoComecar": false
+ },
+ "execucao": {
+  "orqId": "968ba6f4-1e6c-44b3-86a5-3391810aebdd",
+  "sessoes": [
+   "4b2bcbbc-f427-4976-809e-1660433f2834"
+  ],
+  "acoes": [],
+  "estourou": false,
+  "tempoMs": 53341,
+  "worktree": "/private/tmp/bench-gosub/dados-c/worktrees/968ba6f4",
+  "pastaEfetiva": "/private/tmp/bench-gosub/dados-c/worktrees/968ba6f4",
+  "turnosDoApp": 1,
+  "contagemDeEventos": {
+   "turno_iniciado": 1,
+   "sessao_iniciada": 1,
+   "ferramenta_do_orquestrador": 1,
+   "uso_da_cota": 1,
+   "subagente_iniciado": 2,
+   "texto_do_orquestrador": 3,
+   "progresso_do_subagente": 10,
+   "texto_do_subagente": 3,
+   "subagente_concluido": 2,
+   "turno_concluido": 1,
+   "consumo_do_turno_medido": 1
+  },
+  "fimDoTurno": "turno_concluido",
+  "resposta": "Refatoração concluída. O `npm test` passou, 51 de 51, e não há commit.\n\n- **Centralização:** todos os arredondamentos e formatadores de \"R$\" espalhados em 8 arquivos agora usam `src/money.js` (`round2`, `sumMoney`, `percentOf`, `formatBRL`). O `rg` não encontra mais `Math.round` nem `toFixed` fora desse arquivo.\n- **Funções novas em `money.js`:**\n  - `formatBRLExact` mantém o `formatReport` do relatório de vendas idêntico ao original, porque o formatador antigo não arredondava antes de formatar.\n  - `formatBRLSafe` mantém o `lowStockAlert` idêntico com valores não finitos. Para NaN ou Infinity devolve `R$ NaN` ou `R$ Infinity`, como antes.\n- **Testes:** os existentes não foram alterados.\n\nNão comparei a saída com NaN contra a original; o `formatBRLSafe` foi escrito para reproduzi-la, mas esse caso não foi testado.",
+  "usoDoTurno": [
+   {
+    "duracaoMs": 53232,
+    "tokensDeEntrada": 742776,
+    "tokensDeSaida": 22473,
+    "subagentesLancados": 2
+   }
+  ],
+  "consumos": [
+   {
+    "principal": {
+     "entrada": 16,
+     "criacaoDeCache": 14620,
+     "leituraDeCache": 107396,
+     "saida": 1962
+    },
+    "subagentes": {
+     "entrada": 18,
+     "criacaoDeCache": 19029,
+     "leituraDeCache": 106513,
+     "saida": 5529
+    },
+    "subagentesMedidos": 2,
+    "parcial": false,
+    "indiceDeCusto": 100941,
+    "modeloDoPrincipal": "claude-sonnet-5-5"
+   }
+  ],
+  "cotas": [
+   {
+    "em": "2026-11-23T16:50:16.347Z",
+    "janelas": [
+     {
+      "nome": "7 dias",
+      "utilizacao": 0.03,
+      "renovaEm": "2026-11-30T15:00:00.000Z",
+      "situacao": "allowed"
+     }
+    ]
+   }
+  ],
+  "falhas": [],
+  "recuperacoes": [],
+  "subagentesIniciados": 2,
+  "configuracaoDoOrquestrador": {
+   "motorDoOrquestrador": "claude-code",
+   "modeloDoOrquestrador": "sonnet",
+   "esforcoDoOrquestrador": "medio",
+   "motorDosSubagentes": "claude-code",
+   "modeloDosSubagentes": "sonnet",
+   "esforcoDosSubagentes": "medio",
+   "ordemDeReserva": [],
+   "navegadorDoAgente": false,
+   "quantidadeDeSubagentes": {
+    "modo": "automatica",
+    "limite": 3
+   },
+   "nivelDePermissao": "edicao_e_comandos",
+   "permitirCommitEPush": false,
+   "permitirArtefatosOnline": false,
+   "instrucoesPersonalizadas": ""
+  },
+  "versaoDoApp": "45b1b81 (0.2.2)",
+  "porta": 3317
+ },
+ "consumoDoApp": {
+  "principal": {
+   "entrada": 16,
+   "criacaoDeCache": 14620,
+   "leituraDeCache": 107396,
+   "saida": 1962
+  },
+  "subagentes": {
+   "entrada": 18,
+   "criacaoDeCache": 19029,
+   "leituraDeCache": 106513,
+   "saida": 5529
+  },
+  "indiceDeCusto": 100941,
+  "subagentesMedidos": 2,
+  "modelos": [
+   "claude-sonnet-5-5"
+  ]
+ },
+ "resposta": "Refatoração concluída. O `npm test` passou, 51 de 51, e não há commit.\n\n- **Centralização:** todos os arredondamentos e formatadores de \"R$\" espalhados em 8 arquivos agora usam `src/money.js` (`round2`, `sumMoney`, `percentOf`, `formatBRL`). O `rg` não encontra mais `Math.round` nem `toFixed` fora desse arquivo.\n- **Funções novas em `money.js`:**\n  - `formatBRLExact` mantém o `formatReport` do relatório de vendas idêntico ao original, porque o formatador antigo não arredondava antes de formatar.\n  - `formatBRLSafe` mantém o `lowStockAlert` idêntico com valores não finitos. Para NaN ou Infinity devolve `R$ NaN` ou `R$ Infinity`, como antes.\n- **Testes:** os existentes não foram alterados.\n\nNão comparei a saída com NaN contra a original; o `formatBRLSafe` foi escrito para reproduzi-la, mas esse caso não foi testado.",
+ "usoDaAssinatura": {
+  "antes": {
+   "em": "2026-11-23T16:50:16.347Z",
+   "janelas": [
+    {
+     "nome": "7 dias",
+     "utilizacao": 0.03,
+     "renovaEm": "2026-11-30T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "depois": {
+   "em": "2026-11-23T16:50:16.347Z",
+   "janelas": [
+    {
+     "nome": "7 dias",
+     "utilizacao": 0.03,
+     "renovaEm": "2026-11-30T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "leituras": 1
+ },
+ "fim": "2026-11-23T16:51:28.393Z",
+ "tempoDeParedeS": 53.3,
+ "sessoes": [
+  "4b2bcbbc-f427-4976-809e-1660433f2834"
+ ],
+ "pastaDoResultado": "/private/tmp/bench-gosub/dados-c/worktrees/968ba6f4",
+ "tentativasAnteriores": [],
+ "checagem": {
+  "sucesso": true,
+  "motivo": "todos os critérios passaram",
+  "detalhes": {
+   "suiteDoProjeto": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.206708\n      type: 'test'\n      ...\n    # Subtest: ids sequenciais\n    ok 2 - ids sequenciais\n      ---\n      duration_ms: 0.06475\n      type: 'test'\n      ...\n    1..2\nok 15 - validação\n  ---\n  duration_ms: 0.343958\n  type: 'suite'\n  ...\n1..15\n# tests 51\n# suites 14\n# pass 51\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 134.384458\n"
+   },
+   "testesOriginais": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.198875\n      type: 'test'\n      ...\n    # Subtest: ids sequenciais\n    ok 2 - ids sequenciais\n      ---\n      duration_ms: 0.065833\n      type: 'test'\n      ...\n    1..2\nok 14 - validação\n  ---\n  duration_ms: 0.334041\n  type: 'suite'\n  ...\n1..14\n# tests 50\n# suites 14\n# pass 50\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 119.418917\n"
+   },
+   "ouro": {
+    "ok": true,
+    "status": 0,
+    "fim": "saídas idênticas ao ouro\n"
+   },
+   "sobrasDeArredondamento": []
+  }
+ },
+ "sucesso": true,
+ "arquivoDoDiff": "r2-T3-C.diff",
+ "arquivoDaResposta": "r2-T3-C.resposta.md",
+ "medicao": {
+  "arquivos": [
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-968ba6f4/4b2bcbbc-f427-4976-809e-1660433f2834.jsonl",
+    "papel": "principal",
+    "tipoDeAgente": null
+   },
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-968ba6f4/4b2bcbbc-f427-4976-809e-1660433f2834/subagents/agent-a3b9368ab877d2b4b.jsonl",
+    "papel": "subagente",
+    "tipoDeAgente": "executor"
+   },
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-968ba6f4/4b2bcbbc-f427-4976-809e-1660433f2834/subagents/agent-a5a53a40a3739b277.jsonl",
+    "papel": "subagente",
+    "tipoDeAgente": "executor"
+   }
+  ],
+  "medicaoDoApp": {
+   "total": {
+    "entrada": 34,
+    "criacaoDeCache": 33649,
+    "leituraDeCache": 213909,
+    "saida": 7491
+   },
+   "principal": {
+    "entrada": 16,
+    "criacaoDeCache": 14620,
+    "leituraDeCache": 107396,
+    "saida": 1962
+   },
+   "subagentes": {
+    "entrada": 18,
+    "criacaoDeCache": 19029,
+    "leituraDeCache": 106513,
+    "saida": 5529
+   },
+   "porModelo": {
+    "claude-sonnet-5-5": {
+     "entrada": 34,
+     "criacaoDeCache": 33649,
+     "leituraDeCache": 213909,
+     "saida": 7491
+    }
+   },
+   "ferramentas": {
+    "Bash": 7,
+    "Agent": 2,
+    "Read": 1,
+    "Edit": 3
+   },
+   "subagentesLancados": 2,
+   "subagentesPorTipo": {
+    "executor": 2
+   },
+   "subagentesSemChamada": [],
+   "chamadasSemSubagente": [],
+   "mensagens": 15,
+   "modeloDoPrincipal": "claude-sonnet-5-5",
+   "indiceDeCusto": 100941,
+   "indicePrincipal": 38841,
+   "indiceSubagentes": 62101
+  },
+  "custo": {
+   "usd": 0.2024214,
+   "usdPrincipal": 0.0888716,
+   "usdSubagentes": 0.1135498,
+   "porModelo": {
+    "claude-sonnet-5-5": {
+     "usd": 0.2024214,
+     "usdPrincipal": 0.0888716,
+     "usdSubagentes": 0.1135498,
+     "tokens": {
+      "entrada": 34,
+      "cache5m": 19029,
+      "cache1h": 14620,
+      "leituraDeCache": 213909,
+      "saida": 7491
+     },
+     "tabela": "claude-sonnet-5-5"
+    }
+   },
+   "modelosSemPreco": []
+  }
+ },
+ "resumo": {
+  "usd": 0.2024214,
+  "usdPrincipal": 0.0888716,
+  "usdSubagentes": 0.1135498,
+  "indiceDeCusto": 100941,
+  "tokens": {
+   "entrada": 34,
+   "criacaoDeCache": 33649,
+   "leituraDeCache": 213909,
+   "saida": 7491
+  },
+  "principal": {
+   "entrada": 16,
+   "criacaoDeCache": 14620,
+   "leituraDeCache": 107396,
+   "saida": 1962
+  },
+  "subagentes": {
+   "entrada": 18,
+   "criacaoDeCache": 19029,
+   "leituraDeCache": 106513,
+   "saida": 5529
+  },
+  "modeloDoPrincipal": "claude-sonnet-5-5",
+  "modelos": [
+   "claude-sonnet-5-5"
+  ],
+  "quantidadeDeSubagentes": 2,
+  "mensagensDoModelo": 15,
+  "turnosDoUsuario": 1,
+  "turnosDoAgente": null,
+  "tempoDeParedeS": 53.3
+ },
+ "cargaDepois": {
+  "em": "2026-11-23T16:51:28.994Z",
+  "uptime": "13:51  up 31 days,  6:18, 1 user, load averages: 2.29 2.63 2.75",
+  "carga1m": 2.29,
+  "processos": [
+   "44367 5.6 66224 06:07 /Users/pedro/.nvm/versions/node/v22.21.0/bin/node scripts/harness.mjs --variante vr",
+   "61388 0.3 375504 01:10:40 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/",
+   "28901 0.1 30048 09-20:57:59 node /Users/pedro/Projetos/PIR_app-plano-ajustes/PIR_Backend/node_modules/.bin/nest start --watch",
+   "41706 0.0 286112 01:28:45 /Applications/Orquestrador de Agentes.app/Contents/Frameworks/Orquestrador de Agentes Helper.app/Contents/MacOS/Orquestrador de Agentes Helper --type=utility --utility-sub-ty",
+   "15269 0.0 14656 01-00:44:04 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "15267 0.0 62304 01-00:44:04 node ./node_modules/.bin/vite --host 127.0.0.1 --port 5180 --strictPort",
+   "59433 0.0 18320 01-01:30:40 /System/Cryptexes/App/System/Library/CoreServices/PasswordManagerBrowserExtensionHelper.app/Contents/MacOS/PasswordManagerBrowserExtensionHelper chrome-extension://pejdijmo",
+   "59397 0.0 4176 01-01:30:42 /Applications/Claude.app/Contents/Helpers/chrome-native-host chrome-extension://fcoeoabgfenejglbffodgkkbkcdhcgfn/",
+   "74002 0.0 4032 07-03:10:17 node sink.js",
+   "31528 0.0 14672 09-20:55:14 /Users/pedro/Projetos/PIR_app-plano-ajustes/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping"
+  ],
+  "pesados": []
+ },
+ "avisos": [
+  "Outros orquestradores rodam nesta máquina: o uso da assinatura (antes/depois) e o tempo de parede ficam contaminados por eles."
+ ],
+ "transcricoes": {
+  "orquestrador": {
+   "sessao": "4b2bcbbc-f427-4976-809e-1660433f2834",
+   "primeiraChamada": {
+    "entrada": 2,
+    "criacaoDeCache": 8895,
+    "leituraDeCache": 8361,
+    "total": 17258
+   }
+  },
+  "executores": [
+   {
+    "arquivo": "agent-a3b9368ab877d2b4b.jsonl",
+    "tipo": "executor",
+    "inicio": "2026-11-23T16:50:21.207Z",
+    "primeiraChamada": {
+     "entrada": 2,
+     "criacaoDeCache": 5362,
+     "leituraDeCache": 6021,
+     "total": 11385
+    }
+   },
+   {
+    "arquivo": "agent-a5a53a40a3739b277.jsonl",
+    "tipo": "executor",
+    "inicio": "2026-11-23T16:50:52.523Z",
+    "primeiraChamada": {
+     "entrada": 2,
+     "criacaoDeCache": 3581,
+     "leituraDeCache": 7830,
+     "total": 11413
+    }
+   }
+  ],
+  "encontradas": 1,
+  "principal": {
+   "chamadasAoModelo": 6,
+   "chamadasDeFerramenta": 3,
+   "porFerramenta": {
+    "Bash": 1,
+    "Agent": 2
+   }
+  },
+  "subagentes": {
+   "chamadasAoModelo": 9,
+   "chamadasDeFerramenta": 10,
+   "porFerramenta": {
+    "Bash": 6,
+    "Read": 1,
+    "Edit": 3
+   }
+  }
+ },
+ "chamadasDoIntermediario": [
+  {
+   "em": "2026-11-23T16:50:14.457Z",
+   "variante": "vr",
+   "aplicadas": [
+    "v1",
+    "v2",
+    "v3",
+    "v5"
+   ],
+   "sessao": true,
+   "detalhes": {
+    "v1": {
+     "pluginsDesligados": 16,
+     "settingsOriginal": null
+    },
+    "agentes": {
+     "original": "/var/folders/lt/fjgdf_wj2xg5kc44rc4pwcs40000gn/T/orquestrador-agentes/de90e282-ec47-40ef-b3e9-9cdb6a3c070d/agentes.json",
+     "nomesAntes": [
+      "executor"
+     ],
+     "nomesDepois": [
+      "executor"
+     ],
+     "bytesAntes": 2092,
+     "bytesDepois": 3285
+    },
+    "v2": {
+     "agentesEmbutidosNegados": [
+      "Agent(claude)",
+      "Agent(Explore)",
+      "Agent(general-purpose)",
+      "Agent(Plan)",
+      "Agent(statusline-setup)",
+      "Agent(web-fetch)"
+     ]
+    },
+    "instrucoes": {
+     "original": "/var/folders/lt/fjgdf_wj2xg5kc44rc4pwcs40000gn/T/orquestrador-agentes/de90e282-ec47-40ef-b3e9-9cdb6a3c070d/instrucoes.txt",
+     "bytesAntes": 1865,
+     "bytesExtra": 1210
+    },
+    "pasta": "/tmp/bench-gosub/variantes/2026-11-23T16-50-14-455Z-51074"
+   }
+  }
+ ],
+ "cargaAlta": {
+  "antes": false,
+  "depois": false,
+  "carga1mAntes": 2.47,
+  "carga1mDepois": 2.29,
+  "esperouS": 0
+ },
+ "tempoComCargaAlta": false,
+ "arquivosDoApp": [
+  "r2-T3-C.eventos.jsonl",
+  "r2-T3-C.orquestrador.json"
+ ]
+}

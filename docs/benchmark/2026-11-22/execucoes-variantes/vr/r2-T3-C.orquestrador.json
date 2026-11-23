@@ -1,0 +1,77 @@
+{
+  "id": "968ba6f4-1e6c-44b3-86a5-3391810aebdd",
+  "nome": "bench r2-T3-C",
+  "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/r2-T3-C-mwti4nlt",
+  "sessaoId": "4b2bcbbc-f427-4976-809e-1660433f2834",
+  "sessaoIniciada": true,
+  "criadoEm": "2026-11-23T16:50:14.349Z",
+  "configuracao": {
+    "motorDoOrquestrador": "claude-code",
+    "motorDosSubagentes": "claude-code",
+    "modeloDoOrquestrador": "sonnet",
+    "modeloDosSubagentes": "sonnet",
+    "ordemDeReserva": [],
+    "quantidadeDeSubagentes": {
+      "modo": "automatica",
+      "limite": 3
+    },
+    "nivelDePermissao": "edicao_e_comandos",
+    "permitirCommitEPush": false,
+    "permitirArtefatosOnline": false,
+    "navegadorDoAgente": false,
+    "esforcoDoOrquestrador": "medio",
+    "esforcoDosSubagentes": "medio",
+    "instrucoesPersonalizadas": "",
+    "subagentesProntos": "todos"
+  },
+  "turnos": [
+    {
+      "id": "0903d5b9-8dae-447b-baff-ac3368c9ba0f",
+      "texto": "Refatoração sem mudança de comportamento neste projeto (loja-pedidos, Node sem dependências): o arredondamento e a formatação de dinheiro estão espalhados pelo código, com `Math.round(x * 100) / 100` e formatadores de \"R$\" locais repetidos em vários módulos. Centralize tudo em `src/money.js` (use `round2`, `formatBRL`, `sumMoney` e `percentOf`, ampliando-as se precisar) e troque os usos espalhados por essas funções. Regras: nenhuma saída pública pode mudar (valores, textos das mensagens, relatório, alertas), byte a byte; ao final não pode sobrar `Math.round` nem `toFixed` fora de `src/money.js`; não altere os testes existentes, que têm de continuar passando sem mudança. Rode `npm test` ao final.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+      "iniciadoEm": "2026-11-23T16:50:14.350Z",
+      "encerradoEm": "2026-11-23T16:51:07.691Z",
+      "situacao": "concluido",
+      "resposta": "Refatoração concluída. O `npm test` passou, 51 de 51, e não há commit.\n\n- **Centralização:** todos os arredondamentos e formatadores de \"R$\" espalhados em 8 arquivos agora usam `src/money.js` (`round2`, `sumMoney`, `percentOf`, `formatBRL`). O `rg` não encontra mais `Math.round` nem `toFixed` fora desse arquivo.\n- **Funções novas em `money.js`:**\n  - `formatBRLExact` mantém o `formatReport` do relatório de vendas idêntico ao original, porque o formatador antigo não arredondava antes de formatar.\n  - `formatBRLSafe` mantém o `lowStockAlert` idêntico com valores não finitos. Para NaN ou Infinity devolve `R$ NaN` ou `R$ Infinity`, como antes.\n- **Testes:** os existentes não foram alterados.\n\nNão comparei a saída com NaN contra a original; o `formatBRLSafe` foi escrito para reproduzi-la, mas esse caso não foi testado.",
+      "motivoDaFalha": null,
+      "uso": {
+        "duracaoMs": 53232,
+        "tokensDeEntrada": 742776,
+        "tokensDeSaida": 22473,
+        "subagentesLancados": 2
+      },
+      "subagentes": [
+        {
+          "id": "a3b9368ab877d2b4b",
+          "descricao": "Centralizar dinheiro em money.js",
+          "situacao": "concluido",
+          "tokens": 18715,
+          "duracaoMs": 27082,
+          "resumo": "Refatorei os 8 arquivos para usar `round2`, `sumMoney`, `percentOf` e `formatBRL` de `src/money.js`. `npm test` passou (51 de 51), e o `rg` não acha mais `Math.round` nem `toFixed` fora de `money.js`.\n\n- **Helper novo:** `formatBRLExact` em `src/money.js`, para o `formatReport` de `salesReport.js`. O formatador local dele não arredondava antes de formatar, e `formatBRL` arredonda, então a saída poderia divergir em valores como `-0.001`.\n- **Cálculos de preço:** a ordem de arredondamento ficou igual. `discounts.js` agora usa `percentOf`, e `cart.js` e `salesReport.js` usam `sumMoney`.\n- **Divergência (só com NaN):** em `notifier.js`, `lowStockAlert` agora usa `formatBRL`. Com `unitCost` NaN a saída passa de `R$ NaN` para `R$ NaN,undefined`. Para qualquer valor finito é idêntica. Não criei helper para esse caso.\n- **Imports:** os `import` novos foram inseridos no topo dos arquivos, antes dos comentários de cabeçalho. Não alterei testes e não fiz commit."
+        },
+        {
+          "id": "a5a53a40a3739b277",
+          "descricao": "Corrigir divergência NaN no notifier",
+          "situacao": "concluido",
+          "tokens": 15168,
+          "duracaoMs": 11904,
+          "resumo": "Criei o helper `formatBRLSafe` em `src/money.js` e passei `lowStockAlert` a usá-lo em `src/notifications/notifier.js`. Não alterei `formatBRL` porque os usos em `templates.js` com NaN passariam a sair diferentes. Para valores não finitos o helper devolve `R$ ${String(valor)}` (por exemplo `R$ NaN` ou `R$ Infinity`) e, para os demais, chama `formatBRL`.\n\nNão rodei um caso com NaN para comparar a saída com a original. `npm test` passou: 51 de 51, nenhuma falha. Não fiz commit."
+        }
+      ],
+      "anexos": [],
+      "modo": "execucao",
+      "decisaoDoPlano": null,
+      "perguntas": [],
+      "motor": "claude-code"
+    }
+  ],
+  "worktree": {
+    "branch": "orquestrador/968ba6f4-1e6c-44b3-86a5-3391810aebdd",
+    "caminho": "/private/tmp/bench-gosub/dados-c/worktrees/968ba6f4",
+    "ativo": false
+  },
+  "fila": [],
+  "instrucoesNaConversa": false,
+  "retomadaPendente": null,
+  "sessoesDosMotores": {},
+  "liberaEmDosMotores": {}
+}

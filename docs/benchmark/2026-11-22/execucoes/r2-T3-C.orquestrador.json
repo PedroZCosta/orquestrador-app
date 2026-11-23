@@ -1,0 +1,69 @@
+{
+  "id": "b23a1a85-b065-4435-9398-9b862a20750f",
+  "nome": "bench r2-T3-C",
+  "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/r2-T3-C-mwt4jowi",
+  "sessaoId": "7463e379-bfdb-4cb0-8128-7f79251767ad",
+  "sessaoIniciada": true,
+  "criadoEm": "2026-11-23T10:30:01.276Z",
+  "configuracao": {
+    "motorDoOrquestrador": "claude-code",
+    "motorDosSubagentes": "claude-code",
+    "modeloDoOrquestrador": "sonnet",
+    "modeloDosSubagentes": "sonnet",
+    "ordemDeReserva": [],
+    "quantidadeDeSubagentes": {
+      "modo": "automatica",
+      "limite": 3
+    },
+    "nivelDePermissao": "edicao_e_comandos",
+    "permitirCommitEPush": false,
+    "permitirArtefatosOnline": false,
+    "navegadorDoAgente": false,
+    "esforcoDoOrquestrador": "medio",
+    "esforcoDosSubagentes": "medio",
+    "instrucoesPersonalizadas": "",
+    "subagentesProntos": "todos"
+  },
+  "turnos": [
+    {
+      "id": "720640e7-e584-4073-b5ef-9e3468309f3a",
+      "texto": "Refatoração sem mudança de comportamento neste projeto (loja-pedidos, Node sem dependências): o arredondamento e a formatação de dinheiro estão espalhados pelo código, com `Math.round(x * 100) / 100` e formatadores de \"R$\" locais repetidos em vários módulos. Centralize tudo em `src/money.js` (use `round2`, `formatBRL`, `sumMoney` e `percentOf`, ampliando-as se precisar) e troque os usos espalhados por essas funções. Regras: nenhuma saída pública pode mudar (valores, textos das mensagens, relatório, alertas), byte a byte; ao final não pode sobrar `Math.round` nem `toFixed` fora de `src/money.js`; não altere os testes existentes, que têm de continuar passando sem mudança. Rode `npm test` ao final.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+      "iniciadoEm": "2026-11-23T10:30:01.278Z",
+      "encerradoEm": "2026-11-23T10:31:01.063Z",
+      "situacao": "concluido",
+      "resposta": "Refatoração concluída: o arredondamento e a formatação de dinheiro agora passam todos por `src/money.js`. O `npm test` passou, 51 de 51, sem falhas, e os testes não foram alterados. Nenhum `Math.round` ou `toFixed` sobrou fora de `src/money.js` (conferi com grep). Não fiz commit.\n\nUm subagente alterou 8 arquivos:\n- **`cart/cart.js`:** `round2` no total da linha e `sumMoney` no subtotal.\n- **`notifications/templates.js`:** a função `price` usa `formatBRL`.\n- **`notifications/notifier.js`:** o alerta de estoque usa `round2` e `formatBRL`.\n- **`pricing/pricing.js`, `pricing/shipping.js`, `pricing/tax.js`:** `round2` nos pontos de arredondamento.\n- **`pricing/discounts.js`:** `percentOf` no desconto do cupom e `sumMoney` em `lineSubtotal`.\n- **`reports/salesReport.js`:** `sumMoney`, `round2` e `formatBRL` no relatório (o `brl` local virou `const brl = formatBRL`).\n\n- **Saídas públicas:** as trocas preservam a mesma aritmética de ponto flutuante, então valores, mensagens, relatório e alertas devem ficar idênticos. A única verificação feita foi o `npm test` e o grep.\n- **`tax.js`:** usei `round2` em vez de `percentOf`, porque `percentOf` mudaria a ordem das contas.\n- **`salesReport.js`:** `formatBRL` arredonda antes de formatar, e o formatador antigo só usava `toFixed`. Como os valores do relatório já chegam arredondados, o resultado é o mesmo.\n- **`money.js`:** não precisei ampliar nada.",
+      "motivoDaFalha": null,
+      "uso": {
+        "duracaoMs": 59650,
+        "tokensDeEntrada": 809056,
+        "tokensDeSaida": 18598,
+        "subagentesLancados": 1
+      },
+      "subagentes": [
+        {
+          "id": "a32896b680bbe0519",
+          "descricao": "Centralizar dinheiro em money.js",
+          "situacao": "concluido",
+          "tokens": 34168,
+          "duracaoMs": 29394,
+          "resumo": "Refatoração feita: os arredondamentos e formatadores locais agora usam as funções de `src/money.js`, sem mudar a aritmética. `npm test` passou, 51 de 51 testes, 0 falhas. O `grep -rnE \"Math\\.round|toFixed\" src` lista só `src/money.js`.\n\nArquivos alterados, todos em `/private/tmp/bench-gosub/dados-c/worktrees/b23a1a85/src`, cada um com o `import ... from '<relativo>/money.js'`:\n- `notifications/templates.js`\n- `notifications/notifier.js`\n- `reports/salesReport.js`\n- `pricing/pricing.js`\n- `pricing/tax.js`\n- `pricing/shipping.js`\n- `pricing/discounts.js`\n- `cart/cart.js`\n\nSegui as substituições indicadas, inclusive `round2` (sem `percentOf`) em `tax.js` e `describeRate` intocada. Em `salesReport.js` ficou `const brl = formatBRL;`. Não alterei testes nem `money.js`, e não fiz commit."
+        }
+      ],
+      "anexos": [],
+      "modo": "execucao",
+      "decisaoDoPlano": null,
+      "perguntas": [],
+      "motor": "claude-code"
+    }
+  ],
+  "worktree": {
+    "branch": "orquestrador/b23a1a85-b065-4435-9398-9b862a20750f",
+    "caminho": "/private/tmp/bench-gosub/dados-c/worktrees/b23a1a85",
+    "ativo": false
+  },
+  "fila": [],
+  "instrucoesNaConversa": false,
+  "retomadaPendente": null,
+  "sessoesDosMotores": {},
+  "liberaEmDosMotores": {}
+}

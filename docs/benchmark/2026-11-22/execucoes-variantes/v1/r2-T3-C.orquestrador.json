@@ -1,0 +1,69 @@
+{
+  "id": "cfd4198f-c236-4bfa-ac6e-699bf544f8a0",
+  "nome": "bench r2-T3-C",
+  "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/r2-T3-C-mwtgetnu",
+  "sessaoId": "075419f3-2c4c-4ffb-b121-c93e061a7003",
+  "sessaoIniciada": true,
+  "criadoEm": "2026-11-23T16:02:09.532Z",
+  "configuracao": {
+    "motorDoOrquestrador": "claude-code",
+    "motorDosSubagentes": "claude-code",
+    "modeloDoOrquestrador": "sonnet",
+    "modeloDosSubagentes": "sonnet",
+    "ordemDeReserva": [],
+    "quantidadeDeSubagentes": {
+      "modo": "automatica",
+      "limite": 3
+    },
+    "nivelDePermissao": "edicao_e_comandos",
+    "permitirCommitEPush": false,
+    "permitirArtefatosOnline": false,
+    "navegadorDoAgente": false,
+    "esforcoDoOrquestrador": "medio",
+    "esforcoDosSubagentes": "medio",
+    "instrucoesPersonalizadas": "",
+    "subagentesProntos": "todos"
+  },
+  "turnos": [
+    {
+      "id": "7816038d-770f-4c07-a952-ff4b2b6b6c22",
+      "texto": "Refatoração sem mudança de comportamento neste projeto (loja-pedidos, Node sem dependências): o arredondamento e a formatação de dinheiro estão espalhados pelo código, com `Math.round(x * 100) / 100` e formatadores de \"R$\" locais repetidos em vários módulos. Centralize tudo em `src/money.js` (use `round2`, `formatBRL`, `sumMoney` e `percentOf`, ampliando-as se precisar) e troque os usos espalhados por essas funções. Regras: nenhuma saída pública pode mudar (valores, textos das mensagens, relatório, alertas), byte a byte; ao final não pode sobrar `Math.round` nem `toFixed` fora de `src/money.js`; não altere os testes existentes, que têm de continuar passando sem mudança. Rode `npm test` ao final.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+      "iniciadoEm": "2026-11-23T16:02:09.533Z",
+      "encerradoEm": "2026-11-23T16:03:09.107Z",
+      "situacao": "concluido",
+      "resposta": "Todo o arredondamento e a formatação de dinheiro agora passam por `src/money.js`. Rodei `npm test` e os 51 testes passam, sem falhas. Os testes em `test/` não foram alterados e não fiz commit.\n\n- **Sobra fora do `money.js`:** o `grep` por `Math.round` e `toFixed` em `src` não encontra mais nada fora dele. As descrições de cupom com \"R$\" são texto fixo e ficaram como estavam.\n- **O que mudou:** o `money.js` ganhou `mulMoney(...fatores)` e `averageMoney(total, count)`. Nove arquivos de `src/` foram alterados: o próprio `money.js`, `cart`, `pricing` (`discounts`, `tax`, `shipping`, `pricing`), `notifications` (`notifier`, `templates`) e `reports/salesReport`.\n- **Formatadores locais:** os três (`notifier`, `templates`, `salesReport`) passaram a usar `formatBRL`. O de `salesReport` não arredondava antes de formatar, mas os valores ali já chegam arredondados, então a saída é a mesma.\n- **O que não foi conferido:** a igualdade byte a byte das saídas foi verificada pela leitura do código e pelos testes existentes. Não comparei saídas antes e depois com entradas extras, como valores negativos ou NaN.",
+      "motivoDaFalha": null,
+      "uso": {
+        "duracaoMs": 59468,
+        "tokensDeEntrada": 535224,
+        "tokensDeSaida": 19136,
+        "subagentesLancados": 1
+      },
+      "subagentes": [
+        {
+          "id": "afe2627ba9b6480dc",
+          "descricao": "Centralizar dinheiro em money.js",
+          "situacao": "concluido",
+          "tokens": 26496,
+          "duracaoMs": 42714,
+          "resumo": "A refatoração está feita: o `grep` por `Math.round|toFixed` em `src` só retorna `src/money.js`, e `npm test` passou nos 51 testes (0 falhas). Não alterei `test/` e não fiz commit.\n\nArquivos alterados em `src/`: `money.js`, `cart/cart.js`, `pricing/discounts.js`, `pricing/tax.js`, `pricing/shipping.js`, `pricing/pricing.js`, `notifications/notifier.js`, `notifications/templates.js` e `reports/salesReport.js`.\n\n- **`money.js`:** acrescentei `mulMoney(...fatores)` e `averageMoney(total, count)`. O `mulMoney` multiplica da esquerda para a direita e arredonda no fim, então `price * quantity * 100` continua sendo a mesma conta. O `averageMoney` devolve 0 quando `count` é 0.\n- **Formatadores locais:** os três (`notifier`, `templates`, `salesReport`) davam a mesma saída que `formatBRL` para valores de dinheiro normais, então passaram a usá-lo. A diferença é que o de `salesReport` não arredondava antes de formatar. Isso não muda nada porque os valores ali já vêm arredondados.\n- **`lineSubtotal` e `percentDiscount`:** passaram a usar `sumMoney` e `percentOf`, com a mesma expressão de antes dentro do arredondamento.\n\nA equivalência byte a byte foi conferida só lendo o código e pelos testes existentes. Não comparei as saídas antes e depois com entradas extras, como valores negativos ou NaN."
+        }
+      ],
+      "anexos": [],
+      "modo": "execucao",
+      "decisaoDoPlano": null,
+      "perguntas": [],
+      "motor": "claude-code"
+    }
+  ],
+  "worktree": {
+    "branch": "orquestrador/cfd4198f-c236-4bfa-ac6e-699bf544f8a0",
+    "caminho": "/private/tmp/bench-gosub/dados-c/worktrees/cfd4198f",
+    "ativo": false
+  },
+  "fila": [],
+  "instrucoesNaConversa": false,
+  "retomadaPendente": null,
+  "sessoesDosMotores": {},
+  "liberaEmDosMotores": {}
+}

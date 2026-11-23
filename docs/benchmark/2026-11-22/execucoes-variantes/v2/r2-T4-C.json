@@ -1,0 +1,449 @@
+{
+ "id": "r2-T4-C",
+ "rodada": 2,
+ "tarefa": "T4",
+ "config": "C",
+ "posicao": 1,
+ "variante": "v2",
+ "tentativa": 1,
+ "prompt": "Pergunta sobre este projeto (loja-pedidos, Node sem dependências); responda em texto, sem alterar nem criar arquivos no projeto. Uma cliente de Manaus (AM) faz um pedido de 2 unidades de LIV-001 e 1 de CAN-010 com o cupom BEMVINDO10 e paga com cartão de crédito.\n(a) Quanto ela paga? Informe, em reais, o subtotal, o desconto, o frete, o imposto e o total, e explique como cada valor é calculado.\n(b) Se o gateway responder `timeout` (falha temporária) em todas as tentativas de cobrança: quantas cobranças são feitas, quanto tempo de espera há entre elas (em ms), em que status o pedido termina, o que acontece com a reserva de estoque, que mensagem a cliente recebe e se o pedido entra no relatório de vendas.\n(c) Indique os arquivos (caminho) onde estão as regras usadas nas respostas.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+ "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/r2-T4-C-mwtgwtfd",
+ "inicio": "2026-11-23T16:16:09.023Z",
+ "carga": {
+  "em": "2026-11-23T16:16:08.953Z",
+  "uptime": "13:16  up 31 days,  5:43, 1 user, load averages: 1.29 1.86 2.91",
+  "carga1m": 1.29,
+  "processos": [
+   "93205 4.8 83696 07:52 /Users/pedro/.nvm/versions/node/v22.21.0/bin/node scripts/harness.mjs --variante v2",
+   "61388 0.2 400032 35:20 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "41706 0.0 172832 53:25 /Applications/Orquestrador de Agentes.app/Contents/Frameworks/Orquestrador de Agentes Helper.app/Contents/MacOS/Orquestrador de Agentes Helper --type=utility --utility-sub-type=",
+   "15269 0.0 14800 01-00:08:44 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "15267 0.0 61424 01-00:08:44 node ./node_modules/.bin/vite --host 127.0.0.1 --port 5180 --strictPort",
+   "59433 0.0 21728 01-00:55:20 /System/Cryptexes/App/System/Library/CoreServices/PasswordManagerBrowserExtensionHelper.app/Contents/MacOS/PasswordManagerBrowserExtensionHelper chrome-extension://pejdijmo",
+   "59397 0.0 4176 01-00:55:22 /Applications/Claude.app/Contents/Helpers/chrome-native-host chrome-extension://fcoeoabgfenejglbffodgkkbkcdhcgfn/",
+   "74002 0.0 4032 07-02:34:57 node sink.js",
+   "31528 0.0 14688 09-20:19:54 /Users/pedro/Projetos/PIR_app-plano-ajustes/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "31526 0.0 53328 09-20:19:55 node /Users/pedro/Projetos/PIR_app-plano-ajustes/PIR_Frontend/node_modules/.bin/vite --port 5197 --strictPort"
+  ],
+  "pesados": [],
+  "esperouS": 0,
+  "leiturasDaEspera": [],
+  "ocupadaAoComecar": false
+ },
+ "execucao": {
+  "orqId": "a4032c2b-4745-4048-87e1-d46ae37435cc",
+  "sessoes": [
+   "96ccfd5c-c187-4fcf-91e3-14aa03fcbaa5"
+  ],
+  "acoes": [],
+  "estourou": false,
+  "tempoMs": 19890,
+  "worktree": null,
+  "pastaEfetiva": "/private/tmp/bench-gosub/projetos/r2-T4-C-mwtgwtfd",
+  "turnosDoApp": 1,
+  "contagemDeEventos": {
+   "turno_iniciado": 1,
+   "sessao_iniciada": 1,
+   "ferramenta_do_orquestrador": 5,
+   "uso_da_cota": 1,
+   "texto_do_orquestrador": 1,
+   "turno_concluido": 1,
+   "consumo_do_turno_medido": 1
+  },
+  "fimDoTurno": "turno_concluido",
+  "resposta": "**(a) Quanto ela paga: R$ 288,88**\n\n| Item | Valor | Como é calculado |\n|---|---|---|\n| Subtotal | R$ 219,70 | 2 × 89,90 (LIV-001) + 1 × 39,90 (CAN-010) |\n| Desconto | R$ 21,97 | BEMVINDO10 dá 10% sobre o subtotal. O cupom exige subtotal acima de R$ 100,00 (a checagem é estrita, `<=` recusa), e 219,70 passa. |\n| Frete | R$ 51,60 | Peso: 2 × 0,6 + 0,4 = 1,6 kg, arredondado para 2 kg. AM é região norte: base 32,00 + 9,80 × 2 kg. O frete não é grátis: o subtotal com desconto (197,73) fica abaixo de 299,90 e o cupom não é de frete grátis. |\n| Imposto | R$ 39,55 | AM tem alíquota de 20%, aplicada sobre o subtotal com desconto: 197,73 × 0,20 = 39,546, que arredonda para 39,55. O frete não é tributado. |\n| Total | R$ 288,88 | 197,73 + 39,55 + 51,60 |\n\n**(b) Gateway com `timeout` em todas as tentativas**\n\n- **Cobranças:** 3 (`maxAttempts` = 3). O `timeout` vem como falha `retryable` no gateway, então o serviço tenta de novo.\n- **Espera entre elas:** 200 ms entre a 1ª e a 2ª, e 400 ms entre a 2ª e a 3ª. Não há espera depois da última, então o total é 600 ms.\n- **Status final:** `payment_failed`. O pedido registra `reason: 'timeout'` e `attempts: 3`.\n- **Reserva de estoque:** é desfeita com `inventory.release`. As 2 unidades de LIV-001 e a 1 de CAN-010 voltam ao disponível, e nada sai do `onHand`.\n- **Mensagem à cliente:** evento `payment.failed`, com assunto \"Pagamento do pedido ORD-… não aprovado\". O corpo diz: \"Olá, <nome>. Não conseguimos aprovar o pagamento do pedido … (timeout). Os itens voltaram ao estoque; faça um novo pedido quando quiser.\" Ela já tinha recebido antes o e-mail \"Pedido … recebido\".\n- **Relatório de vendas:** não entra. `salesReport` descarta pedidos com status `payment_failed`.\n\n**(c) Arquivos das regras**\n\nCaminhos relativos à raiz do projeto.\n\n- **Preços, frete e imposto:** `src/catalog/seed.js` (preços e pesos), `src/pricing/pricing.js` (ordem do cálculo), `src/pricing/coupons.js` e `src/pricing/discounts.js` (cupom), `src/pricing/shipping.js`, `src/pricing/tax.js`, `src/config.js` (alíquota e frete de AM, limite de frete grátis).\n- **Pagamento e falha:** `src/config.js` (`PAYMENT.maxAttempts` e `backoffMs`), `src/payments/paymentService.js` (retentativas e espera), `src/payments/paymentGateway.js` (contrato do gateway), `src/orders/orderService.js` (`payOrder`), `src/orders/order.js` (status).\n- **Reserva, mensagem e relatório:** `src/inventory/inventory.js` (`release`), `src/notifications/templates.js` e `src/notifications/notifier.js`, `src/reports/salesReport.js`.\n\nLi o código e calculei à mão, sem rodar nada. Não alterei nem criei arquivos e não fiz commit.",
+  "usoDoTurno": [
+   {
+    "duracaoMs": 19755,
+    "tokensDeEntrada": 133813,
+    "tokensDeSaida": 2277,
+    "subagentesLancados": 0
+   }
+  ],
+  "consumos": [
+   {
+    "principal": {
+     "entrada": 8,
+     "criacaoDeCache": 34419,
+     "leituraDeCache": 99386,
+     "saida": 2277
+    },
+    "subagentes": {
+     "entrada": 0,
+     "criacaoDeCache": 0,
+     "leituraDeCache": 0,
+     "saida": 0
+    },
+    "subagentesMedidos": 0,
+    "parcial": false,
+    "indiceDeCusto": 64355,
+    "modeloDoPrincipal": "claude-sonnet-5-5"
+   }
+  ],
+  "cotas": [
+   {
+    "em": "2026-11-23T16:16:11.489Z",
+    "janelas": [
+     {
+      "nome": "7 dias",
+      "utilizacao": 0.03,
+      "renovaEm": "2026-11-30T15:00:00.000Z",
+      "situacao": "allowed"
+     }
+    ]
+   }
+  ],
+  "falhas": [],
+  "recuperacoes": [],
+  "subagentesIniciados": 0,
+  "configuracaoDoOrquestrador": {
+   "motorDoOrquestrador": "claude-code",
+   "modeloDoOrquestrador": "sonnet",
+   "esforcoDoOrquestrador": "medio",
+   "motorDosSubagentes": "claude-code",
+   "modeloDosSubagentes": "sonnet",
+   "esforcoDosSubagentes": "medio",
+   "ordemDeReserva": [],
+   "navegadorDoAgente": false,
+   "quantidadeDeSubagentes": {
+    "modo": "automatica",
+    "limite": 3
+   },
+   "nivelDePermissao": "edicao_e_comandos",
+   "permitirCommitEPush": false,
+   "permitirArtefatosOnline": false,
+   "instrucoesPersonalizadas": ""
+  },
+  "versaoDoApp": "45b1b81 (0.2.2)",
+  "porta": 3317
+ },
+ "consumoDoApp": {
+  "principal": {
+   "entrada": 8,
+   "criacaoDeCache": 34419,
+   "leituraDeCache": 99386,
+   "saida": 2277
+  },
+  "subagentes": {
+   "entrada": 0,
+   "criacaoDeCache": 0,
+   "leituraDeCache": 0,
+   "saida": 0
+  },
+  "indiceDeCusto": 64355,
+  "subagentesMedidos": 0,
+  "modelos": [
+   "claude-sonnet-5-5"
+  ]
+ },
+ "resposta": "**(a) Quanto ela paga: R$ 288,88**\n\n| Item | Valor | Como é calculado |\n|---|---|---|\n| Subtotal | R$ 219,70 | 2 × 89,90 (LIV-001) + 1 × 39,90 (CAN-010) |\n| Desconto | R$ 21,97 | BEMVINDO10 dá 10% sobre o subtotal. O cupom exige subtotal acima de R$ 100,00 (a checagem é estrita, `<=` recusa), e 219,70 passa. |\n| Frete | R$ 51,60 | Peso: 2 × 0,6 + 0,4 = 1,6 kg, arredondado para 2 kg. AM é região norte: base 32,00 + 9,80 × 2 kg. O frete não é grátis: o subtotal com desconto (197,73) fica abaixo de 299,90 e o cupom não é de frete grátis. |\n| Imposto | R$ 39,55 | AM tem alíquota de 20%, aplicada sobre o subtotal com desconto: 197,73 × 0,20 = 39,546, que arredonda para 39,55. O frete não é tributado. |\n| Total | R$ 288,88 | 197,73 + 39,55 + 51,60 |\n\n**(b) Gateway com `timeout` em todas as tentativas**\n\n- **Cobranças:** 3 (`maxAttempts` = 3). O `timeout` vem como falha `retryable` no gateway, então o serviço tenta de novo.\n- **Espera entre elas:** 200 ms entre a 1ª e a 2ª, e 400 ms entre a 2ª e a 3ª. Não há espera depois da última, então o total é 600 ms.\n- **Status final:** `payment_failed`. O pedido registra `reason: 'timeout'` e `attempts: 3`.\n- **Reserva de estoque:** é desfeita com `inventory.release`. As 2 unidades de LIV-001 e a 1 de CAN-010 voltam ao disponível, e nada sai do `onHand`.\n- **Mensagem à cliente:** evento `payment.failed`, com assunto \"Pagamento do pedido ORD-… não aprovado\". O corpo diz: \"Olá, <nome>. Não conseguimos aprovar o pagamento do pedido … (timeout). Os itens voltaram ao estoque; faça um novo pedido quando quiser.\" Ela já tinha recebido antes o e-mail \"Pedido … recebido\".\n- **Relatório de vendas:** não entra. `salesReport` descarta pedidos com status `payment_failed`.\n\n**(c) Arquivos das regras**\n\nCaminhos relativos à raiz do projeto.\n\n- **Preços, frete e imposto:** `src/catalog/seed.js` (preços e pesos), `src/pricing/pricing.js` (ordem do cálculo), `src/pricing/coupons.js` e `src/pricing/discounts.js` (cupom), `src/pricing/shipping.js`, `src/pricing/tax.js`, `src/config.js` (alíquota e frete de AM, limite de frete grátis).\n- **Pagamento e falha:** `src/config.js` (`PAYMENT.maxAttempts` e `backoffMs`), `src/payments/paymentService.js` (retentativas e espera), `src/payments/paymentGateway.js` (contrato do gateway), `src/orders/orderService.js` (`payOrder`), `src/orders/order.js` (status).\n- **Reserva, mensagem e relatório:** `src/inventory/inventory.js` (`release`), `src/notifications/templates.js` e `src/notifications/notifier.js`, `src/reports/salesReport.js`.\n\nLi o código e calculei à mão, sem rodar nada. Não alterei nem criei arquivos e não fiz commit.",
+ "usoDaAssinatura": {
+  "antes": {
+   "em": "2026-11-23T16:16:11.489Z",
+   "janelas": [
+    {
+     "nome": "7 dias",
+     "utilizacao": 0.03,
+     "renovaEm": "2026-11-30T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "depois": {
+   "em": "2026-11-23T16:16:11.489Z",
+   "janelas": [
+    {
+     "nome": "7 dias",
+     "utilizacao": 0.03,
+     "renovaEm": "2026-11-30T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "leituras": 1
+ },
+ "fim": "2026-11-23T16:16:50.047Z",
+ "tempoDeParedeS": 19.9,
+ "sessoes": [
+  "96ccfd5c-c187-4fcf-91e3-14aa03fcbaa5"
+ ],
+ "pastaDoResultado": "/private/tmp/bench-gosub/projetos/r2-T4-C-mwtgwtfd",
+ "tentativasAnteriores": [],
+ "checagem": {
+  "sucesso": true,
+  "motivo": "todos os fatos presentes e nenhum arquivo alterado",
+  "detalhes": {
+   "fatos": [
+    {
+     "id": "subtotal",
+     "descricao": "subtotal R$ 219,70",
+     "ok": true
+    },
+    {
+     "id": "desconto",
+     "descricao": "desconto R$ 21,97",
+     "ok": true
+    },
+    {
+     "id": "frete",
+     "descricao": "frete R$ 51,60",
+     "ok": true
+    },
+    {
+     "id": "imposto",
+     "descricao": "imposto R$ 39,55",
+     "ok": true
+    },
+    {
+     "id": "total",
+     "descricao": "total R$ 288,88",
+     "ok": true
+    },
+    {
+     "id": "tentativas",
+     "descricao": "3 cobranças",
+     "ok": true
+    },
+    {
+     "id": "esperas",
+     "descricao": "esperas de 200 ms e 400 ms (600 ms no total)",
+     "ok": true
+    },
+    {
+     "id": "status",
+     "descricao": "status payment_failed",
+     "ok": true
+    },
+    {
+     "id": "reserva",
+     "descricao": "reserva de estoque liberada",
+     "ok": true
+    },
+    {
+     "id": "mensagem",
+     "descricao": "mensagem de pagamento não aprovado",
+     "ok": true
+    },
+    {
+     "id": "relatorio",
+     "descricao": "fora do relatório de vendas",
+     "ok": true
+    },
+    {
+     "id": "arquivo-frete",
+     "descricao": "cita src/pricing/shipping.js",
+     "ok": true
+    },
+    {
+     "id": "arquivo-imposto",
+     "descricao": "cita src/pricing/tax.js",
+     "ok": true
+    },
+    {
+     "id": "arquivo-pagamento",
+     "descricao": "cita src/payments/paymentService.js",
+     "ok": true
+    }
+   ],
+   "gitStatus": ""
+  }
+ },
+ "sucesso": true,
+ "arquivoDoDiff": "r2-T4-C.diff",
+ "arquivoDaResposta": "r2-T4-C.resposta.md",
+ "medicao": {
+  "arquivos": [
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-a4032c2b/96ccfd5c-c187-4fcf-91e3-14aa03fcbaa5.jsonl",
+    "papel": "principal",
+    "tipoDeAgente": null
+   }
+  ],
+  "medicaoDoApp": {
+   "total": {
+    "entrada": 8,
+    "criacaoDeCache": 34419,
+    "leituraDeCache": 99386,
+    "saida": 2277
+   },
+   "principal": {
+    "entrada": 8,
+    "criacaoDeCache": 34419,
+    "leituraDeCache": 99386,
+    "saida": 2277
+   },
+   "subagentes": {
+    "entrada": 0,
+    "criacaoDeCache": 0,
+    "leituraDeCache": 0,
+    "saida": 0
+   },
+   "porModelo": {
+    "claude-sonnet-5-5": {
+     "entrada": 8,
+     "criacaoDeCache": 34419,
+     "leituraDeCache": 99386,
+     "saida": 2277
+    }
+   },
+   "ferramentas": {
+    "Bash": 5
+   },
+   "subagentesLancados": 0,
+   "subagentesPorTipo": {},
+   "subagentesSemChamada": [],
+   "chamadasSemSubagente": [],
+   "mensagens": 4,
+   "modeloDoPrincipal": "claude-sonnet-5-5",
+   "indiceDeCusto": 64355,
+   "indicePrincipal": 64355,
+   "indiceSubagentes": 0
+  },
+  "custo": {
+   "usd": 0.1704006,
+   "usdPrincipal": 0.1704006,
+   "usdSubagentes": 0,
+   "porModelo": {
+    "claude-sonnet-5-5": {
+     "usd": 0.1704006,
+     "usdPrincipal": 0.1704006,
+     "usdSubagentes": 0,
+     "tokens": {
+      "entrada": 8,
+      "cache5m": 0,
+      "cache1h": 34419,
+      "leituraDeCache": 99386,
+      "saida": 2277
+     },
+     "tabela": "claude-sonnet-5-5"
+    }
+   },
+   "modelosSemPreco": []
+  }
+ },
+ "resumo": {
+  "usd": 0.1704006,
+  "usdPrincipal": 0.1704006,
+  "usdSubagentes": 0,
+  "indiceDeCusto": 64355,
+  "tokens": {
+   "entrada": 8,
+   "criacaoDeCache": 34419,
+   "leituraDeCache": 99386,
+   "saida": 2277
+  },
+  "principal": {
+   "entrada": 8,
+   "criacaoDeCache": 34419,
+   "leituraDeCache": 99386,
+   "saida": 2277
+  },
+  "subagentes": {
+   "entrada": 0,
+   "criacaoDeCache": 0,
+   "leituraDeCache": 0,
+   "saida": 0
+  },
+  "modeloDoPrincipal": "claude-sonnet-5-5",
+  "modelos": [
+   "claude-sonnet-5-5"
+  ],
+  "quantidadeDeSubagentes": 0,
+  "mensagensDoModelo": 4,
+  "turnosDoUsuario": 1,
+  "turnosDoAgente": null,
+  "tempoDeParedeS": 19.9
+ },
+ "cargaDepois": {
+  "em": "2026-11-23T16:16:50.271Z",
+  "uptime": "13:16  up 31 days,  5:43, 1 user, load averages: 1.15 1.75 2.82",
+  "carga1m": 1.15,
+  "processos": [
+   "93205 2.1 83808 08:34 /Users/pedro/.nvm/versions/node/v22.21.0/bin/node scripts/harness.mjs --variante v2",
+   "61388 0.8 401072 36:02 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "41706 0.1 172592 54:07 /Applications/Orquestrador de Agentes.app/Contents/Frameworks/Orquestrador de Agentes Helper.app/Contents/MacOS/Orquestrador de Agentes Helper --type=utility --utility-sub-type=",
+   "70235 0.1 33808 11-05:28:35 /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/worktrees/89355f65/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --pin",
+   "15269 0.0 14800 01-00:09:26 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "15267 0.0 61424 01-00:09:26 node ./node_modules/.bin/vite --host 127.0.0.1 --port 5180 --strictPort",
+   "59433 0.0 21728 01-00:56:02 /System/Cryptexes/App/System/Library/CoreServices/PasswordManagerBrowserExtensionHelper.app/Contents/MacOS/PasswordManagerBrowserExtensionHelper chrome-extension://pejdijmo",
+   "59397 0.0 4176 01-00:56:04 /Applications/Claude.app/Contents/Helpers/chrome-native-host chrome-extension://fcoeoabgfenejglbffodgkkbkcdhcgfn/",
+   "74002 0.0 4032 07-02:35:39 node sink.js",
+   "31528 0.0 14704 09-20:20:36 /Users/pedro/Projetos/PIR_app-plano-ajustes/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping"
+  ],
+  "pesados": []
+ },
+ "avisos": [
+  "Outros orquestradores rodam nesta máquina: o uso da assinatura (antes/depois) e o tempo de parede ficam contaminados por eles."
+ ],
+ "transcricoes": {
+  "orquestrador": {
+   "sessao": "96ccfd5c-c187-4fcf-91e3-14aa03fcbaa5",
+   "primeiraChamada": {
+    "entrada": 2,
+    "criacaoDeCache": 18787,
+    "leituraDeCache": 8984,
+    "total": 27773
+   }
+  },
+  "executores": [],
+  "encontradas": 1,
+  "principal": {
+   "chamadasAoModelo": 4,
+   "chamadasDeFerramenta": 5,
+   "porFerramenta": {
+    "Bash": 5
+   }
+  },
+  "subagentes": {
+   "chamadasAoModelo": 0,
+   "chamadasDeFerramenta": 0,
+   "porFerramenta": {}
+  }
+ },
+ "chamadasDoIntermediario": [
+  {
+   "em": "2026-11-23T16:16:09.125Z",
+   "variante": "v2",
+   "aplicadas": [
+    "v2"
+   ],
+   "sessao": true,
+   "detalhes": {
+    "agentes": {
+     "original": "/var/folders/lt/fjgdf_wj2xg5kc44rc4pwcs40000gn/T/orquestrador-agentes/693b68b2-3d6d-4824-9e76-b42f92b7545b/agentes.json",
+     "nomesAntes": [
+      "executor"
+     ],
+     "nomesDepois": [
+      "executor"
+     ],
+     "bytesAntes": 2092,
+     "bytesDepois": 2064
+    },
+    "v2": {
+     "agentesEmbutidosNegados": [
+      "Agent(claude)",
+      "Agent(Explore)",
+      "Agent(general-purpose)",
+      "Agent(Plan)",
+      "Agent(statusline-setup)",
+      "Agent(web-fetch)"
+     ]
+    },
+    "pasta": "/tmp/bench-gosub/variantes/2026-11-23T16-16-09-124Z-3982"
+   }
+  }
+ ],
+ "cargaAlta": {
+  "antes": false,
+  "depois": false,
+  "carga1mAntes": 1.29,
+  "carga1mDepois": 1.15,
+  "esperouS": 0
+ },
+ "tempoComCargaAlta": false,
+ "arquivosDoApp": [
+  "r2-T4-C.eventos.jsonl",
+  "r2-T4-C.orquestrador.json"
+ ]
+}

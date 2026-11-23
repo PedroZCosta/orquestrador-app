@@ -1,0 +1,430 @@
+ README.md                      |  13 +++
+ src/notifications/templates.js |   4 +
+ src/orders/order.js            |  17 +++-
+ src/orders/orderService.js     |  57 +++++++++++++
+ src/payments/paymentService.js |  11 +++
+ src/reports/salesReport.js     |   4 +-
+ test/orderService.test.js      | 178 +++++++++++++++++++++++++++++++++++++++++
+ test/salesReport.test.js       |  14 ++++
+ 8 files changed, 293 insertions(+), 5 deletions(-)
+
+diff --git a/README.md b/README.md
+index fe83186..b1b96f4 100644
+--- a/README.md
++++ b/README.md
+@@ -22,6 +22,19 @@ Núcleo de pedidos de uma loja on-line, sem dependências externas.
+    Se a cobrança falhar de vez, o pedido vira `payment_failed`.
+ 3. `shipOrder` e `deliverOrder` levam o pedido a `shipped` e `delivered`.
+ 
++4. `cancelOrder(orderId, reason)` cancela um pedido `pending` ou `paid` (o motivo é obrigatório) e emite `order.cancelled`.
++   Qualquer outro status, inclusive `cancelled`, falha com `ORDER_NOT_CANCELLABLE`.
++   - `pending`: a reserva é desfeita (`release`) e não há estorno.
++   - `paid`: o total é estornado uma única vez, sem novas tentativas (`PaymentService#refund`), antes de qualquer
++     mudança. Se o estorno falhar, lança `REFUND_FAILED` e o pedido segue `paid`, com o estoque intacto. Se der
++     certo, os itens voltam ao estoque físico (`addStock`), pois a reserva já havia sido consumida no pagamento.
++   - Cancelamentos simultâneos do mesmo pedido: só o primeiro segue, os demais recebem `ORDER_NOT_CANCELLABLE`.
++   - O pedido guarda `cancelReason` e `cancelledAt`, e o histórico ganha a entrada `cancelled` com o motivo.
++
++Status possíveis: `pending`, `paid`, `payment_failed`, `shipped`, `delivered` e `cancelled` (sem saídas).
++
++O relatório de vendas (`salesReport`) ignora pedidos `payment_failed` e `cancelled`.
++
+ ## Testes
+ 
+ ```
+diff --git a/src/notifications/templates.js b/src/notifications/templates.js
+index f8aeb6e..9c91414 100644
+--- a/src/notifications/templates.js
++++ b/src/notifications/templates.js
+@@ -26,6 +26,10 @@ export const TEMPLATES = {
+     subject: `Pagamento do pedido ${orderId} não aprovado`,
+     body: `Olá, ${name}. Não conseguimos aprovar o pagamento do pedido ${orderId} (${reason}). Os itens voltaram ao estoque; faça um novo pedido quando quiser.${signature()}`,
+   }),
++  'order.cancelled': ({ orderId, name, reason, refunded }) => ({
++    subject: `Pedido ${orderId} cancelado`,
++    body: `Olá, ${name}! O pedido ${orderId} foi cancelado. Motivo: ${reason}.${refunded ? ' O valor pago foi estornado.' : ''}${signature()}`,
++  }),
+   'order.shipped': ({ orderId, name, trackingCode }) => ({
+     subject: `Pedido ${orderId} enviado`,
+     body: `Olá, ${name}! O pedido ${orderId} saiu para entrega. Código de rastreio: ${trackingCode}.${signature()}`,
+diff --git a/src/orders/order.js b/src/orders/order.js
+index dbc1996..fdc5968 100644
+--- a/src/orders/order.js
++++ b/src/orders/order.js
+@@ -1,14 +1,15 @@
+ import { DomainError } from '../util/errors.js';
+ 
+-export const ORDER_STATUSES = ['pending', 'paid', 'payment_failed', 'shipped', 'delivered'];
++export const ORDER_STATUSES = ['pending', 'paid', 'payment_failed', 'shipped', 'delivered', 'cancelled'];
+ 
+ /** De cada status, para quais o pedido pode ir. */
+ const TRANSITIONS = {
+-  pending: ['paid', 'payment_failed'],
+-  paid: ['shipped'],
++  pending: ['paid', 'payment_failed', 'cancelled'],
++  paid: ['shipped', 'cancelled'],
+   payment_failed: [],
+   shipped: ['delivered'],
+   delivered: [],
++  cancelled: [],
+ };
+ 
+ /**
+@@ -27,6 +28,8 @@ export class Order {
+     this.history = [{ status: 'pending', at: createdAt }];
+     this.payment = null;
+     this.shipment = null;
++    this.cancelReason = null;
++    this.cancelledAt = null;
+   }
+ 
+   canTransitionTo(status) {
+@@ -66,6 +69,12 @@ export class Order {
+     this.shipment = { ...this.shipment, deliveredAt: at };
+   }
+ 
++  markCancelled({ reason }, at) {
++    this.transitionTo('cancelled', at, { reason });
++    this.cancelReason = reason;
++    this.cancelledAt = at;
++  }
++
+   get itemCount() {
+     return this.lines.reduce((sum, line) => sum + line.quantity, 0);
+   }
+@@ -82,6 +91,8 @@ export class Order {
+       history: this.history,
+       payment: this.payment,
+       shipment: this.shipment,
++      cancelReason: this.cancelReason,
++      cancelledAt: this.cancelledAt,
+     };
+   }
+ }
+diff --git a/src/orders/orderService.js b/src/orders/orderService.js
+index 92a9cb4..ee49ee1 100644
+--- a/src/orders/orderService.js
++++ b/src/orders/orderService.js
+@@ -19,6 +19,7 @@ export class OrderService {
+     this.clock = clock;
+     this.nextOrderId = nextOrderId ?? createIdGenerator('ORD');
+     this.logger = logger;
++    this.cancelling = new Set();
+   }
+ 
+   now() {
+@@ -110,6 +111,62 @@ export class OrderService {
+     return order;
+   }
+ 
++  /**
++   * Cancela um pedido `pending` ou `paid`. Pedido pago é estornado (uma única
++   * vez) antes de qualquer mudança; só então o pedido e o estoque são alterados.
++   */
++  async cancelOrder(orderId, reason) {
++    const text = requireString(reason, 'reason');
++    const order = this.repository.get(orderId);
++    if (
++      this.cancelling.has(orderId) ||
++      (order.status !== 'pending' && order.status !== 'paid')
++    ) {
++      throw new DomainError('ORDER_NOT_CANCELLABLE', `O pedido ${orderId} está ${order.status}.`, {
++        status: order.status,
++      });
++    }
++    this.cancelling.add(orderId);
++    try {
++      const refunded = order.status === 'paid';
++      if (refunded) {
++        let result;
++        try {
++          result = await this.payments.refund({
++            paymentId: order.payment.paymentId,
++            amount: order.totals.total,
++          });
++        } catch (error) {
++          result = { ok: false, reason: error?.message ?? 'refund_error' };
++        }
++        if (!result.ok) {
++          throw new DomainError('REFUND_FAILED', `Não foi possível estornar o pedido ${orderId}.`, {
++            reason: result.reason,
++          });
++        }
++      }
++      order.markCancelled({ reason: text }, this.now().toISOString());
++      if (refunded) {
++        for (const line of order.lines) {
++          this.inventory.addStock(line.sku, line.quantity);
++        }
++      } else {
++        this.inventory.release(orderId);
++      }
++      this.repository.save(order);
++      this.bus.emit('order.cancelled', {
++        orderId,
++        email: order.customer.email,
++        name: order.customer.name,
++        reason: text,
++        refunded,
++      });
++      return order;
++    } finally {
++      this.cancelling.delete(orderId);
++    }
++  }
++
+   shipOrder(orderId, trackingCode) {
+     const order = this.repository.get(orderId);
+     const code = requireString(trackingCode, 'trackingCode').toUpperCase();
+diff --git a/src/payments/paymentService.js b/src/payments/paymentService.js
+index 4e29feb..292631f 100644
+--- a/src/payments/paymentService.js
++++ b/src/payments/paymentService.js
+@@ -40,4 +40,15 @@ export class PaymentService {
+     }
+     return { ok: false, reason: lastReason, attempts: this.maxAttempts };
+   }
++
++  /** Estorno: uma única chamada ao gateway, sem novas tentativas. */
++  async refund({ paymentId, amount }) {
++    const result = await this.gateway.refund({ paymentId, amount });
++    if (result.ok) {
++      this.logger?.info('Estorno aprovado', { paymentId, amount });
++    } else {
++      this.logger?.warn('Estorno recusado', { paymentId, amount, reason: result.reason });
++    }
++    return result;
++  }
+ }
+diff --git a/src/reports/salesReport.js b/src/reports/salesReport.js
+index 04f3ac7..1ebed15 100644
+--- a/src/reports/salesReport.js
++++ b/src/reports/salesReport.js
+@@ -2,13 +2,13 @@
+  * Relatório de vendas de um período.
+  *
+  * Entram os pedidos criados em [from, to) (datas ISO, comparadas em UTC).
+- * Pedidos com pagamento recusado não são venda e ficam de fora.
++ * Pedidos com pagamento recusado ou cancelados não são venda e ficam de fora.
+  */
+ export function salesReport(orders, { from, to } = {}) {
+   const start = from === undefined ? -Infinity : Date.parse(from);
+   const end = to === undefined ? Infinity : Date.parse(to);
+   const counted = orders
+-    .filter((order) => order.status !== 'payment_failed')
++    .filter((order) => order.status !== 'payment_failed' && order.status !== 'cancelled')
+     .filter((order) => {
+       const created = Date.parse(order.createdAt);
+       return created >= start && created < end;
+diff --git a/test/orderService.test.js b/test/orderService.test.js
+index c3b715c..8548d8d 100644
+--- a/test/orderService.test.js
++++ b/test/orderService.test.js
+@@ -75,4 +75,182 @@ describe('OrderService', () => {
+     const store = testStore();
+     assert.throws(() => store.orders.getOrder('ORD-9999'), { code: 'ORDER_NOT_FOUND' });
+   });
++
++  describe('cancelOrder', () => {
++    const place = (store, sku = 'TEC-040', quantity = 2) =>
++      store.orders.placeOrder({ customer: CUSTOMER, items: [{ sku, quantity }] });
++
++    it('pendente: desfaz a reserva, sem estorno', async () => {
++      const store = testStore();
++      const order = await place(store);
++      const onHand = store.inventory.onHand('TEC-040');
++      const result = await store.orders.cancelOrder(order.id, '  desisti  ');
++      assert.equal(result, order);
++      assert.equal(order.status, 'cancelled');
++      assert.equal(order.cancelReason, 'desisti');
++      assert.equal(order.cancelledAt, '2026-03-10T12:00:00.000Z');
++      assert.equal(store.inventory.reservationOf(order.id), null);
++      assert.equal(store.inventory.available('TEC-040'), onHand);
++      assert.equal(store.inventory.onHand('TEC-040'), onHand);
++      assert.equal(store.gateway.refunds.length, 0);
++      const [event] = store.bus.emitted('order.cancelled');
++      assert.deepEqual(event, {
++        orderId: order.id,
++        email: 'ana@example.com',
++        name: 'Ana Souza',
++        reason: 'desisti',
++        refunded: false,
++      });
++      assert.deepEqual(
++        order.history.map((entry) => entry.status),
++        ['pending', 'cancelled'],
++      );
++      assert.equal(order.history[1].reason, 'desisti');
++      assert.equal(order.toJSON().cancelReason, 'desisti');
++      assert.equal(order.toJSON().cancelledAt, order.cancelledAt);
++      assert.equal(store.repository.get(order.id).status, 'cancelled');
++    });
++
++    it('pago: estorna o total uma vez e devolve o estoque físico', async () => {
++      const store = testStore();
++      const before = store.inventory.onHand('TEC-040');
++      const order = await place(store);
++      await store.orders.payOrder(order.id, 'pix');
++      assert.equal(store.inventory.onHand('TEC-040'), before - 2);
++      await store.orders.cancelOrder(order.id, 'defeito');
++      assert.equal(order.status, 'cancelled');
++      assert.deepEqual(store.gateway.refunds, [
++        { paymentId: order.payment.paymentId, amount: order.totals.total, refundId: 'REF-0001' },
++      ]);
++      assert.equal(store.inventory.onHand('TEC-040'), before);
++      assert.equal(store.inventory.available('TEC-040'), before);
++      assert.equal(store.bus.emitted('order.cancelled')[0].refunded, true);
++      assert.deepEqual(
++        order.history.map((entry) => entry.status),
++        ['pending', 'paid', 'cancelled'],
++      );
++    });
++
++    it('estorno recusado: segue paid, estoque intacto, sem evento', async () => {
++      const gateway = new FakePaymentGateway();
++      let calls = 0;
++      gateway.refund = async () => {
++        calls += 1;
++        return { ok: false, reason: 'x' };
++      };
++      const store = testStore({ gateway });
++      const order = await place(store);
++      await store.orders.payOrder(order.id, 'pix');
++      const onHand = store.inventory.onHand('TEC-040');
++      await assert.rejects(store.orders.cancelOrder(order.id, 'motivo'), (error) => {
++        assert.equal(error.code, 'REFUND_FAILED');
++        assert.deepEqual(error.details, { reason: 'x' });
++        return true;
++      });
++      assert.equal(calls, 1);
++      assert.equal(order.status, 'paid');
++      assert.equal(order.cancelReason, null);
++      assert.equal(store.inventory.onHand('TEC-040'), onHand);
++      assert.equal(store.bus.emitted('order.cancelled').length, 0);
++    });
++
++    it('gateway que lança exceção vira REFUND_FAILED', async () => {
++      const gateway = new FakePaymentGateway();
++      gateway.refund = async () => {
++        throw new Error('boom');
++      };
++      const store = testStore({ gateway });
++      const order = await place(store);
++      await store.orders.payOrder(order.id, 'pix');
++      await assert.rejects(store.orders.cancelOrder(order.id, 'motivo'), { code: 'REFUND_FAILED' });
++      assert.equal(order.status, 'paid');
++      // a trava foi liberada: dá para tentar de novo
++      gateway.refund = FakePaymentGateway.prototype.refund.bind(gateway);
++      await store.orders.cancelOrder(order.id, 'motivo');
++      assert.equal(order.status, 'cancelled');
++    });
++
++    it('reason vazio ou ausente', async () => {
++      const store = testStore();
++      const order = await place(store);
++      await assert.rejects(store.orders.cancelOrder(order.id, ''), { code: 'VALIDATION_ERROR' });
++      await assert.rejects(store.orders.cancelOrder(order.id, '   '), { code: 'VALIDATION_ERROR' });
++      await assert.rejects(store.orders.cancelOrder(order.id), { code: 'VALIDATION_ERROR' });
++      assert.equal(order.status, 'pending');
++    });
++
++    it('pedido inexistente', async () => {
++      const store = testStore();
++      await assert.rejects(store.orders.cancelOrder('ORD-9999', 'x'), { code: 'ORDER_NOT_FOUND' });
++    });
++
++    it('status não cancelável: shipped e payment_failed', async () => {
++      const gateway = new FakePaymentGateway({ script: [{ ok: true }, { ok: false, retryable: false, reason: 'card_declined' }] });
++      const store = testStore({ gateway });
++      const shipped = await place(store, 'CAN-010', 1);
++      await store.orders.payOrder(shipped.id, 'pix');
++      store.orders.shipOrder(shipped.id, 'br1');
++      const failed = await place(store, 'CAN-010', 1);
++      await store.orders.payOrder(failed.id, 'credit_card');
++      for (const [order, status] of [[shipped, 'shipped'], [failed, 'payment_failed']]) {
++        await assert.rejects(store.orders.cancelOrder(order.id, 'x'), (error) => {
++          assert.equal(error.code, 'ORDER_NOT_CANCELLABLE');
++          assert.deepEqual(error.details, { status });
++          return true;
++        });
++      }
++      assert.equal(store.gateway.refunds.length, 0);
++    });
++
++    it('cancelar duas vezes estorna uma única vez', async () => {
++      const store = testStore();
++      const order = await place(store);
++      await store.orders.payOrder(order.id, 'pix');
++      await store.orders.cancelOrder(order.id, 'a');
++      await assert.rejects(store.orders.cancelOrder(order.id, 'b'), (error) => {
++        assert.equal(error.code, 'ORDER_NOT_CANCELLABLE');
++        assert.deepEqual(error.details, { status: 'cancelled' });
++        return true;
++      });
++      assert.equal(store.gateway.refunds.length, 1);
++      assert.equal(order.cancelReason, 'a');
++    });
++
++    it('cancelamentos concorrentes: só um estorna', async () => {
++      const store = testStore();
++      const before = store.inventory.onHand('TEC-040');
++      const order = await place(store);
++      await store.orders.payOrder(order.id, 'pix');
++      const results = await Promise.allSettled([
++        store.orders.cancelOrder(order.id, 'a'),
++        store.orders.cancelOrder(order.id, 'b'),
++      ]);
++      assert.deepEqual(results.map((r) => r.status), ['fulfilled', 'rejected']);
++      assert.equal(results[1].reason.code, 'ORDER_NOT_CANCELLABLE');
++      assert.equal(store.gateway.refunds.length, 1);
++      assert.equal(store.inventory.onHand('TEC-040'), before);
++      assert.equal(store.bus.emitted('order.cancelled').length, 1);
++    });
++
++    it('envia a mensagem de cancelamento', async () => {
++      const store = testStore();
++      const order = await place(store);
++      await store.orders.payOrder(order.id, 'pix');
++      await store.orders.cancelOrder(order.id, 'defeito');
++      const message = store.transport.sent.at(-1);
++      assert.equal(message.subject, 'Pedido ORD-0001 cancelado');
++      assert.equal(message.to, 'ana@example.com');
++      assert.ok(message.body.includes('defeito'));
++      assert.ok(message.body.includes('estornado'));
++    });
++
++    it('mensagem de pedido pendente não fala de estorno', async () => {
++      const store = testStore();
++      const order = await place(store);
++      await store.orders.cancelOrder(order.id, 'desisti');
++      const message = store.transport.sent.at(-1);
++      assert.equal(message.subject, 'Pedido ORD-0001 cancelado');
++      assert.ok(!message.body.includes('estornado'));
++    });
++  });
+ });
+diff --git a/test/salesReport.test.js b/test/salesReport.test.js
+index ef26c35..8d98d0a 100644
+--- a/test/salesReport.test.js
++++ b/test/salesReport.test.js
+@@ -30,6 +30,20 @@ describe('salesReport', () => {
+     assert.equal(report.topProducts[0].sku, 'LIV-001');
+   });
+ 
++  it('ignora pedidos cancelados', async () => {
++    const store = testStore();
++    const a = await store.orders.placeOrder({ customer: CUSTOMER, items: [{ sku: 'LIV-001', quantity: 1 }] });
++    const b = await store.orders.placeOrder({ customer: CUSTOMER, items: [{ sku: 'CAN-010', quantity: 1 }] });
++    const c = await store.orders.placeOrder({ customer: CUSTOMER, items: [{ sku: 'CAN-010', quantity: 1 }] });
++    await store.orders.payOrder(b.id, 'pix');
++    await store.orders.cancelOrder(b.id, 'x');
++    await store.orders.cancelOrder(c.id, 'y');
++    const report = salesReport(store.orders.listOrders());
++    assert.equal(report.orderCount, 1);
++    assert.equal(report.revenue, a.totals.total);
++    assert.equal(report.bySku['CAN-010'], undefined);
++  });
++
+   it('filtra pelo período', async () => {
+     const store = testStore();
+     await store.orders.placeOrder({ customer: CUSTOMER, items: [{ sku: 'CAN-010', quantity: 1 }] });

@@ -1,0 +1,450 @@
+{
+ "id": "r1-T1-C",
+ "rodada": 1,
+ "tarefa": "T1",
+ "config": "C",
+ "posicao": 1,
+ "variante": "v2",
+ "tentativa": 1,
+ "prompt": "Bug relatado por uma cliente neste projeto (loja-pedidos, Node sem dependências): um pedido de exatamente R$ 100,00 com o cupom BEMVINDO10 foi recusado por pedido mínimo não atingido, mas a descrição do cupom diz \"para pedidos a partir de R$ 100,00\". Corrija para que o pedido mínimo dos cupons seja inclusivo (vale para todos os cupons com mínimo), sem mudar mais nada do comportamento, e acrescente um teste que cubra o caso. Rode `npm test` ao final: tudo tem de passar.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+ "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/r1-T1-C-mwtgmor5",
+ "inicio": "2026-11-23T16:08:16.418Z",
+ "carga": {
+  "em": "2026-11-23T16:08:16.337Z",
+  "uptime": "13:08  up 31 days,  5:35, 1 user, load averages: 2.29 2.67 3.74",
+  "carga1m": 2.29,
+  "processos": [
+   "61388 0.4 354576 27:28 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "31528 0.1 14592 09-20:12:02 /Users/pedro/Projetos/PIR_app-plano-ajustes/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "41706 0.0 160944 45:33 /Applications/Orquestrador de Agentes.app/Contents/Frameworks/Orquestrador de Agentes Helper.app/Contents/MacOS/Orquestrador de Agentes Helper --type=utility --utility-sub-type=",
+   "15269 0.0 14688 01-00:00:52 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "15267 0.0 60800 01-00:00:52 node ./node_modules/.bin/vite --host 127.0.0.1 --port 5180 --strictPort",
+   "59433 0.0 21488 01-00:47:28 /System/Cryptexes/App/System/Library/CoreServices/PasswordManagerBrowserExtensionHelper.app/Contents/MacOS/PasswordManagerBrowserExtensionHelper chrome-extension://pejdijmo",
+   "59397 0.0 4176 01-00:47:30 /Applications/Claude.app/Contents/Helpers/chrome-native-host chrome-extension://fcoeoabgfenejglbffodgkkbkcdhcgfn/",
+   "74002 0.0 4032 07-02:27:05 node sink.js",
+   "31526 0.0 54208 09-20:12:03 node /Users/pedro/Projetos/PIR_app-plano-ajustes/PIR_Frontend/node_modules/.bin/vite --port 5197 --strictPort",
+   "28961 0.0 95952 09-20:14:38 node --enable-source-maps /Users/pedro/Projetos/PIR_app-plano-ajustes/PIR_Backend/dist/main"
+  ],
+  "pesados": [],
+  "esperouS": 0,
+  "leiturasDaEspera": [],
+  "ocupadaAoComecar": false
+ },
+ "execucao": {
+  "orqId": "837a212b-3c07-44aa-bf75-fd48f623e1f6",
+  "sessoes": [
+   "66342402-a2f1-45aa-8574-67105bd9b9de"
+  ],
+  "acoes": [],
+  "estourou": false,
+  "tempoMs": 20929,
+  "worktree": "/private/tmp/bench-gosub/dados-c/worktrees/837a212b",
+  "pastaEfetiva": "/private/tmp/bench-gosub/dados-c/worktrees/837a212b",
+  "turnosDoApp": 1,
+  "contagemDeEventos": {
+   "turno_iniciado": 1,
+   "sessao_iniciada": 1,
+   "ferramenta_do_orquestrador": 4,
+   "uso_da_cota": 2,
+   "subagente_iniciado": 1,
+   "texto_do_orquestrador": 3,
+   "progresso_do_subagente": 5,
+   "texto_do_subagente": 2,
+   "subagente_concluido": 1,
+   "turno_concluido": 1,
+   "consumo_do_turno_medido": 1
+  },
+  "fimDoTurno": "turno_concluido",
+  "resposta": "O pedido mínimo dos cupons agora é inclusivo. Um pedido de exatamente R$ 100,00 com BEMVINDO10 é aceito.\n\n- **Correção:** em `src/pricing/discounts.js` linha 19, a comparação `subtotal <= coupon.minSubtotal` virou `subtotal < coupon.minSubtotal`. Como a checagem é genérica, vale para todos os cupons com mínimo. Nada mais mudou.\n- **Teste novo:** em `test/discounts.test.js`, \"exatamente no mínimo é aceito\" avalia BEMVINDO10 com um item de R$ 100,00 e espera `ok` verdadeiro e desconto de 10.\n- **Verificação:** o subagente rodou `npm test` e passaram 52 testes, 0 falhas. Eu só conferi o `git diff --stat` (2 arquivos, 7 inserções, 1 remoção) e não rodei o `npm test` de novo.\n\nNão fiz commit e não ficou nada pendente.",
+  "usoDoTurno": [
+   {
+    "duracaoMs": 20811,
+    "tokensDeEntrada": 547084,
+    "tokensDeSaida": 4790,
+    "subagentesLancados": 1
+   }
+  ],
+  "consumos": [
+   {
+    "principal": {
+     "entrada": 16,
+     "criacaoDeCache": 22437,
+     "leituraDeCache": 186258,
+     "saida": 1302
+    },
+    "subagentes": {
+     "entrada": 6,
+     "criacaoDeCache": 22750,
+     "leituraDeCache": 42075,
+     "saida": 1093
+    },
+    "subagentesMedidos": 1,
+    "parcial": false,
+    "indiceDeCusto": 91314,
+    "modeloDoPrincipal": "claude-sonnet-5-5"
+   }
+  ],
+  "cotas": [
+   {
+    "em": "2026-11-23T16:08:19.797Z",
+    "janelas": [
+     {
+      "nome": "7 dias",
+      "utilizacao": 0.02,
+      "renovaEm": "2026-11-30T15:00:00.000Z",
+      "situacao": "allowed"
+     }
+    ]
+   },
+   {
+    "em": "2026-11-23T16:08:20.701Z",
+    "janelas": [
+     {
+      "nome": "7 dias",
+      "utilizacao": 0.03,
+      "renovaEm": "2026-11-30T15:00:00.000Z",
+      "situacao": "allowed"
+     }
+    ]
+   }
+  ],
+  "falhas": [],
+  "recuperacoes": [],
+  "subagentesIniciados": 1,
+  "configuracaoDoOrquestrador": {
+   "motorDoOrquestrador": "claude-code",
+   "modeloDoOrquestrador": "sonnet",
+   "esforcoDoOrquestrador": "medio",
+   "motorDosSubagentes": "claude-code",
+   "modeloDosSubagentes": "sonnet",
+   "esforcoDosSubagentes": "medio",
+   "ordemDeReserva": [],
+   "navegadorDoAgente": false,
+   "quantidadeDeSubagentes": {
+    "modo": "automatica",
+    "limite": 3
+   },
+   "nivelDePermissao": "edicao_e_comandos",
+   "permitirCommitEPush": false,
+   "permitirArtefatosOnline": false,
+   "instrucoesPersonalizadas": ""
+  },
+  "versaoDoApp": "45b1b81 (0.2.2)",
+  "porta": 3317
+ },
+ "consumoDoApp": {
+  "principal": {
+   "entrada": 16,
+   "criacaoDeCache": 22437,
+   "leituraDeCache": 186258,
+   "saida": 1302
+  },
+  "subagentes": {
+   "entrada": 6,
+   "criacaoDeCache": 22750,
+   "leituraDeCache": 42075,
+   "saida": 1093
+  },
+  "indiceDeCusto": 91314,
+  "subagentesMedidos": 1,
+  "modelos": [
+   "claude-sonnet-5-5"
+  ]
+ },
+ "resposta": "O pedido mínimo dos cupons agora é inclusivo. Um pedido de exatamente R$ 100,00 com BEMVINDO10 é aceito.\n\n- **Correção:** em `src/pricing/discounts.js` linha 19, a comparação `subtotal <= coupon.minSubtotal` virou `subtotal < coupon.minSubtotal`. Como a checagem é genérica, vale para todos os cupons com mínimo. Nada mais mudou.\n- **Teste novo:** em `test/discounts.test.js`, \"exatamente no mínimo é aceito\" avalia BEMVINDO10 com um item de R$ 100,00 e espera `ok` verdadeiro e desconto de 10.\n- **Verificação:** o subagente rodou `npm test` e passaram 52 testes, 0 falhas. Eu só conferi o `git diff --stat` (2 arquivos, 7 inserções, 1 remoção) e não rodei o `npm test` de novo.\n\nNão fiz commit e não ficou nada pendente.",
+ "usoDaAssinatura": {
+  "antes": {
+   "em": "2026-11-23T16:08:19.797Z",
+   "janelas": [
+    {
+     "nome": "7 dias",
+     "utilizacao": 0.02,
+     "renovaEm": "2026-11-30T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "depois": {
+   "em": "2026-11-23T16:08:20.701Z",
+   "janelas": [
+    {
+     "nome": "7 dias",
+     "utilizacao": 0.03,
+     "renovaEm": "2026-11-30T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "leituras": 2
+ },
+ "fim": "2026-11-23T16:08:58.488Z",
+ "tempoDeParedeS": 20.9,
+ "sessoes": [
+  "66342402-a2f1-45aa-8574-67105bd9b9de"
+ ],
+ "pastaDoResultado": "/private/tmp/bench-gosub/dados-c/worktrees/837a212b",
+ "tentativasAnteriores": [],
+ "checagem": {
+  "sucesso": true,
+  "motivo": "todos os critérios passaram",
+  "detalhes": {
+   "suiteDoProjeto": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.213458\n      type: 'test'\n      ...\n    # Subtest: ids sequenciais\n    ok 2 - ids sequenciais\n      ---\n      duration_ms: 0.066458\n      type: 'test'\n      ...\n    1..2\nok 15 - validação\n  ---\n  duration_ms: 0.353334\n  type: 'suite'\n  ...\n1..15\n# tests 52\n# suites 14\n# pass 52\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 142.557292\n"
+   },
+   "testeOculto": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.472875\n      type: 'test'\n      ...\n    # Subtest: acima do mínimo segue igual\n    ok 4 - acima do mínimo segue igual\n      ---\n      duration_ms: 0.055\n      type: 'test'\n      ...\n    1..4\nok 1 - T1 oculto: pedido mínimo do cupom é inclusivo\n  ---\n  duration_ms: 2.894959\n  type: 'suite'\n  ...\n1..1\n# tests 4\n# suites 1\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 46.042\n"
+   }
+  }
+ },
+ "sucesso": true,
+ "arquivoDoDiff": "r1-T1-C.diff",
+ "arquivoDaResposta": "r1-T1-C.resposta.md",
+ "medicao": {
+  "arquivos": [
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-837a212b/66342402-a2f1-45aa-8574-67105bd9b9de.jsonl",
+    "papel": "principal",
+    "tipoDeAgente": null
+   },
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-837a212b/66342402-a2f1-45aa-8574-67105bd9b9de/subagents/agent-a5670ab2c2b7f7635.jsonl",
+    "papel": "subagente",
+    "tipoDeAgente": "executor"
+   }
+  ],
+  "medicaoDoApp": {
+   "total": {
+    "entrada": 22,
+    "criacaoDeCache": 45187,
+    "leituraDeCache": 228333,
+    "saida": 2395
+   },
+   "principal": {
+    "entrada": 16,
+    "criacaoDeCache": 22437,
+    "leituraDeCache": 186258,
+    "saida": 1302
+   },
+   "subagentes": {
+    "entrada": 6,
+    "criacaoDeCache": 22750,
+    "leituraDeCache": 42075,
+    "saida": 1093
+   },
+   "porModelo": {
+    "claude-sonnet-5-5": {
+     "entrada": 22,
+     "criacaoDeCache": 45187,
+     "leituraDeCache": 228333,
+     "saida": 2395
+    }
+   },
+   "ferramentas": {
+    "Grep": 2,
+    "Read": 2,
+    "Agent": 1,
+    "Bash": 3,
+    "Edit": 2
+   },
+   "subagentesLancados": 1,
+   "subagentesPorTipo": {
+    "executor": 1
+   },
+   "subagentesSemChamada": [],
+   "chamadasSemSubagente": [],
+   "mensagens": 10,
+   "modeloDoPrincipal": "claude-sonnet-5-5",
+   "indiceDeCusto": 91314,
+   "indicePrincipal": 53198,
+   "indiceSubagentes": 38116
+  },
+  "custo": {
+   "usd": 0.1934503,
+   "usdPrincipal": 0.12142580000000001,
+   "usdSubagentes": 0.0720245,
+   "porModelo": {
+    "claude-sonnet-5-5": {
+     "usd": 0.1934503,
+     "usdPrincipal": 0.12142580000000001,
+     "usdSubagentes": 0.0720245,
+     "tokens": {
+      "entrada": 22,
+      "cache5m": 22750,
+      "cache1h": 22437,
+      "leituraDeCache": 228333,
+      "saida": 2395
+     },
+     "tabela": "claude-sonnet-5-5"
+    }
+   },
+   "modelosSemPreco": []
+  }
+ },
+ "resumo": {
+  "usd": 0.1934503,
+  "usdPrincipal": 0.12142580000000001,
+  "usdSubagentes": 0.0720245,
+  "indiceDeCusto": 91314,
+  "tokens": {
+   "entrada": 22,
+   "criacaoDeCache": 45187,
+   "leituraDeCache": 228333,
+   "saida": 2395
+  },
+  "principal": {
+   "entrada": 16,
+   "criacaoDeCache": 22437,
+   "leituraDeCache": 186258,
+   "saida": 1302
+  },
+  "subagentes": {
+   "entrada": 6,
+   "criacaoDeCache": 22750,
+   "leituraDeCache": 42075,
+   "saida": 1093
+  },
+  "modeloDoPrincipal": "claude-sonnet-5-5",
+  "modelos": [
+   "claude-sonnet-5-5"
+  ],
+  "quantidadeDeSubagentes": 1,
+  "mensagensDoModelo": 10,
+  "turnosDoUsuario": 1,
+  "turnosDoAgente": null,
+  "tempoDeParedeS": 20.9
+ },
+ "cargaDepois": {
+  "em": "2026-11-23T16:08:58.975Z",
+  "uptime": "13:08  up 31 days,  5:35, 1 user, load averages: 2.96 2.81 3.74",
+  "carga1m": 2.96,
+  "processos": [
+   "93205 3.9 76288 00:42 /Users/pedro/.nvm/versions/node/v22.21.0/bin/node scripts/harness.mjs --variante v2",
+   "61388 1.0 376640 28:10 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "41706 0.4 161696 46:15 /Applications/Orquestrador de Agentes.app/Contents/Frameworks/Orquestrador de Agentes Helper.app/Contents/MacOS/Orquestrador de Agentes Helper --type=utility --utility-sub-type=",
+   "28901 0.3 30208 09-20:15:29 node /Users/pedro/Projetos/PIR_app-plano-ajustes/PIR_Backend/node_modules/.bin/nest start --watch",
+   "93616 0.1 2272 00:30 /bin/zsh -c source /Users/pedro/.claude/shell-snapshots/snapshot-zsh-1795448472175-z8kado.sh 2>/dev/null || true && setopt NO_EXTENDED_GLOB NO_BARE_GLOB_QUAL NO_EQUALS 2>/dev/null",
+   "15269 0.0 14688 01-00:01:34 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "15267 0.0 59264 01-00:01:34 node ./node_modules/.bin/vite --host 127.0.0.1 --port 5180 --strictPort",
+   "59433 0.0 21440 01-00:48:10 /System/Cryptexes/App/System/Library/CoreServices/PasswordManagerBrowserExtensionHelper.app/Contents/MacOS/PasswordManagerBrowserExtensionHelper chrome-extension://pejdijmo",
+   "59397 0.0 4176 01-00:48:12 /Applications/Claude.app/Contents/Helpers/chrome-native-host chrome-extension://fcoeoabgfenejglbffodgkkbkcdhcgfn/",
+   "74002 0.0 4032 07-02:27:47 node sink.js"
+  ],
+  "pesados": []
+ },
+ "avisos": [
+  "Outros orquestradores rodam nesta máquina: o uso da assinatura (antes/depois) e o tempo de parede ficam contaminados por eles."
+ ],
+ "transcricoes": {
+  "orquestrador": {
+   "sessao": "66342402-a2f1-45aa-8574-67105bd9b9de",
+   "primeiraChamada": {
+    "entrada": 2,
+    "criacaoDeCache": 18651,
+    "leituraDeCache": 8984,
+    "total": 27637
+   }
+  },
+  "executores": [
+   {
+    "arquivo": "agent-a5670ab2c2b7f7635.jsonl",
+    "tipo": "executor",
+    "inicio": "2026-11-23T16:08:23.749Z",
+    "primeiraChamada": {
+     "entrada": 2,
+     "criacaoDeCache": 20302,
+     "leituraDeCache": 0,
+     "total": 20304
+    }
+   }
+  ],
+  "encontradas": 1,
+  "principal": {
+   "chamadasAoModelo": 7,
+   "chamadasDeFerramenta": 5,
+   "porFerramenta": {
+    "Grep": 1,
+    "Read": 1,
+    "Agent": 1,
+    "Bash": 2
+   }
+  },
+  "subagentes": {
+   "chamadasAoModelo": 3,
+   "chamadasDeFerramenta": 5,
+   "porFerramenta": {
+    "Read": 1,
+    "Grep": 1,
+    "Edit": 2,
+    "Bash": 1
+   }
+  }
+ },
+ "chamadasDoIntermediario": [
+  {
+   "em": "2026-11-23T16:08:17.586Z",
+   "variante": "v2",
+   "aplicadas": [
+    "v2"
+   ],
+   "sessao": true,
+   "detalhes": {
+    "agentes": {
+     "original": "/var/folders/lt/fjgdf_wj2xg5kc44rc4pwcs40000gn/T/orquestrador-agentes/20e20a8b-9cf9-4065-9e21-44a29fc5e70a/agentes.json",
+     "nomesAntes": [
+      "executor"
+     ],
+     "nomesDepois": [
+      "executor"
+     ],
+     "bytesAntes": 2092,
+     "bytesDepois": 2064
+    },
+    "v2": {
+     "agentesEmbutidosNegados": [
+      "Agent(claude)",
+      "Agent(Explore)",
+      "Agent(general-purpose)",
+      "Agent(Plan)",
+      "Agent(statusline-setup)",
+      "Agent(web-fetch)"
+     ]
+    },
+    "pasta": "/tmp/bench-gosub/variantes/2026-11-23T16-08-17-585Z-93352"
+   }
+  },
+  {
+   "em": "2026-11-23T16:08:18.403Z",
+   "variante": "v2",
+   "aplicadas": [
+    "v2"
+   ],
+   "sessao": false,
+   "detalhes": {}
+  },
+  {
+   "em": "2026-11-23T16:08:18.466Z",
+   "variante": "v2",
+   "aplicadas": [
+    "v2"
+   ],
+   "sessao": false,
+   "detalhes": {}
+  }
+ ],
+ "cargaAlta": {
+  "antes": false,
+  "depois": false,
+  "carga1mAntes": 2.29,
+  "carga1mDepois": 2.96,
+  "esperouS": 0
+ },
+ "tempoComCargaAlta": false,
+ "arquivosDoApp": [
+  "r1-T1-C.eventos.jsonl",
+  "r1-T1-C.orquestrador.json"
+ ]
+}

@@ -1,0 +1,6 @@
+A refatoração está feita: o arredondamento e a formatação de dinheiro agora passam todos por `src/money.js`. O `npm test` passou, com 51 testes e 0 falhas, e os testes existentes não foram alterados. Não fiz commit.
+
+- **O que mudou:** `round2`, `formatBRL`, `sumMoney` e `percentOf` substituem os usos espalhados em `cart.js`, `pricing.js`, `shipping.js`, `tax.js`, `discounts.js`, `templates.js`, `notifier.js` e `salesReport.js`. Não foi preciso ampliar `money.js`. A ordem das operações foi mantida, então o ponto flutuante se comporta como antes.
+- **Verificação:** só `src/money.js` ainda tem `Math.round` e `toFixed`.
+- **Alerta de estoque baixo:** conferi à parte os valores `R$ 0,00` e `R$ 24.690,00`, e o texto saiu correto, sem mudar o formato.
+- **Relatório em texto:** o `formatBRL` arredonda antes de formatar, e o formatador local do relatório não arredondava. Como os valores do relatório já chegam arredondados, a saída deve ser a mesma. Só os testes confirmam isso; não comparei o relatório byte a byte antes e depois.

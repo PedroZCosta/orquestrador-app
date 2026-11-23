@@ -1,0 +1,69 @@
+{
+  "id": "c5573209-cd04-46b5-9304-42736bd1f4b7",
+  "nome": "bench r1-T1-C",
+  "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/r1-T1-C-mwtg797g",
+  "sessaoId": "8fa0e111-37f2-43c7-b54b-71a5d757059a",
+  "sessaoIniciada": true,
+  "criadoEm": "2026-11-23T15:56:17.475Z",
+  "configuracao": {
+    "motorDoOrquestrador": "claude-code",
+    "motorDosSubagentes": "claude-code",
+    "modeloDoOrquestrador": "sonnet",
+    "modeloDosSubagentes": "sonnet",
+    "ordemDeReserva": [],
+    "quantidadeDeSubagentes": {
+      "modo": "automatica",
+      "limite": 3
+    },
+    "nivelDePermissao": "edicao_e_comandos",
+    "permitirCommitEPush": false,
+    "permitirArtefatosOnline": false,
+    "navegadorDoAgente": false,
+    "esforcoDoOrquestrador": "medio",
+    "esforcoDosSubagentes": "medio",
+    "instrucoesPersonalizadas": "",
+    "subagentesProntos": "todos"
+  },
+  "turnos": [
+    {
+      "id": "e3c67b48-21f9-422c-89dd-058e077c519e",
+      "texto": "Bug relatado por uma cliente neste projeto (loja-pedidos, Node sem dependências): um pedido de exatamente R$ 100,00 com o cupom BEMVINDO10 foi recusado por pedido mínimo não atingido, mas a descrição do cupom diz \"para pedidos a partir de R$ 100,00\". Corrija para que o pedido mínimo dos cupons seja inclusivo (vale para todos os cupons com mínimo), sem mudar mais nada do comportamento, e acrescente um teste que cubra o caso. Rode `npm test` ao final: tudo tem de passar.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+      "iniciadoEm": "2026-11-23T15:56:17.479Z",
+      "encerradoEm": "2026-11-23T15:56:36.046Z",
+      "situacao": "concluido",
+      "resposta": "Corrigi o pedido mínimo dos cupons para ser inclusivo, e `npm test` passou com 52 de 52 testes, sem falhas.\n\n- **Correção:** em `src/pricing/discounts.js:19`, a comparação `subtotal <= coupon.minSubtotal` virou `subtotal < coupon.minSubtotal`. Isso vale para todos os cupons com mínimo, não só o BEMVINDO10. O subtotal já é arredondado para centavos, então R$ 100,00 chega exato e nada mais precisou mudar.\n- **Teste novo:** em `test/discounts.test.js`, o caso \"subtotal exatamente igual ao mínimo é aceito\" usa o BEMVINDO10 com um item de R$ 100,00. Ele espera que o cupom seja aceito com desconto de R$ 10,00.\n\nNão fiz commit. Não ficou nada pendente.",
+      "motivoDaFalha": null,
+      "uso": {
+        "duracaoMs": 18426,
+        "tokensDeEntrada": 294938,
+        "tokensDeSaida": 4838,
+        "subagentesLancados": 1
+      },
+      "subagentes": [
+        {
+          "id": "af42283f8d1ef1715",
+          "descricao": "Tornar pedido mínimo inclusivo",
+          "situacao": "concluido",
+          "tokens": 15046,
+          "duracaoMs": 9319,
+          "resumo": "Feito: o mínimo do cupom agora é inclusivo, e `npm test` passou com 52 de 52 testes e 0 falhas.\n\nO `subtotal` já vem de `lineSubtotal`, que arredonda para centavos (`Math.round(raw * 100) / 100`). Por isso 100,00 chega exato e não precisei ajustar mais nada.\n\n```diff\n--- src/pricing/discounts.js\n-  if (coupon.minSubtotal !== undefined && subtotal <= coupon.minSubtotal) {\n+  if (coupon.minSubtotal !== undefined && subtotal < coupon.minSubtotal) {\n--- test/discounts.test.js (após 'abaixo do mínimo é recusado')\n+  it('subtotal exatamente igual ao mínimo é aceito', () => {\n+    const result = evaluateCoupon('BEMVINDO10', [line('CAN-010', 1, 100)], NOW);\n+    assert.equal(result.ok, true);\n+    assert.equal(result.amount, 10);\n+  });\n```\n\nArquivos alterados:\n- `/private/tmp/bench-gosub/dados-c/worktrees/c5573209/src/pricing/discounts.js`\n- `/private/tmp/bench-gosub/dados-c/worktrees/c5573209/test/discounts.test.js`\n\nNão fiz commit."
+        }
+      ],
+      "anexos": [],
+      "modo": "execucao",
+      "decisaoDoPlano": null,
+      "perguntas": [],
+      "motor": "claude-code"
+    }
+  ],
+  "worktree": {
+    "branch": "orquestrador/c5573209-cd04-46b5-9304-42736bd1f4b7",
+    "caminho": "/private/tmp/bench-gosub/dados-c/worktrees/c5573209",
+    "ativo": false
+  },
+  "fila": [],
+  "instrucoesNaConversa": false,
+  "retomadaPendente": null,
+  "sessoesDosMotores": {},
+  "liberaEmDosMotores": {}
+}

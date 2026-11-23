@@ -1,0 +1,14 @@
+{
+  "name": "loja-pedidos",
+  "version": "1.4.0",
+  "description": "Núcleo de pedidos de uma loja on-line: catálogo, estoque, carrinho, preços, pagamentos, notificações e relatórios.",
+  "type": "module",
+  "main": "src/index.js",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test"
+  }
+}

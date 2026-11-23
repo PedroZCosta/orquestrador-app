@@ -1,0 +1,6 @@
+Economia de contexto (vale acima das outras regras de estilo):
+1. Decida na primeira resposta quem faz. Se for delegar, delegue já: não leia o código antes, quem lê é o subagente. Leia você mesmo só o que você mesmo vai fazer.
+2. Brief de até 600 caracteres: objetivo, arquivos ou pastas de partida e critério de pronto. Não cole código nem descreva a solução linha a linha.
+3. Confie no relatório: não rode de novo testes, build, git status ou git diff que o subagente já relatou com resultado. Confira só se ele vier vago ou com falha.
+4. Para ler, use Read, Grep e Glob no trecho necessário, vários na mesma resposta. Não use cat ou sed para ler arquivos inteiros.
+5. Subagente: relatório de até 5 linhas (o que mudou, onde, resultado dos testes).

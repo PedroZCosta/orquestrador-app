@@ -1,0 +1,69 @@
+{
+  "id": "90c1f819-cdea-4f33-8794-9ed15f861792",
+  "nome": "bench fumaca-T1-C",
+  "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/fumaca-T1-C-mwt3p5h9",
+  "sessaoId": "a3ed268e-b73c-4b70-a88f-5981c55fd62d",
+  "sessaoIniciada": true,
+  "criadoEm": "2026-11-23T10:06:16.421Z",
+  "configuracao": {
+    "motorDoOrquestrador": "claude-code",
+    "motorDosSubagentes": "claude-code",
+    "modeloDoOrquestrador": "sonnet",
+    "modeloDosSubagentes": "sonnet",
+    "ordemDeReserva": [],
+    "quantidadeDeSubagentes": {
+      "modo": "automatica",
+      "limite": 3
+    },
+    "nivelDePermissao": "edicao_e_comandos",
+    "permitirCommitEPush": false,
+    "permitirArtefatosOnline": false,
+    "navegadorDoAgente": false,
+    "esforcoDoOrquestrador": "medio",
+    "esforcoDosSubagentes": "medio",
+    "instrucoesPersonalizadas": "",
+    "subagentesProntos": "todos"
+  },
+  "turnos": [
+    {
+      "id": "9e5c2b65-e51f-4c7b-8c0d-4044fbbe9d9d",
+      "texto": "Bug relatado por uma cliente neste projeto (loja-pedidos, Node sem dependências): um pedido de exatamente R$ 100,00 com o cupom BEMVINDO10 foi recusado por pedido mínimo não atingido, mas a descrição do cupom diz \"para pedidos a partir de R$ 100,00\". Corrija para que o pedido mínimo dos cupons seja inclusivo (vale para todos os cupons com mínimo), sem mudar mais nada do comportamento, e acrescente um teste que cubra o caso. Rode `npm test` ao final: tudo tem de passar.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+      "iniciadoEm": "2026-11-23T10:06:16.423Z",
+      "encerradoEm": "2026-11-23T10:06:38.725Z",
+      "situacao": "concluido",
+      "resposta": "O pedido mínimo dos cupons agora é inclusivo, e `npm test` passou com 52 de 52 testes, sem falhas. O subagente rodou os testes e eu conferi o `git diff --stat`, mas não reli os arquivos.\n\n- **Correção:** em `src/pricing/discounts.js` (linha 19), a comparação `subtotal <= coupon.minSubtotal` virou `subtotal < coupon.minSubtotal`. Como a checagem é única, vale para todos os cupons com mínimo (BEMVINDO10, DESC50, FRETEGRATIS e os demais). Nada mais foi alterado.\n- **Teste novo:** em `test/discounts.test.js`, \"subtotal exatamente igual ao mínimo é aceito\" cobre BEMVINDO10 com um pedido de R$ 100,00. Ele confere que o cupom é aceito e que o desconto é de R$ 10,00.\n- **Pendências:** não fiz commit, como você pediu. As alterações estão só na árvore de trabalho, 2 arquivos com 7 inserções e 1 remoção.",
+      "motivoDaFalha": null,
+      "uso": {
+        "duracaoMs": 22173,
+        "tokensDeEntrada": 542642,
+        "tokensDeSaida": 5076,
+        "subagentesLancados": 1
+      },
+      "subagentes": [
+        {
+          "id": "a58a351cb8df426a9",
+          "descricao": "Tornar mínimo do cupom inclusivo",
+          "situacao": "concluido",
+          "tokens": 22736,
+          "duracaoMs": 8563,
+          "resumo": "Fiz as três tarefas e o `npm test` passou: 52 testes, 52 ok, 0 falhas. Nenhum teste existente quebrou com a mudança. Não fiz commit.\n\n- **`src/pricing/discounts.js` linha 19:** troquei `subtotal <= coupon.minSubtotal` por `subtotal < coupon.minSubtotal`, então o mínimo passa a ser inclusivo.\n- **`test/discounts.test.js`:** adicionei o teste 'subtotal exatamente igual ao mínimo é aceito' logo após 'abaixo do mínimo é recusado'. Ele usa BEMVINDO10 com `[line('CAN-010', 1, 100)]` e `NOW`, e confere `result.ok === true` e `result.amount === 10`.\n\n`git diff --stat`:\n```\n src/pricing/discounts.js | 2 +-\n test/discounts.test.js   | 6 ++++++\n 2 files changed, 7 insertions(+), 1 deletion(-)\n```"
+        }
+      ],
+      "anexos": [],
+      "modo": "execucao",
+      "decisaoDoPlano": null,
+      "perguntas": [],
+      "motor": "claude-code"
+    }
+  ],
+  "worktree": {
+    "branch": "orquestrador/90c1f819-cdea-4f33-8794-9ed15f861792",
+    "caminho": "/private/tmp/bench-gosub/dados-c/worktrees/90c1f819",
+    "ativo": false
+  },
+  "fila": [],
+  "instrucoesNaConversa": false,
+  "retomadaPendente": null,
+  "sessoesDosMotores": {},
+  "liberaEmDosMotores": {}
+}

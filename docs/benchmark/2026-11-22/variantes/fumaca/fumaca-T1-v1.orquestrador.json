@@ -1,0 +1,69 @@
+{
+  "id": "1e905e31-d005-46d0-ac14-eeba99799251",
+  "nome": "bench fumaca-T1-v1",
+  "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/fumaca-T1-v1-mwtfx2t8",
+  "sessaoId": "e55fd8e0-265e-4b91-9059-7d4b9092813c",
+  "sessaoIniciada": true,
+  "criadoEm": "2026-11-23T15:48:21.624Z",
+  "configuracao": {
+    "motorDoOrquestrador": "claude-code",
+    "motorDosSubagentes": "claude-code",
+    "modeloDoOrquestrador": "sonnet",
+    "modeloDosSubagentes": "sonnet",
+    "ordemDeReserva": [],
+    "quantidadeDeSubagentes": {
+      "modo": "automatica",
+      "limite": 3
+    },
+    "nivelDePermissao": "edicao_e_comandos",
+    "permitirCommitEPush": false,
+    "permitirArtefatosOnline": false,
+    "navegadorDoAgente": false,
+    "esforcoDoOrquestrador": "medio",
+    "esforcoDosSubagentes": "medio",
+    "instrucoesPersonalizadas": "",
+    "subagentesProntos": "todos"
+  },
+  "turnos": [
+    {
+      "id": "8bfbc0a1-849a-4ba4-924d-cb484326da41",
+      "texto": "Bug relatado por uma cliente neste projeto (loja-pedidos, Node sem dependências): um pedido de exatamente R$ 100,00 com o cupom BEMVINDO10 foi recusado por pedido mínimo não atingido, mas a descrição do cupom diz \"para pedidos a partir de R$ 100,00\". Corrija para que o pedido mínimo dos cupons seja inclusivo (vale para todos os cupons com mínimo), sem mudar mais nada do comportamento, e acrescente um teste que cubra o caso. Rode `npm test` ao final: tudo tem de passar.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+      "iniciadoEm": "2026-11-23T15:48:21.630Z",
+      "encerradoEm": "2026-11-23T15:48:45.335Z",
+      "situacao": "concluido",
+      "resposta": "Corrigido: o pedido mínimo dos cupons agora é inclusivo, então um pedido de R$ 100,00 com BEMVINDO10 é aceito. O executor rodou `npm test` e os 52 testes passaram. Eu só conferi o `git diff --stat` (2 arquivos alterados), sem rodar os testes de novo.\n\n- **Correção:** em `src/pricing/discounts.js` (linha 19), a comparação `subtotal <= coupon.minSubtotal` virou `subtotal < coupon.minSubtotal`. Como a checagem é a mesma para todos os cupons, o mínimo passa a valer inclusivo em todos os que têm mínimo. Nada mais foi alterado.\n- **Teste novo:** em `test/discounts.test.js`, \"subtotal exatamente igual ao mínimo é aceito\" avalia BEMVINDO10 com um item de R$ 100,00 e confere que foi aceito, com desconto de R$ 10,00.\n\nPendente: o teste do caso exato cobre só o BEMVINDO10; os outros cupons com mínimo (300 e 150) compartilham a mesma checagem, mas não têm teste próprio. Nenhum commit foi feito.",
+      "motivoDaFalha": null,
+      "uso": {
+        "duracaoMs": 23561,
+        "tokensDeEntrada": 362800,
+        "tokensDeSaida": 5198,
+        "subagentesLancados": 1
+      },
+      "subagentes": [
+        {
+          "id": "a35b54303e6ba3f5f",
+          "descricao": "Tornar pedido mínimo inclusivo",
+          "situacao": "concluido",
+          "tokens": 13622,
+          "duracaoMs": 9766,
+          "resumo": "Fiz as duas mudanças e `npm test` passou: 52 testes, 52 ok, 0 falhas. Não commitei.\n\n- **`src/pricing/discounts.js` linha 19:** `subtotal <= coupon.minSubtotal` virou `subtotal < coupon.minSubtotal`, então o mínimo agora é inclusivo.\n- **`test/discounts.test.js`:** adicionei o teste \"subtotal exatamente igual ao mínimo é aceito\" logo após \"abaixo do mínimo é recusado\". Ele usa BEMVINDO10 com `line('CAN-010', 1, 100)` e `NOW`, e confere `ok === true` e `amount === 10`.\n\nNão adicionei o teste opcional para outro cupom com mínimo."
+        }
+      ],
+      "anexos": [],
+      "modo": "execucao",
+      "decisaoDoPlano": null,
+      "perguntas": [],
+      "motor": "claude-code"
+    }
+  ],
+  "worktree": {
+    "branch": "orquestrador/1e905e31-d005-46d0-ac14-eeba99799251",
+    "caminho": "/private/tmp/bench-gosub/dados-c/worktrees/1e905e31",
+    "ativo": false
+  },
+  "fila": [],
+  "instrucoesNaConversa": false,
+  "retomadaPendente": null,
+  "sessoesDosMotores": {},
+  "liberaEmDosMotores": {}
+}

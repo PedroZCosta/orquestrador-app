@@ -1,0 +1,332 @@
+{
+ "id": "fumaca-T1-C",
+ "rodada": 0,
+ "tarefa": "T1",
+ "config": "C",
+ "posicao": 0,
+ "tentativa": 1,
+ "prompt": "Bug relatado por uma cliente neste projeto (loja-pedidos, Node sem dependências): um pedido de exatamente R$ 100,00 com o cupom BEMVINDO10 foi recusado por pedido mínimo não atingido, mas a descrição do cupom diz \"para pedidos a partir de R$ 100,00\". Corrija para que o pedido mínimo dos cupons seja inclusivo (vale para todos os cupons com mínimo), sem mudar mais nada do comportamento, e acrescente um teste que cubra o caso. Rode `npm test` ao final: tudo tem de passar.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+ "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/fumaca-T1-C-mwt3p5h9",
+ "inicio": "2026-11-23T10:06:16.401Z",
+ "carga": {
+  "em": "2026-11-23T10:06:16.317Z",
+  "uptime": "7:06  up 30 days, 23:33, 1 user, load averages: 3.45 2.75 2.37",
+  "processos": [
+   "16015 2.7 51632 00:45 node scripts/harness.mjs --fumaca T1 A,B,C",
+   "12036 1.5 295856 03:49 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "12541 0.3 278224 03:26 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "13042 0.3 279328 03:02 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "34892 0.0 44144 08:34:34 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "34891 0.0 13920 08:34:34 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "34874 0.0 49936 08:34:34 node /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/.bin/vite --port 5181 --strictPort",
+   "34855 0.0 52912 08:34:34 node /private/tmp/claude-501/-Users-pedro-Library-Application-Support-Orquestrador-de-Agentes-dados-worktrees-ec4c6672/b394ed48-1c5b-4d59-a4d1-badd6351de2b/scratchpad/dash403/",
+   "29962 0.0 8176 08:38:45 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "29924 0.0 43168 08:38:46 node /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/.bin/vite --port 5182 --strictPort"
+  ],
+  "pesados": [],
+  "esperouS": 0
+ },
+ "execucao": {
+  "orqId": "90c1f819-cdea-4f33-8794-9ed15f861792",
+  "sessoes": [
+   "a3ed268e-b73c-4b70-a88f-5981c55fd62d"
+  ],
+  "acoes": [],
+  "estourou": false,
+  "tempoMs": 22303,
+  "worktree": "/private/tmp/bench-gosub/dados-c/worktrees/90c1f819",
+  "pastaEfetiva": "/private/tmp/bench-gosub/dados-c/worktrees/90c1f819",
+  "turnosDoApp": 1,
+  "contagemDeEventos": {
+   "turno_iniciado": 1,
+   "sessao_iniciada": 1,
+   "ferramenta_do_orquestrador": 4,
+   "uso_da_cota": 1,
+   "texto_do_orquestrador": 4,
+   "subagente_iniciado": 1,
+   "progresso_do_subagente": 5,
+   "texto_do_subagente": 1,
+   "subagente_concluido": 1,
+   "turno_concluido": 1,
+   "consumo_do_turno_medido": 1
+  },
+  "fimDoTurno": "turno_concluido",
+  "resposta": "O pedido mínimo dos cupons agora é inclusivo, e `npm test` passou com 52 de 52 testes, sem falhas. O subagente rodou os testes e eu conferi o `git diff --stat`, mas não reli os arquivos.\n\n- **Correção:** em `src/pricing/discounts.js` (linha 19), a comparação `subtotal <= coupon.minSubtotal` virou `subtotal < coupon.minSubtotal`. Como a checagem é única, vale para todos os cupons com mínimo (BEMVINDO10, DESC50, FRETEGRATIS e os demais). Nada mais foi alterado.\n- **Teste novo:** em `test/discounts.test.js`, \"subtotal exatamente igual ao mínimo é aceito\" cobre BEMVINDO10 com um pedido de R$ 100,00. Ele confere que o cupom é aceito e que o desconto é de R$ 10,00.\n- **Pendências:** não fiz commit, como você pediu. As alterações estão só na árvore de trabalho, 2 arquivos com 7 inserções e 1 remoção.",
+  "usoDoTurno": [
+   {
+    "duracaoMs": 22173,
+    "tokensDeEntrada": 542642,
+    "tokensDeSaida": 5076,
+    "subagentesLancados": 1
+   }
+  ],
+  "consumos": [
+   {
+    "principal": {
+     "entrada": 14,
+     "criacaoDeCache": 24615,
+     "leituraDeCache": 161488,
+     "saida": 1332
+    },
+    "subagentes": {
+     "entrada": 8,
+     "criacaoDeCache": 22117,
+     "leituraDeCache": 63079,
+     "saida": 1206
+    },
+    "subagentesMedidos": 1,
+    "parcial": false,
+    "indiceDeCusto": 93584,
+    "modeloDoPrincipal": "claude-sonnet-5-5"
+   }
+  ],
+  "cotas": [
+   {
+    "em": "2026-11-23T10:06:18.777Z",
+    "janelas": [
+     {
+      "nome": "7 dias",
+      "utilizacao": 0.54,
+      "renovaEm": "2026-11-23T15:00:00.000Z",
+      "situacao": "allowed"
+     }
+    ]
+   }
+  ],
+  "falhas": [],
+  "recuperacoes": [],
+  "subagentesIniciados": 1,
+  "configuracaoDoOrquestrador": {
+   "motorDoOrquestrador": "claude-code",
+   "modeloDoOrquestrador": "sonnet",
+   "esforcoDoOrquestrador": "medio",
+   "motorDosSubagentes": "claude-code",
+   "modeloDosSubagentes": "sonnet",
+   "esforcoDosSubagentes": "medio",
+   "ordemDeReserva": [],
+   "navegadorDoAgente": false,
+   "quantidadeDeSubagentes": {
+    "modo": "automatica",
+    "limite": 3
+   },
+   "nivelDePermissao": "edicao_e_comandos",
+   "permitirCommitEPush": false,
+   "permitirArtefatosOnline": false,
+   "instrucoesPersonalizadas": ""
+  },
+  "versaoDoApp": "45b1b81 (0.2.2)",
+  "porta": 3317
+ },
+ "consumoDoApp": {
+  "principal": {
+   "entrada": 14,
+   "criacaoDeCache": 24615,
+   "leituraDeCache": 161488,
+   "saida": 1332
+  },
+  "subagentes": {
+   "entrada": 8,
+   "criacaoDeCache": 22117,
+   "leituraDeCache": 63079,
+   "saida": 1206
+  },
+  "indiceDeCusto": 93584,
+  "subagentesMedidos": 1,
+  "modelos": [
+   "claude-sonnet-5-5"
+  ]
+ },
+ "resposta": "O pedido mínimo dos cupons agora é inclusivo, e `npm test` passou com 52 de 52 testes, sem falhas. O subagente rodou os testes e eu conferi o `git diff --stat`, mas não reli os arquivos.\n\n- **Correção:** em `src/pricing/discounts.js` (linha 19), a comparação `subtotal <= coupon.minSubtotal` virou `subtotal < coupon.minSubtotal`. Como a checagem é única, vale para todos os cupons com mínimo (BEMVINDO10, DESC50, FRETEGRATIS e os demais). Nada mais foi alterado.\n- **Teste novo:** em `test/discounts.test.js`, \"subtotal exatamente igual ao mínimo é aceito\" cobre BEMVINDO10 com um pedido de R$ 100,00. Ele confere que o cupom é aceito e que o desconto é de R$ 10,00.\n- **Pendências:** não fiz commit, como você pediu. As alterações estão só na árvore de trabalho, 2 arquivos com 7 inserções e 1 remoção.",
+ "usoDaAssinatura": {
+  "antes": {
+   "em": "2026-11-23T10:06:18.777Z",
+   "janelas": [
+    {
+     "nome": "7 dias",
+     "utilizacao": 0.54,
+     "renovaEm": "2026-11-23T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "depois": {
+   "em": "2026-11-23T10:06:18.777Z",
+   "janelas": [
+    {
+     "nome": "7 dias",
+     "utilizacao": 0.54,
+     "renovaEm": "2026-11-23T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "leituras": 1
+ },
+ "fim": "2026-11-23T10:07:00.485Z",
+ "tempoDeParedeS": 22.3,
+ "sessoes": [
+  "a3ed268e-b73c-4b70-a88f-5981c55fd62d"
+ ],
+ "pastaDoResultado": "/private/tmp/bench-gosub/dados-c/worktrees/90c1f819",
+ "tentativasAnteriores": [],
+ "checagem": {
+  "sucesso": true,
+  "motivo": "todos os critérios passaram",
+  "detalhes": {
+   "suiteDoProjeto": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.811959\n      type: 'test'\n      ...\n    # Subtest: ids sequenciais\n    ok 2 - ids sequenciais\n      ---\n      duration_ms: 0.199167\n      type: 'test'\n      ...\n    1..2\nok 15 - validação\n  ---\n  duration_ms: 1.215458\n  type: 'suite'\n  ...\n1..15\n# tests 52\n# suites 14\n# pass 52\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 305.494959\n"
+   },
+   "testeOculto": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.741625\n      type: 'test'\n      ...\n    # Subtest: acima do mínimo segue igual\n    ok 4 - acima do mínimo segue igual\n      ---\n      duration_ms: 0.079042\n      type: 'test'\n      ...\n    1..4\nok 1 - T1 oculto: pedido mínimo do cupom é inclusivo\n  ---\n  duration_ms: 4.16325\n  type: 'suite'\n  ...\n1..1\n# tests 4\n# suites 1\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 69.743042\n"
+   }
+  }
+ },
+ "sucesso": true,
+ "arquivoDoDiff": "fumaca-T1-C.diff",
+ "arquivoDaResposta": "fumaca-T1-C.resposta.md",
+ "medicao": {
+  "arquivos": [
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-90c1f819/a3ed268e-b73c-4b70-a88f-5981c55fd62d.jsonl",
+    "papel": "principal",
+    "tipoDeAgente": null
+   },
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-90c1f819/a3ed268e-b73c-4b70-a88f-5981c55fd62d/subagents/agent-a58a351cb8df426a9.jsonl",
+    "papel": "subagente",
+    "tipoDeAgente": "executor"
+   }
+  ],
+  "medicaoDoApp": {
+   "total": {
+    "entrada": 22,
+    "criacaoDeCache": 46732,
+    "leituraDeCache": 224567,
+    "saida": 2538
+   },
+   "principal": {
+    "entrada": 14,
+    "criacaoDeCache": 24615,
+    "leituraDeCache": 161488,
+    "saida": 1332
+   },
+   "subagentes": {
+    "entrada": 8,
+    "criacaoDeCache": 22117,
+    "leituraDeCache": 63079,
+    "saida": 1206
+   },
+   "porModelo": {
+    "claude-sonnet-5-5": {
+     "entrada": 22,
+     "criacaoDeCache": 46732,
+     "leituraDeCache": 224567,
+     "saida": 2538
+    }
+   },
+   "ferramentas": {
+    "Grep": 2,
+    "Read": 3,
+    "Agent": 1,
+    "Bash": 2,
+    "Edit": 2
+   },
+   "subagentesLancados": 1,
+   "subagentesPorTipo": {
+    "executor": 1
+   },
+   "subagentesSemChamada": [],
+   "chamadasSemSubagente": [],
+   "mensagens": 10,
+   "modeloDoPrincipal": "claude-sonnet-5-5",
+   "indiceDeCusto": 93584,
+   "indicePrincipal": 53592,
+   "indiceSubagentes": 39992
+  },
+  "custo": {
+   "usd": 0.2016332,
+   "usdPrincipal": 0.12795679999999998,
+   "usdSubagentes": 0.0736764,
+   "porModelo": {
+    "claude-sonnet-5-5": {
+     "usd": 0.2016332,
+     "usdPrincipal": 0.12795679999999998,
+     "usdSubagentes": 0.0736764,
+     "tokens": {
+      "entrada": 22,
+      "cache5m": 22117,
+      "cache1h": 24615,
+      "leituraDeCache": 224567,
+      "saida": 2538
+     },
+     "tabela": "claude-sonnet-5-5"
+    }
+   },
+   "modelosSemPreco": []
+  }
+ },
+ "resumo": {
+  "usd": 0.2016332,
+  "usdPrincipal": 0.12795679999999998,
+  "usdSubagentes": 0.0736764,
+  "indiceDeCusto": 93584,
+  "tokens": {
+   "entrada": 22,
+   "criacaoDeCache": 46732,
+   "leituraDeCache": 224567,
+   "saida": 2538
+  },
+  "principal": {
+   "entrada": 14,
+   "criacaoDeCache": 24615,
+   "leituraDeCache": 161488,
+   "saida": 1332
+  },
+  "subagentes": {
+   "entrada": 8,
+   "criacaoDeCache": 22117,
+   "leituraDeCache": 63079,
+   "saida": 1206
+  },
+  "modeloDoPrincipal": "claude-sonnet-5-5",
+  "modelos": [
+   "claude-sonnet-5-5"
+  ],
+  "quantidadeDeSubagentes": 1,
+  "mensagensDoModelo": 10,
+  "turnosDoUsuario": 1,
+  "turnosDoAgente": null,
+  "tempoDeParedeS": 22.3
+ },
+ "cargaDepois": {
+  "em": "2026-11-23T10:07:01.366Z",
+  "uptime": "7:07  up 30 days, 23:33, 1 user, load averages: 4.54 3.16 2.54",
+  "processos": [
+   "18519 48.1 83152 00:00 node /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/worktrees/ddbd756e/node_modules/.bin/remotion still src/index.ts v1 /tmp/st/v1-700.png --frame=700 --",
+   "18459 37.0 85888 00:01 npm exec remotion still src/index.ts v1 /tmp/st/v1-700.png --frame=700 --scale=0.5",
+   "12036 5.7 247136 04:34 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "16015 2.4 35824 01:30 node scripts/harness.mjs --fumaca T1 A,B,C",
+   "12541 1.4 221040 04:11 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "13042 0.7 205328 03:47 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "66795 0.4 163024 04-12:01:58 /Applications/Orquestrador de Agentes.app/Contents/Frameworks/Orquestrador de Agentes Helper.app/Contents/MacOS/Orquestrador de Agentes Helper --type=utility --utility-sub",
+   "34892 0.0 9216 08:35:19 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "34891 0.0 7888 08:35:19 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "34874 0.0 42816 08:35:19 node /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/.bin/vite --port 5181 --strictPort"
+  ],
+  "pesados": [
+   "18519 48.1 83152 00:00 node /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/worktrees/ddbd756e/node_modules/.bin/remotion still src/index.ts v1 /tmp/st/v1-700.png --frame=700 --",
+   "18459 37.0 85888 00:01 npm exec remotion still src/index.ts v1 /tmp/st/v1-700.png --frame=700 --scale=0.5"
+  ]
+ },
+ "avisos": [
+  "Outros orquestradores rodam nesta máquina: o uso da assinatura (antes/depois) e o tempo de parede ficam contaminados por eles."
+ ],
+ "arquivosDoApp": [
+  "fumaca-T1-C.eventos.jsonl",
+  "fumaca-T1-C.orquestrador.json"
+ ]
+}

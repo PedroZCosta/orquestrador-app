@@ -1,0 +1,6 @@
+Todo o arredondamento e a formatação de dinheiro agora passam por `src/money.js`. Rodei `npm test` e os 51 testes passam, sem falhas. Os testes em `test/` não foram alterados e não fiz commit.
+
+- **Sobra fora do `money.js`:** o `grep` por `Math.round` e `toFixed` em `src` não encontra mais nada fora dele. As descrições de cupom com "R$" são texto fixo e ficaram como estavam.
+- **O que mudou:** o `money.js` ganhou `mulMoney(...fatores)` e `averageMoney(total, count)`. Nove arquivos de `src/` foram alterados: o próprio `money.js`, `cart`, `pricing` (`discounts`, `tax`, `shipping`, `pricing`), `notifications` (`notifier`, `templates`) e `reports/salesReport`.
+- **Formatadores locais:** os três (`notifier`, `templates`, `salesReport`) passaram a usar `formatBRL`. O de `salesReport` não arredondava antes de formatar, mas os valores ali já chegam arredondados, então a saída é a mesma.
+- **O que não foi conferido:** a igualdade byte a byte das saídas foi verificada pela leitura do código e pelos testes existentes. Não comparei saídas antes e depois com entradas extras, como valores negativos ou NaN.

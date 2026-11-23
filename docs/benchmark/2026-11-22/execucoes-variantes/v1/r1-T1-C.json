@@ -1,0 +1,421 @@
+{
+ "id": "r1-T1-C",
+ "rodada": 1,
+ "tarefa": "T1",
+ "config": "C",
+ "posicao": 1,
+ "variante": "v1",
+ "tentativa": 1,
+ "prompt": "Bug relatado por uma cliente neste projeto (loja-pedidos, Node sem dependências): um pedido de exatamente R$ 100,00 com o cupom BEMVINDO10 foi recusado por pedido mínimo não atingido, mas a descrição do cupom diz \"para pedidos a partir de R$ 100,00\". Corrija para que o pedido mínimo dos cupons seja inclusivo (vale para todos os cupons com mínimo), sem mudar mais nada do comportamento, e acrescente um teste que cubra o caso. Rode `npm test` ao final: tudo tem de passar.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+ "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/r1-T1-C-mwtg797g",
+ "inicio": "2026-11-23T15:56:16.437Z",
+ "carga": {
+  "em": "2026-11-23T15:56:16.347Z",
+  "uptime": "12:56  up 31 days,  5:23, 1 user, load averages: 2.92 3.68 5.05",
+  "carga1m": 2.92,
+  "processos": [
+   "61388 16.3 421856 15:28 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/ar",
+   "77799 7.5 50736 00:00 /Users/pedro/.nvm/versions/node/v22.21.0/bin/node scripts/harness.mjs --variante v1",
+   "77793 1.1 2288 00:00 /bin/zsh -c source /Users/pedro/.claude/shell-snapshots/snapshot-zsh-1795448472175-z8kado.sh 2>/dev/null || true && setopt NO_EXTENDED_GLOB NO_BARE_GLOB_QUAL NO_EQUALS 2>/dev/null",
+   "41706 0.8 250768 33:33 /Applications/Orquestrador de Agentes.app/Contents/Frameworks/Orquestrador de Agentes Helper.app/Contents/MacOS/Orquestrador de Agentes Helper --type=utility --utility-sub-type=",
+   "28961 0.4 42016 09-20:02:38 node --enable-source-maps /Users/pedro/Projetos/PIR_app-plano-ajustes/PIR_Backend/dist/main",
+   "31526 0.2 51424 09-20:00:03 node /Users/pedro/Projetos/PIR_app-plano-ajustes/PIR_Frontend/node_modules/.bin/vite --port 5197 --strictPort",
+   "15269 0.0 14496 23:48:52 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "15267 0.0 60688 23:48:52 node ./node_modules/.bin/vite --host 127.0.0.1 --port 5180 --strictPort",
+   "59433 0.0 21888 01-00:35:28 /System/Cryptexes/App/System/Library/CoreServices/PasswordManagerBrowserExtensionHelper.app/Contents/MacOS/PasswordManagerBrowserExtensionHelper chrome-extension://pejdijmo",
+   "59397 0.0 4176 01-00:35:30 /Applications/Claude.app/Contents/Helpers/chrome-native-host chrome-extension://fcoeoabgfenejglbffodgkkbkcdhcgfn/"
+  ],
+  "pesados": [],
+  "esperouS": 0,
+  "leiturasDaEspera": [],
+  "ocupadaAoComecar": false
+ },
+ "execucao": {
+  "orqId": "c5573209-cd04-46b5-9304-42736bd1f4b7",
+  "sessoes": [
+   "8fa0e111-37f2-43c7-b54b-71a5d757059a"
+  ],
+  "acoes": [],
+  "estourou": false,
+  "tempoMs": 18569,
+  "worktree": "/private/tmp/bench-gosub/dados-c/worktrees/c5573209",
+  "pastaEfetiva": "/private/tmp/bench-gosub/dados-c/worktrees/c5573209",
+  "turnosDoApp": 1,
+  "contagemDeEventos": {
+   "turno_iniciado": 1,
+   "sessao_iniciada": 1,
+   "ferramenta_do_orquestrador": 2,
+   "uso_da_cota": 1,
+   "subagente_iniciado": 1,
+   "texto_do_orquestrador": 2,
+   "progresso_do_subagente": 6,
+   "texto_do_subagente": 2,
+   "subagente_concluido": 1,
+   "turno_concluido": 1,
+   "consumo_do_turno_medido": 1
+  },
+  "fimDoTurno": "turno_concluido",
+  "resposta": "Corrigi o pedido mínimo dos cupons para ser inclusivo, e `npm test` passou com 52 de 52 testes, sem falhas.\n\n- **Correção:** em `src/pricing/discounts.js:19`, a comparação `subtotal <= coupon.minSubtotal` virou `subtotal < coupon.minSubtotal`. Isso vale para todos os cupons com mínimo, não só o BEMVINDO10. O subtotal já é arredondado para centavos, então R$ 100,00 chega exato e nada mais precisou mudar.\n- **Teste novo:** em `test/discounts.test.js`, o caso \"subtotal exatamente igual ao mínimo é aceito\" usa o BEMVINDO10 com um item de R$ 100,00. Ele espera que o cupom seja aceito com desconto de R$ 10,00.\n\nNão fiz commit. Não ficou nada pendente.",
+  "usoDoTurno": [
+   {
+    "duracaoMs": 18426,
+    "tokensDeEntrada": 294938,
+    "tokensDeSaida": 4838,
+    "subagentesLancados": 1
+   }
+  ],
+  "consumos": [
+   {
+    "principal": {
+     "entrada": 12,
+     "criacaoDeCache": 12941,
+     "leituraDeCache": 82351,
+     "saida": 1015
+    },
+    "subagentes": {
+     "entrada": 8,
+     "criacaoDeCache": 14127,
+     "leituraDeCache": 38030,
+     "saida": 1404
+    },
+    "subagentesMedidos": 1,
+    "parcial": false,
+    "indiceDeCusto": 57988,
+    "modeloDoPrincipal": "claude-sonnet-5-5"
+   }
+  ],
+  "cotas": [
+   {
+    "em": "2026-11-23T15:56:19.735Z",
+    "janelas": [
+     {
+      "nome": "7 dias",
+      "utilizacao": 0.02,
+      "renovaEm": "2026-11-30T15:00:00.000Z",
+      "situacao": "allowed"
+     }
+    ]
+   }
+  ],
+  "falhas": [],
+  "recuperacoes": [],
+  "subagentesIniciados": 1,
+  "configuracaoDoOrquestrador": {
+   "motorDoOrquestrador": "claude-code",
+   "modeloDoOrquestrador": "sonnet",
+   "esforcoDoOrquestrador": "medio",
+   "motorDosSubagentes": "claude-code",
+   "modeloDosSubagentes": "sonnet",
+   "esforcoDosSubagentes": "medio",
+   "ordemDeReserva": [],
+   "navegadorDoAgente": false,
+   "quantidadeDeSubagentes": {
+    "modo": "automatica",
+    "limite": 3
+   },
+   "nivelDePermissao": "edicao_e_comandos",
+   "permitirCommitEPush": false,
+   "permitirArtefatosOnline": false,
+   "instrucoesPersonalizadas": ""
+  },
+  "versaoDoApp": "45b1b81 (0.2.2)",
+  "porta": 3317
+ },
+ "consumoDoApp": {
+  "principal": {
+   "entrada": 12,
+   "criacaoDeCache": 12941,
+   "leituraDeCache": 82351,
+   "saida": 1015
+  },
+  "subagentes": {
+   "entrada": 8,
+   "criacaoDeCache": 14127,
+   "leituraDeCache": 38030,
+   "saida": 1404
+  },
+  "indiceDeCusto": 57988,
+  "subagentesMedidos": 1,
+  "modelos": [
+   "claude-sonnet-5-5"
+  ]
+ },
+ "resposta": "Corrigi o pedido mínimo dos cupons para ser inclusivo, e `npm test` passou com 52 de 52 testes, sem falhas.\n\n- **Correção:** em `src/pricing/discounts.js:19`, a comparação `subtotal <= coupon.minSubtotal` virou `subtotal < coupon.minSubtotal`. Isso vale para todos os cupons com mínimo, não só o BEMVINDO10. O subtotal já é arredondado para centavos, então R$ 100,00 chega exato e nada mais precisou mudar.\n- **Teste novo:** em `test/discounts.test.js`, o caso \"subtotal exatamente igual ao mínimo é aceito\" usa o BEMVINDO10 com um item de R$ 100,00. Ele espera que o cupom seja aceito com desconto de R$ 10,00.\n\nNão fiz commit. Não ficou nada pendente.",
+ "usoDaAssinatura": {
+  "antes": {
+   "em": "2026-11-23T15:56:19.735Z",
+   "janelas": [
+    {
+     "nome": "7 dias",
+     "utilizacao": 0.02,
+     "renovaEm": "2026-11-30T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "depois": {
+   "em": "2026-11-23T15:56:19.735Z",
+   "janelas": [
+    {
+     "nome": "7 dias",
+     "utilizacao": 0.02,
+     "renovaEm": "2026-11-30T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "leituras": 1
+ },
+ "fim": "2026-11-23T15:56:58.497Z",
+ "tempoDeParedeS": 18.6,
+ "sessoes": [
+  "8fa0e111-37f2-43c7-b54b-71a5d757059a"
+ ],
+ "pastaDoResultado": "/private/tmp/bench-gosub/dados-c/worktrees/c5573209",
+ "tentativasAnteriores": [],
+ "checagem": {
+  "sucesso": true,
+  "motivo": "todos os critérios passaram",
+  "detalhes": {
+   "suiteDoProjeto": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.203667\n      type: 'test'\n      ...\n    # Subtest: ids sequenciais\n    ok 2 - ids sequenciais\n      ---\n      duration_ms: 0.068917\n      type: 'test'\n      ...\n    1..2\nok 15 - validação\n  ---\n  duration_ms: 0.346625\n  type: 'suite'\n  ...\n1..15\n# tests 52\n# suites 14\n# pass 52\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 153.651542\n"
+   },
+   "testeOculto": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.493667\n      type: 'test'\n      ...\n    # Subtest: acima do mínimo segue igual\n    ok 4 - acima do mínimo segue igual\n      ---\n      duration_ms: 0.056208\n      type: 'test'\n      ...\n    1..4\nok 1 - T1 oculto: pedido mínimo do cupom é inclusivo\n  ---\n  duration_ms: 3.138791\n  type: 'suite'\n  ...\n1..1\n# tests 4\n# suites 1\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 50.707458\n"
+   }
+  }
+ },
+ "sucesso": true,
+ "arquivoDoDiff": "r1-T1-C.diff",
+ "arquivoDaResposta": "r1-T1-C.resposta.md",
+ "medicao": {
+  "arquivos": [
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-c5573209/8fa0e111-37f2-43c7-b54b-71a5d757059a.jsonl",
+    "papel": "principal",
+    "tipoDeAgente": null
+   },
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-c5573209/8fa0e111-37f2-43c7-b54b-71a5d757059a/subagents/agent-af42283f8d1ef1715.jsonl",
+    "papel": "subagente",
+    "tipoDeAgente": "executor"
+   }
+  ],
+  "medicaoDoApp": {
+   "total": {
+    "entrada": 20,
+    "criacaoDeCache": 27068,
+    "leituraDeCache": 120381,
+    "saida": 2419
+   },
+   "principal": {
+    "entrada": 12,
+    "criacaoDeCache": 12941,
+    "leituraDeCache": 82351,
+    "saida": 1015
+   },
+   "subagentes": {
+    "entrada": 8,
+    "criacaoDeCache": 14127,
+    "leituraDeCache": 38030,
+    "saida": 1404
+   },
+   "porModelo": {
+    "claude-sonnet-5-5": {
+     "entrada": 20,
+     "criacaoDeCache": 27068,
+     "leituraDeCache": 120381,
+     "saida": 2419
+    }
+   },
+   "ferramentas": {
+    "Grep": 3,
+    "Read": 2,
+    "Agent": 1,
+    "Edit": 2,
+    "Bash": 1
+   },
+   "subagentesLancados": 1,
+   "subagentesPorTipo": {
+    "executor": 1
+   },
+   "subagentesSemChamada": [],
+   "chamadasSemSubagente": [],
+   "mensagens": 9,
+   "modeloDoPrincipal": "claude-sonnet-5-5",
+   "indiceDeCusto": 57988,
+   "indicePrincipal": 29498,
+   "indiceSubagentes": 28490
+  },
+  "custo": {
+   "usd": 0.1233496,
+   "usdPrincipal": 0.0701731,
+   "usdSubagentes": 0.0531765,
+   "porModelo": {
+    "claude-sonnet-5-5": {
+     "usd": 0.1233496,
+     "usdPrincipal": 0.0701731,
+     "usdSubagentes": 0.0531765,
+     "tokens": {
+      "entrada": 20,
+      "cache5m": 14127,
+      "cache1h": 12941,
+      "leituraDeCache": 120381,
+      "saida": 2419
+     },
+     "tabela": "claude-sonnet-5-5"
+    }
+   },
+   "modelosSemPreco": []
+  }
+ },
+ "resumo": {
+  "usd": 0.1233496,
+  "usdPrincipal": 0.0701731,
+  "usdSubagentes": 0.0531765,
+  "indiceDeCusto": 57988,
+  "tokens": {
+   "entrada": 20,
+   "criacaoDeCache": 27068,
+   "leituraDeCache": 120381,
+   "saida": 2419
+  },
+  "principal": {
+   "entrada": 12,
+   "criacaoDeCache": 12941,
+   "leituraDeCache": 82351,
+   "saida": 1015
+  },
+  "subagentes": {
+   "entrada": 8,
+   "criacaoDeCache": 14127,
+   "leituraDeCache": 38030,
+   "saida": 1404
+  },
+  "modeloDoPrincipal": "claude-sonnet-5-5",
+  "modelos": [
+   "claude-sonnet-5-5"
+  ],
+  "quantidadeDeSubagentes": 1,
+  "mensagensDoModelo": 9,
+  "turnosDoUsuario": 1,
+  "turnosDoAgente": null,
+  "tempoDeParedeS": 18.6
+ },
+ "cargaDepois": {
+  "em": "2026-11-23T15:56:58.995Z",
+  "uptime": "12:56  up 31 days,  5:23, 1 user, load averages: 3.29 3.68 4.98",
+  "carga1m": 3.29,
+  "processos": [
+   "77799 3.9 76144 00:42 /Users/pedro/.nvm/versions/node/v22.21.0/bin/node scripts/harness.mjs --variante v1",
+   "61388 0.2 422016 16:10 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "41706 0.0 251120 34:15 /Applications/Orquestrador de Agentes.app/Contents/Frameworks/Orquestrador de Agentes Helper.app/Contents/MacOS/Orquestrador de Agentes Helper --type=utility --utility-sub-type=",
+   "15269 0.0 14528 23:49:34 /Users/pedro/pir-revisao/wt-acessos/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "15267 0.0 60752 23:49:34 node ./node_modules/.bin/vite --host 127.0.0.1 --port 5180 --strictPort",
+   "59433 0.0 21888 01-00:36:10 /System/Cryptexes/App/System/Library/CoreServices/PasswordManagerBrowserExtensionHelper.app/Contents/MacOS/PasswordManagerBrowserExtensionHelper chrome-extension://pejdijmo",
+   "59397 0.0 4176 01-00:36:12 /Applications/Claude.app/Contents/Helpers/chrome-native-host chrome-extension://fcoeoabgfenejglbffodgkkbkcdhcgfn/",
+   "74002 0.0 4032 07-02:15:47 node sink.js",
+   "31528 0.0 14448 09-20:00:44 /Users/pedro/Projetos/PIR_app-plano-ajustes/PIR_Frontend/node_modules/@esbuild/darwin-arm64/bin/esbuild --service=0.27.4 --ping",
+   "31526 0.0 51760 09-20:00:45 node /Users/pedro/Projetos/PIR_app-plano-ajustes/PIR_Frontend/node_modules/.bin/vite --port 5197 --strictPort"
+  ],
+  "pesados": []
+ },
+ "avisos": [
+  "Outros orquestradores rodam nesta máquina: o uso da assinatura (antes/depois) e o tempo de parede ficam contaminados por eles."
+ ],
+ "transcricoes": {
+  "orquestrador": {
+   "sessao": "8fa0e111-37f2-43c7-b54b-71a5d757059a",
+   "primeiraChamada": {
+    "entrada": 2,
+    "criacaoDeCache": 9398,
+    "leituraDeCache": 7951,
+    "total": 17351
+   }
+  },
+  "executores": [
+   {
+    "arquivo": "agent-af42283f8d1ef1715.jsonl",
+    "tipo": "executor",
+    "inicio": "2026-11-23T15:56:23.897Z",
+    "primeiraChamada": {
+     "entrada": 2,
+     "criacaoDeCache": 10827,
+     "leituraDeCache": 0,
+     "total": 10829
+    }
+   }
+  ],
+  "encontradas": 1,
+  "principal": {
+   "chamadasAoModelo": 5,
+   "chamadasDeFerramenta": 3,
+   "porFerramenta": {
+    "Grep": 1,
+    "Read": 1,
+    "Agent": 1
+   }
+  },
+  "subagentes": {
+   "chamadasAoModelo": 4,
+   "chamadasDeFerramenta": 6,
+   "porFerramenta": {
+    "Read": 1,
+    "Grep": 2,
+    "Edit": 2,
+    "Bash": 1
+   }
+  }
+ },
+ "chamadasDoIntermediario": [
+  {
+   "em": "2026-11-23T15:56:17.632Z",
+   "variante": "v1",
+   "aplicadas": [
+    "v1"
+   ],
+   "sessao": true,
+   "detalhes": {
+    "v1": {
+     "pluginsDesligados": 16,
+     "settingsOriginal": null
+    },
+    "pasta": "/tmp/bench-gosub/variantes/2026-11-23T15-56-17-630Z-77850"
+   }
+  },
+  {
+   "em": "2026-11-23T15:56:18.428Z",
+   "variante": "v1",
+   "aplicadas": [
+    "v1"
+   ],
+   "sessao": false,
+   "detalhes": {}
+  },
+  {
+   "em": "2026-11-23T15:56:18.511Z",
+   "variante": "v1",
+   "aplicadas": [
+    "v1"
+   ],
+   "sessao": false,
+   "detalhes": {}
+  }
+ ],
+ "cargaAlta": {
+  "antes": false,
+  "depois": false,
+  "carga1mAntes": 2.92,
+  "carga1mDepois": 3.29,
+  "esperouS": 0
+ },
+ "tempoComCargaAlta": false,
+ "arquivosDoApp": [
+  "r1-T1-C.eventos.jsonl",
+  "r1-T1-C.orquestrador.json"
+ ]
+}

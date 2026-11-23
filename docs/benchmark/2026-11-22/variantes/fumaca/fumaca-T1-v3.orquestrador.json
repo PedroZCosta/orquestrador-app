@@ -1,0 +1,60 @@
+{
+  "id": "a048e2f1-03b1-4085-b57f-b2cde7d9635c",
+  "nome": "bench fumaca-T1-v3",
+  "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/fumaca-T1-v3-mwtg0dci",
+  "sessaoId": "477a4325-0489-4d68-a025-a7ff0ee27587",
+  "sessaoIniciada": true,
+  "criadoEm": "2026-11-23T15:50:55.231Z",
+  "configuracao": {
+    "motorDoOrquestrador": "claude-code",
+    "motorDosSubagentes": "claude-code",
+    "modeloDoOrquestrador": "sonnet",
+    "modeloDosSubagentes": "sonnet",
+    "ordemDeReserva": [],
+    "quantidadeDeSubagentes": {
+      "modo": "automatica",
+      "limite": 3
+    },
+    "nivelDePermissao": "edicao_e_comandos",
+    "permitirCommitEPush": false,
+    "permitirArtefatosOnline": false,
+    "navegadorDoAgente": false,
+    "esforcoDoOrquestrador": "medio",
+    "esforcoDosSubagentes": "medio",
+    "instrucoesPersonalizadas": "",
+    "subagentesProntos": "todos"
+  },
+  "turnos": [
+    {
+      "id": "1d43e99e-e4a7-4bc0-9543-d499f8a0bffe",
+      "texto": "Bug relatado por uma cliente neste projeto (loja-pedidos, Node sem dependências): um pedido de exatamente R$ 100,00 com o cupom BEMVINDO10 foi recusado por pedido mínimo não atingido, mas a descrição do cupom diz \"para pedidos a partir de R$ 100,00\". Corrija para que o pedido mínimo dos cupons seja inclusivo (vale para todos os cupons com mínimo), sem mudar mais nada do comportamento, e acrescente um teste que cubra o caso. Rode `npm test` ao final: tudo tem de passar.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+      "iniciadoEm": "2026-11-23T15:50:55.234Z",
+      "encerradoEm": "2026-11-23T15:51:09.967Z",
+      "situacao": "concluido",
+      "resposta": "Corrigido: o pedido mínimo dos cupons agora é inclusivo, e um pedido de exatamente R$ 100,00 com BEMVINDO10 é aceito. `npm test` termina com 52 de 52 testes passando.\n\n- **Correção:** em `src/pricing/discounts.js:19`, a comparação `subtotal <= coupon.minSubtotal` virou `subtotal < coupon.minSubtotal`. Como a checagem é a mesma para todos os cupons, o ajuste vale também para DESC50 e FRETEGRATIS. Nada mais mudou.\n- **Teste novo:** em `test/discounts.test.js`, um pedido de R$ 100,00 exatos com BEMVINDO10 é aceito e gera R$ 10,00 de desconto.\n\nFiz eu mesmo, sem subagentes, por ser uma mudança de uma linha. Não fiz commit.",
+      "motivoDaFalha": null,
+      "uso": {
+        "duracaoMs": 14625,
+        "tokensDeEntrada": 151508,
+        "tokensDeSaida": 1212,
+        "subagentesLancados": 0
+      },
+      "subagentes": [],
+      "anexos": [],
+      "modo": "execucao",
+      "decisaoDoPlano": null,
+      "perguntas": [],
+      "motor": "claude-code"
+    }
+  ],
+  "worktree": {
+    "branch": "orquestrador/a048e2f1-03b1-4085-b57f-b2cde7d9635c",
+    "caminho": "/private/tmp/bench-gosub/dados-c/worktrees/a048e2f1",
+    "ativo": false
+  },
+  "fila": [],
+  "instrucoesNaConversa": false,
+  "retomadaPendente": null,
+  "sessoesDosMotores": {},
+  "liberaEmDosMotores": {}
+}

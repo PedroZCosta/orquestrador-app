@@ -1,0 +1,69 @@
+{
+  "id": "0b96d3f3-e963-4852-a069-99b642b64fa3",
+  "nome": "bench r2-T3-C",
+  "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/r2-T3-C-mwtgv7qz",
+  "sessaoId": "17908eeb-bcbc-419b-86f5-a6f572dd5df2",
+  "sessaoIniciada": true,
+  "criadoEm": "2026-11-23T16:14:54.277Z",
+  "configuracao": {
+    "motorDoOrquestrador": "claude-code",
+    "motorDosSubagentes": "claude-code",
+    "modeloDoOrquestrador": "sonnet",
+    "modeloDosSubagentes": "sonnet",
+    "ordemDeReserva": [],
+    "quantidadeDeSubagentes": {
+      "modo": "automatica",
+      "limite": 3
+    },
+    "nivelDePermissao": "edicao_e_comandos",
+    "permitirCommitEPush": false,
+    "permitirArtefatosOnline": false,
+    "navegadorDoAgente": false,
+    "esforcoDoOrquestrador": "medio",
+    "esforcoDosSubagentes": "medio",
+    "instrucoesPersonalizadas": "",
+    "subagentesProntos": "todos"
+  },
+  "turnos": [
+    {
+      "id": "e7478a30-930d-4fb9-b8c2-5e5a966b9a4c",
+      "texto": "Refatoração sem mudança de comportamento neste projeto (loja-pedidos, Node sem dependências): o arredondamento e a formatação de dinheiro estão espalhados pelo código, com `Math.round(x * 100) / 100` e formatadores de \"R$\" locais repetidos em vários módulos. Centralize tudo em `src/money.js` (use `round2`, `formatBRL`, `sumMoney` e `percentOf`, ampliando-as se precisar) e troque os usos espalhados por essas funções. Regras: nenhuma saída pública pode mudar (valores, textos das mensagens, relatório, alertas), byte a byte; ao final não pode sobrar `Math.round` nem `toFixed` fora de `src/money.js`; não altere os testes existentes, que têm de continuar passando sem mudança. Rode `npm test` ao final.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+      "iniciadoEm": "2026-11-23T16:14:54.278Z",
+      "encerradoEm": "2026-11-23T16:15:47.872Z",
+      "situacao": "concluido",
+      "resposta": "A refatoração está feita e `npm test` passou com 51 de 51 testes. Não alterei nenhum arquivo em `test/` e não fiz commit. Conferi com um grep: não sobrou `Math.round` nem `toFixed` fora de `src/money.js`. Só rodei os testes existentes. Não comparei a saída antiga com a nova para valores de borda, então a garantia de saída idêntica byte a byte se apoia na análise do executor e nos testes.\n\n**O que mudou por arquivo**\n- **`src/money.js`:** `round2`, `sumMoney` e `percentOf` ficaram iguais. `formatBRL` ganhou duas opções para manter o comportamento antigo:\n  - `round: false` não arredonda antes de formatar.\n  - `lenient: true` devolve `R$ NaN` ou `R$ 1e+21` para `NaN`, `Infinity` e valores de 1e21 em diante, como o código antigo.\n- **`src/cart/cart.js`:** usa `round2` e `sumMoney`.\n- **`src/pricing/discounts.js`:** usa `percentOf` e `sumMoney`.\n- **`src/pricing/tax.js`:** usa `round2` direto, porque `rate` não é um percentual.\n- **`src/pricing/shipping.js` e `src/pricing/pricing.js`:** usam `round2`.\n- **`src/notifications/templates.js`:** `price()` agora chama `formatBRL`.\n- **`src/notifications/notifier.js`:** usa `round2` e `formatBRL(estimate, { lenient: true })`. O regex de agrupamento antigo era diferente, mas dá a mesma saída para valores finitos.\n- **`src/reports/salesReport.js`:** usa `sumMoney` e `round2`, e o formatador local virou `formatBRL(value, { round: false })`. O antigo não arredondava antes do `toFixed`.\n\nNão ficou nada pendente.",
+      "motivoDaFalha": null,
+      "uso": {
+        "duracaoMs": 53488,
+        "tokensDeEntrada": 618286,
+        "tokensDeSaida": 14580,
+        "subagentesLancados": 1
+      },
+      "subagentes": [
+        {
+          "id": "ab968fa8a308c5305",
+          "descricao": "Centralizar dinheiro em money.js",
+          "situacao": "concluido",
+          "tokens": 31064,
+          "duracaoMs": 34112,
+          "resumo": "Refatoração concluída. `npm test` passou com 51 de 51 testes e 0 falhas, sem mudar nada em `test/`. O `grep -rn \"Math.round\\|toFixed\" src` fora de `src/money.js` não acha nada. Não fiz commit.\n\n**Mudanças por arquivo**\n- **`src/money.js`:** `formatBRL(value, { round = true, lenient = false })` ganhou duas opções para preservar o comportamento antigo (veja as divergências abaixo). `round2`, `sumMoney` e `percentOf` ficaram iguais.\n- **`src/cart/cart.js`:** usa `round2` e `sumMoney`.\n- **`src/pricing/discounts.js`:** `percentOf(base, coupon.value)` mantém `(base*value)/100`, e `lineSubtotal` usa `sumMoney`.\n- **`src/pricing/tax.js`:** `round2(taxableAmount * rate)`. Não usei `percentOf`, porque `rate` não é percentual.\n- **`src/pricing/shipping.js` e `src/pricing/pricing.js`:** usam `round2`.\n- **`src/notifications/templates.js`:** `price()` agora chama `formatBRL`.\n- **`src/notifications/notifier.js`:** usa `round2` e `formatBRL(estimate, { lenient: true })`.\n- **`src/reports/salesReport.js`:** usa `sumMoney` e `round2`, e o formatador local virou `formatBRL(value, { round: false })`.\n\n**Divergências de borda tratadas**\n- **`salesReport`:** o formatador antigo não arredondava antes do `toFixed(2)`. Em valores não arredondados, como `-0.001` ou `1.255`, o resultado pode diferir do de `formatBRL`. Por isso criei `round: false`.\n- **`notifier`:** o regex de agrupamento é diferente, mas dá a mesma saída para valores finitos, incluindo grandes, zero e negativos. Para `NaN`, `Infinity` e valores de 1e21 em diante, o código antigo devolvia `R$ NaN` ou `R$ 1e+21`. O `formatBRL` puro devolveria `R$ NaN,undefined`. Por isso criei `lenient: true`.\n- **`templates.js`:** o formatador antigo é idêntico ao `formatBRL` padrão, inclusive nesses casos.\n\nSó rodei os testes existentes. Não comparei a saída antiga com a nova para os valores de borda."
+        }
+      ],
+      "anexos": [],
+      "modo": "execucao",
+      "decisaoDoPlano": null,
+      "perguntas": [],
+      "motor": "claude-code"
+    }
+  ],
+  "worktree": {
+    "branch": "orquestrador/0b96d3f3-e963-4852-a069-99b642b64fa3",
+    "caminho": "/private/tmp/bench-gosub/dados-c/worktrees/0b96d3f3",
+    "ativo": false
+  },
+  "fila": [],
+  "instrucoesNaConversa": false,
+  "retomadaPendente": null,
+  "sessoesDosMotores": {},
+  "liberaEmDosMotores": {}
+}

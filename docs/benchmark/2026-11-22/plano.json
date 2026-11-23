@@ -1,0 +1,258 @@
+{
+ "semente": 20261122,
+ "algoritmo": "mulberry32 + Fisher-Yates por (rodada, tarefa)",
+ "execucoes": [
+  {
+   "id": "r1-T1-B",
+   "rodada": 1,
+   "tarefa": "T1",
+   "config": "B",
+   "posicao": 1
+  },
+  {
+   "id": "r1-T1-A",
+   "rodada": 1,
+   "tarefa": "T1",
+   "config": "A",
+   "posicao": 2
+  },
+  {
+   "id": "r1-T1-C",
+   "rodada": 1,
+   "tarefa": "T1",
+   "config": "C",
+   "posicao": 3
+  },
+  {
+   "id": "r1-T2-C",
+   "rodada": 1,
+   "tarefa": "T2",
+   "config": "C",
+   "posicao": 1
+  },
+  {
+   "id": "r1-T2-B",
+   "rodada": 1,
+   "tarefa": "T2",
+   "config": "B",
+   "posicao": 2
+  },
+  {
+   "id": "r1-T2-A",
+   "rodada": 1,
+   "tarefa": "T2",
+   "config": "A",
+   "posicao": 3
+  },
+  {
+   "id": "r1-T3-A",
+   "rodada": 1,
+   "tarefa": "T3",
+   "config": "A",
+   "posicao": 1
+  },
+  {
+   "id": "r1-T3-C",
+   "rodada": 1,
+   "tarefa": "T3",
+   "config": "C",
+   "posicao": 2
+  },
+  {
+   "id": "r1-T3-B",
+   "rodada": 1,
+   "tarefa": "T3",
+   "config": "B",
+   "posicao": 3
+  },
+  {
+   "id": "r1-T4-A",
+   "rodada": 1,
+   "tarefa": "T4",
+   "config": "A",
+   "posicao": 1
+  },
+  {
+   "id": "r1-T4-C",
+   "rodada": 1,
+   "tarefa": "T4",
+   "config": "C",
+   "posicao": 2
+  },
+  {
+   "id": "r1-T4-B",
+   "rodada": 1,
+   "tarefa": "T4",
+   "config": "B",
+   "posicao": 3
+  },
+  {
+   "id": "r2-T1-C",
+   "rodada": 2,
+   "tarefa": "T1",
+   "config": "C",
+   "posicao": 1
+  },
+  {
+   "id": "r2-T1-B",
+   "rodada": 2,
+   "tarefa": "T1",
+   "config": "B",
+   "posicao": 2
+  },
+  {
+   "id": "r2-T1-A",
+   "rodada": 2,
+   "tarefa": "T1",
+   "config": "A",
+   "posicao": 3
+  },
+  {
+   "id": "r2-T2-A",
+   "rodada": 2,
+   "tarefa": "T2",
+   "config": "A",
+   "posicao": 1
+  },
+  {
+   "id": "r2-T2-C",
+   "rodada": 2,
+   "tarefa": "T2",
+   "config": "C",
+   "posicao": 2
+  },
+  {
+   "id": "r2-T2-B",
+   "rodada": 2,
+   "tarefa": "T2",
+   "config": "B",
+   "posicao": 3
+  },
+  {
+   "id": "r2-T3-C",
+   "rodada": 2,
+   "tarefa": "T3",
+   "config": "C",
+   "posicao": 1
+  },
+  {
+   "id": "r2-T3-B",
+   "rodada": 2,
+   "tarefa": "T3",
+   "config": "B",
+   "posicao": 2
+  },
+  {
+   "id": "r2-T3-A",
+   "rodada": 2,
+   "tarefa": "T3",
+   "config": "A",
+   "posicao": 3
+  },
+  {
+   "id": "r2-T4-B",
+   "rodada": 2,
+   "tarefa": "T4",
+   "config": "B",
+   "posicao": 1
+  },
+  {
+   "id": "r2-T4-A",
+   "rodada": 2,
+   "tarefa": "T4",
+   "config": "A",
+   "posicao": 2
+  },
+  {
+   "id": "r2-T4-C",
+   "rodada": 2,
+   "tarefa": "T4",
+   "config": "C",
+   "posicao": 3
+  },
+  {
+   "id": "r3-T1-A",
+   "rodada": 3,
+   "tarefa": "T1",
+   "config": "A",
+   "posicao": 1
+  },
+  {
+   "id": "r3-T1-B",
+   "rodada": 3,
+   "tarefa": "T1",
+   "config": "B",
+   "posicao": 2
+  },
+  {
+   "id": "r3-T1-C",
+   "rodada": 3,
+   "tarefa": "T1",
+   "config": "C",
+   "posicao": 3
+  },
+  {
+   "id": "r3-T2-B",
+   "rodada": 3,
+   "tarefa": "T2",
+   "config": "B",
+   "posicao": 1
+  },
+  {
+   "id": "r3-T2-A",
+   "rodada": 3,
+   "tarefa": "T2",
+   "config": "A",
+   "posicao": 2
+  },
+  {
+   "id": "r3-T2-C",
+   "rodada": 3,
+   "tarefa": "T2",
+   "config": "C",
+   "posicao": 3
+  },
+  {
+   "id": "r3-T3-A",
+   "rodada": 3,
+   "tarefa": "T3",
+   "config": "A",
+   "posicao": 1
+  },
+  {
+   "id": "r3-T3-B",
+   "rodada": 3,
+   "tarefa": "T3",
+   "config": "B",
+   "posicao": 2
+  },
+  {
+   "id": "r3-T3-C",
+   "rodada": 3,
+   "tarefa": "T3",
+   "config": "C",
+   "posicao": 3
+  },
+  {
+   "id": "r3-T4-A",
+   "rodada": 3,
+   "tarefa": "T4",
+   "config": "A",
+   "posicao": 1
+  },
+  {
+   "id": "r3-T4-C",
+   "rodada": 3,
+   "tarefa": "T4",
+   "config": "C",
+   "posicao": 2
+  },
+  {
+   "id": "r3-T4-B",
+   "rodada": 3,
+   "tarefa": "T4",
+   "config": "B",
+   "posicao": 3
+  }
+ ]
+}

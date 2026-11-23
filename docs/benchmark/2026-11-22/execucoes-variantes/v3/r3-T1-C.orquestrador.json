@@ -1,0 +1,69 @@
+{
+  "id": "ad9a0d89-d62a-4f09-9731-44287bfad789",
+  "nome": "bench r3-T1-C",
+  "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/r3-T1-C-mwthewwp",
+  "sessaoId": "2e662460-9849-42d6-bd12-97c2e54a0e4d",
+  "sessaoIniciada": true,
+  "criadoEm": "2026-11-23T16:30:13.358Z",
+  "configuracao": {
+    "motorDoOrquestrador": "claude-code",
+    "motorDosSubagentes": "claude-code",
+    "modeloDoOrquestrador": "sonnet",
+    "modeloDosSubagentes": "sonnet",
+    "ordemDeReserva": [],
+    "quantidadeDeSubagentes": {
+      "modo": "automatica",
+      "limite": 3
+    },
+    "nivelDePermissao": "edicao_e_comandos",
+    "permitirCommitEPush": false,
+    "permitirArtefatosOnline": false,
+    "navegadorDoAgente": false,
+    "esforcoDoOrquestrador": "medio",
+    "esforcoDosSubagentes": "medio",
+    "instrucoesPersonalizadas": "",
+    "subagentesProntos": "todos"
+  },
+  "turnos": [
+    {
+      "id": "5a6d13e1-3621-46ce-a488-68bbe9a61b24",
+      "texto": "Bug relatado por uma cliente neste projeto (loja-pedidos, Node sem dependências): um pedido de exatamente R$ 100,00 com o cupom BEMVINDO10 foi recusado por pedido mínimo não atingido, mas a descrição do cupom diz \"para pedidos a partir de R$ 100,00\". Corrija para que o pedido mínimo dos cupons seja inclusivo (vale para todos os cupons com mínimo), sem mudar mais nada do comportamento, e acrescente um teste que cubra o caso. Rode `npm test` ao final: tudo tem de passar.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+      "iniciadoEm": "2026-11-23T16:30:13.359Z",
+      "encerradoEm": "2026-11-23T16:30:40.959Z",
+      "situacao": "concluido",
+      "resposta": "Corrigi o bug: o pedido mínimo dos cupons agora é inclusivo, então um pedido de exatamente R$ 100,00 com BEMVINDO10 é aceito. `npm test` passou, com 54 testes aprovados e 0 falhas. Não fiz commit.\n\n- **Correção:** em `src/pricing/discounts.js:19`, a comparação `subtotal <= coupon.minSubtotal` virou `subtotal < coupon.minSubtotal`. Isso vale para todos os cupons com mínimo (BEMVINDO10, DESC50 e FRETEGRATIS). Nada mais foi alterado.\n- **Testes novos:** em `test/discounts.test.js`, três casos com subtotal exatamente igual ao mínimo, todos aceitos:\n  - BEMVINDO10 com 1 × R$ 100,00, desconto de R$ 10,00.\n  - DESC50 com 1 × R$ 300,00, desconto de R$ 50,00.\n  - FRETEGRATIS com 1 × R$ 150,00, frete grátis.\n- **Teste existente:** o \"abaixo do mínimo é recusado\" continua válido (79,80 retorna `MIN_SUBTOTAL`).\n- **Arredondamento:** o subagente verificou o cálculo do subtotal. Casos como 3 × 33,33333 e 1000 × 0,1 fecham em 100, então um pedido de R$ 100,00 não fica abaixo do mínimo por erro de ponto flutuante.\n\nNão há pendências.",
+      "motivoDaFalha": null,
+      "uso": {
+        "duracaoMs": 27488,
+        "tokensDeEntrada": 554778,
+        "tokensDeSaida": 6720,
+        "subagentesLancados": 1
+      },
+      "subagentes": [
+        {
+          "id": "add27e2523e503776",
+          "descricao": "Corrigir mínimo inclusivo do cupom",
+          "situacao": "concluido",
+          "tokens": 25392,
+          "duracaoMs": 11664,
+          "resumo": "A correção está feita e `npm test` passou: 54 testes, 54 aprovados, 0 falhas.\n\n**Diff**\n- Em `src/pricing/discounts.js`, linha 19, `subtotal <= coupon.minSubtotal` virou `subtotal < coupon.minSubtotal`.\n- Em `test/discounts.test.js`, acrescentei três testes com subtotal exatamente igual ao mínimo, todos aceitos:\n  - BEMVINDO10 com 1 x 100, desconto de 10.\n  - DESC50 com 1 x 300, desconto de 50.\n  - FRETEGRATIS com 1 x 150, frete grátis.\n- O teste existente \"abaixo do mínimo é recusado\" continua válido: 2 x 39,90 dá 79,80, abaixo de 100, e retorna `MIN_SUBTOTAL`.\n\n**Risco de arredondamento em `lineSubtotal`:** não encontrei risco para o caso pedido. A função soma `unitPrice * quantity` e arredonda para 2 casas com `Math.round(raw * 100) / 100`. Rodei três casos e todos deram 100:\n- 3 x 33,33333.\n- 3 x 33,333333333333336.\n- 1000 x 0,1.\n\nO arredondamento só falharia em subtotais que caiam exatamente num meio centavo, o que não ocorre nesses casos. Não alterei a função.\n\nNão fiz commit."
+        }
+      ],
+      "anexos": [],
+      "modo": "execucao",
+      "decisaoDoPlano": null,
+      "perguntas": [],
+      "motor": "claude-code"
+    }
+  ],
+  "worktree": {
+    "branch": "orquestrador/ad9a0d89-d62a-4f09-9731-44287bfad789",
+    "caminho": "/private/tmp/bench-gosub/dados-c/worktrees/ad9a0d89",
+    "ativo": false
+  },
+  "fila": [],
+  "instrucoesNaConversa": false,
+  "retomadaPendente": null,
+  "sessoesDosMotores": {},
+  "liberaEmDosMotores": {}
+}
