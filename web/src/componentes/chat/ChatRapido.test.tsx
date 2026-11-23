@@ -658,10 +658,118 @@ describe("ChatRapido · modo invisível", () => {
     fireEvent.keyDown(campo, { key: "Enter" });
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "Não foi possível capturar a tela: sem permissão de tela. A pergunta não foi enviada.",
+      "Não foi possível capturar a tela (sem permissão de tela). A pergunta não foi enviada.",
     );
     expect(perguntar).not.toHaveBeenCalled();
     expect(campo).toHaveValue("Veja");
+  });
+
+  it.each(["denied", "restricted"])(
+    'com a permissão de Gravação de Tela "%s", não captura nem envia, mantém o texto e oferece abrir os Ajustes',
+    async (estado) => {
+      const perguntar = vi.spyOn(api, "perguntarNoChat");
+      const { modoInvisivel, ativar } = ponteAtiva();
+      const permissaoDaTela = vi.fn().mockResolvedValue(estado);
+      const abrirAjustesDaTela = vi.fn().mockResolvedValue(undefined);
+      Object.assign(modoInvisivel, { permissaoDaTela, abrirAjustesDaTela });
+      const { campo } = renderizar();
+      ativar();
+
+      fireEvent.change(campo, { target: { value: "Veja" } });
+      fireEvent.keyDown(campo, { key: "Enter" });
+
+      const alerta = await screen.findByRole("alert");
+      expect(alerta).toHaveTextContent("Sem permissão de Gravação de Tela. A pergunta não foi enviada.");
+      expect(permissaoDaTela).toHaveBeenCalledTimes(1);
+      expect(modoInvisivel.capturarTela).not.toHaveBeenCalled();
+      expect(perguntar).not.toHaveBeenCalled();
+      expect(campo).toHaveValue("Veja");
+
+      fireEvent.click(within(alerta).getByRole("button", { name: "Abrir Ajustes" }));
+      expect(abrirAjustesDaTela).toHaveBeenCalledTimes(1);
+    },
+  );
+
+  it.each(["not-determined", "unknown"])(
+    'com a permissão "%s", tenta capturar (é a tentativa que faz o Mac perguntar) e envia com a foto',
+    async (estado) => {
+      const perguntar = vi.spyOn(api, "perguntarNoChat").mockResolvedValue({ mensagemId: "m1" });
+      const { modoInvisivel, ativar } = ponteAtiva();
+      const permissaoDaTela = vi.fn().mockResolvedValue(estado);
+      Object.assign(modoInvisivel, { permissaoDaTela, abrirAjustesDaTela: vi.fn().mockResolvedValue(undefined) });
+      const { campo } = renderizar();
+      ativar();
+
+      fireEvent.change(campo, { target: { value: "Oi" } });
+      fireEvent.keyDown(campo, { key: "Enter" });
+
+      await waitFor(() => expect(perguntar).toHaveBeenCalledWith("Oi", [FOTO]));
+      expect(permissaoDaTela).toHaveBeenCalledTimes(1);
+      expect(modoInvisivel.capturarTela).toHaveBeenCalledTimes(1);
+      expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    },
+  );
+
+  it("o erro da captura sai sem o prefixo técnico do Electron e com um ponto só, sem o botão dos Ajustes", async () => {
+    const perguntar = vi.spyOn(api, "perguntarNoChat");
+    const { modoInvisivel, ativar } = ponteAtiva(
+      vi.fn().mockRejectedValue(new Error("Error invoking remote method 'tela:capturar': Error: monitor desligado.")),
+    );
+    Object.assign(modoInvisivel, {
+      permissaoDaTela: vi.fn().mockResolvedValue("granted"),
+      abrirAjustesDaTela: vi.fn().mockResolvedValue(undefined),
+    });
+    const { campo } = renderizar();
+    ativar();
+
+    fireEvent.change(campo, { target: { value: "Veja" } });
+    fireEvent.keyDown(campo, { key: "Enter" });
+
+    const alerta = await screen.findByRole("alert");
+    expect(alerta.textContent).toBe("Não foi possível capturar a tela (monitor desligado). A pergunta não foi enviada.");
+    expect(within(alerta).queryByRole("button", { name: "Abrir Ajustes" })).not.toBeInTheDocument();
+    expect(perguntar).not.toHaveBeenCalled();
+  });
+
+  it('"Failed to get sources" do Electron conta como falta da permissão, com o botão dos Ajustes', async () => {
+    const perguntar = vi.spyOn(api, "perguntarNoChat");
+    const { modoInvisivel, ativar } = ponteAtiva(
+      vi.fn().mockRejectedValue(new Error("Error invoking remote method 'tela:capturar': Failed to get sources.")),
+    );
+    const abrirAjustesDaTela = vi.fn().mockResolvedValue(undefined);
+    Object.assign(modoInvisivel, { permissaoDaTela: vi.fn().mockResolvedValue("granted"), abrirAjustesDaTela });
+    const { campo } = renderizar();
+    ativar();
+
+    fireEvent.change(campo, { target: { value: "Veja" } });
+    fireEvent.keyDown(campo, { key: "Enter" });
+
+    const alerta = await screen.findByRole("alert");
+    expect(alerta).toHaveTextContent(/^Sem permissão de Gravação de Tela\. A pergunta não foi enviada\.\s*Abrir Ajustes$/);
+    expect(perguntar).not.toHaveBeenCalled();
+    expect(campo).toHaveValue("Veja");
+    fireEvent.click(within(alerta).getByRole("button", { name: "Abrir Ajustes" }));
+    expect(abrirAjustesDaTela).toHaveBeenCalledTimes(1);
+  });
+
+  it("uma ponte antiga, sem a consulta da permissão nem os Ajustes, segue capturando; sem permissão, não há botão", async () => {
+    const perguntar = vi.spyOn(api, "perguntarNoChat").mockResolvedValue({ mensagemId: "m1" });
+    const { modoInvisivel, ativar } = ponteAtiva(
+      vi.fn().mockResolvedValueOnce(FOTO).mockRejectedValueOnce(new Error("Failed to get sources")),
+    );
+    expect(modoInvisivel).not.toHaveProperty("permissaoDaTela");
+    const { campo } = renderizar();
+    ativar();
+
+    fireEvent.change(campo, { target: { value: "Oi" } });
+    fireEvent.keyDown(campo, { key: "Enter" });
+    await waitFor(() => expect(perguntar).toHaveBeenCalledWith("Oi", [FOTO]));
+
+    fireEvent.change(campo, { target: { value: "De novo" } });
+    fireEvent.keyDown(campo, { key: "Enter" });
+    const alerta = await screen.findByRole("alert");
+    expect(alerta).toHaveTextContent("Sem permissão de Gravação de Tela. A pergunta não foi enviada.");
+    expect(within(alerta).queryByRole("button")).not.toBeInTheDocument();
   });
 
   it("sem o modo ativo, não captura nem anexa nada", async () => {

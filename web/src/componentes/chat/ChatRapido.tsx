@@ -112,6 +112,27 @@ const SEM_ORQUESTRADORES: readonly ResumoDoOrquestrador[] = [];
 const MARGEM_DE_ACOMPANHAMENTO = 80;
 /** Quantas mensagens o chat desenha de uma vez; "Mostrar anteriores" revela mais esse tanto. */
 const MENSAGENS_POR_PAGINA = 100;
+/** Modo invisível no Mac sem a permissão de Gravação de Tela: o erro ganha o botão "Abrir Ajustes". */
+const SEM_PERMISSAO_DA_TELA = "Sem permissão de Gravação de Tela. A pergunta não foi enviada.";
+
+/**
+ * O erro da captura da tela, sem o prefixo técnico do Electron ("Error invoking remote
+ * method 'tela:capturar': ") e sem o ponto final, para caber na frase com um ponto só.
+ * O "Failed to get sources" do Electron no Mac quase sempre é a falta da permissão.
+ */
+function erroDaCapturaDaTela(falha: unknown): string {
+  const motivo = mensagemDeErro(falha)
+    .replace(/^Error invoking remote method '[^']*':\s*/, "")
+    .replace(/^Error:\s*/, "")
+    .trim()
+    .replace(/\.+$/, "");
+  if (/failed to get sources/i.test(motivo)) {
+    return SEM_PERMISSAO_DA_TELA;
+  }
+  return motivo === ""
+    ? "Não foi possível capturar a tela. A pergunta não foi enviada."
+    : `Não foi possível capturar a tela (${motivo}). A pergunta não foi enviada.`;
+}
 
 interface Props extends PropsDasAcoesDoChat {
   chat: EstadoDoChatNaTela;
@@ -809,6 +830,9 @@ export function ChatRapido({
     alternarEscutaManual,
     entrar: entrarNoModo,
     capturarTela,
+    permissaoDaTela,
+    ajustesDaTelaDisponivel,
+    abrirAjustesDaTela,
     aoCapturarQuadro,
     aoAtalho,
     aoMudarOculto,
@@ -971,11 +995,17 @@ export function ChatRapido({
               `No modo invisível a tela ocupa um dos ${MAXIMO_DE_ANEXOS} anexos: remova um arquivo anexado.`,
             );
           }
+          // No Mac, permissão negada ou restrita: avisa antes, com o atalho aos Ajustes. Com "not-determined"
+          // a captura segue, porque é a tentativa que faz o sistema perguntar (e pôr o app na lista dos Ajustes).
+          const permissao = await permissaoDaTela();
+          if (permissao === "denied" || permissao === "restricted") {
+            throw new Error(SEM_PERMISSAO_DA_TELA);
+          }
           let captura: CapturaDeTela;
           try {
             captura = await capturarTela();
           } catch (falha) {
-            throw new Error(`Não foi possível capturar a tela: ${mensagemDeErro(falha)}. A pergunta não foi enviada.`);
+            throw new Error(erroDaCapturaDaTela(falha));
           }
           todosOsAnexos = [
             ...anexos,
@@ -995,7 +1025,7 @@ export function ChatRapido({
         setEnviando(false);
       }
     },
-    [modoAtivo, capturarTela],
+    [modoAtivo, capturarTela, permissaoDaTela],
   );
 
   /** A pergunta detectada pela escuta vai como a do campo, com o print e a origem; rejeita com o erro original. */
@@ -2172,6 +2202,14 @@ export function ChatRapido({
           {(erro ?? erroAoCarregar) !== null && (
             <p className="hint-error texto-longo px-3" role="alert">
               {erro ?? `Não foi possível carregar o chat: ${erroAoCarregar}`}
+              {erro === SEM_PERMISSAO_DA_TELA && ajustesDaTelaDisponivel && (
+                <>
+                  {" "}
+                  <button type="button" className="btn btn-sm btn-ghost" onClick={() => void abrirAjustesDaTela()}>
+                    Abrir Ajustes
+                  </button>
+                </>
+              )}
             </p>
           )}
         </div>

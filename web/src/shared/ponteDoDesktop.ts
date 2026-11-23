@@ -101,6 +101,9 @@ export interface CapturaDeTela {
   base64: string;
 }
 
+/** A permissão de Gravação de Tela do sistema (a do Mac; nos outros sistemas é sempre "granted"). */
+export type PermissaoDaTela = "granted" | "denied" | "not-determined" | "restricted" | "unknown";
+
 /**
  * O modo invisível: a janela fica transparente, só o header e o chat rápido
  * aparecem, e os cliques fora deles atravessam para os apps de trás.
@@ -144,6 +147,10 @@ export interface ApiDoModoInvisivel {
   aoAtalho?(callback: (acao: string) => void): () => void;
   /** Avisa quando o overlay é ocultado ou mostrado (Ctrl+\); devolve a função que cancela. */
   aoMudarOculto?(callback: (oculto: boolean) => void): () => void;
+  /** A permissão de Gravação de Tela, consultada antes de cada captura. Opcional para pontes antigas. */
+  permissaoDaTela?(): Promise<PermissaoDaTela>;
+  /** Abre os Ajustes do Mac em Privacidade e Segurança, Gravação de Tela. Opcional para pontes antigas. */
+  abrirAjustesDaTela?(): Promise<void>;
 }
 
 /** As ações dos atalhos globais do modo invisível que a tela trata. */

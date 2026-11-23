@@ -282,6 +282,34 @@ describe("useModoInvisivel", () => {
     expect(result.current.erro).toContain("recusado");
   });
 
+  it("permissaoDaTela e abrirAjustesDaTela repassam à ponte", async () => {
+    const abrirAjustesDaTela = vi.fn().mockResolvedValue(undefined);
+    ponte({ permissaoDaTela: vi.fn().mockResolvedValue("denied"), abrirAjustesDaTela });
+    const { result } = renderHook(() => useModoInvisivel());
+
+    await expect(result.current.permissaoDaTela()).resolves.toBe("denied");
+    expect(result.current.ajustesDaTelaDisponivel).toBe(true);
+    await result.current.abrirAjustesDaTela();
+    expect(abrirAjustesDaTela).toHaveBeenCalledTimes(1);
+  });
+
+  it("sem as funções da permissão (ponte antiga) ou com falha nelas, conta como concedida e nunca lança", async () => {
+    ponte();
+    const antiga = renderHook(() => useModoInvisivel());
+    await expect(antiga.result.current.permissaoDaTela()).resolves.toBe("granted");
+    expect(antiga.result.current.ajustesDaTelaDisponivel).toBe(false);
+    await expect(antiga.result.current.abrirAjustesDaTela()).resolves.toBeUndefined();
+    antiga.unmount();
+
+    ponte({
+      permissaoDaTela: vi.fn().mockRejectedValue(new Error("canal ausente")),
+      abrirAjustesDaTela: vi.fn().mockRejectedValue(new Error("falhou")),
+    });
+    const comFalha = renderHook(() => useModoInvisivel());
+    await expect(comFalha.result.current.permissaoDaTela()).resolves.toBe("granted");
+    await expect(comFalha.result.current.abrirAjustesDaTela()).resolves.toBeUndefined();
+  });
+
   it("capturarTela devolve a foto da ponte", async () => {
     ponte();
     const { result } = renderHook(() => useModoInvisivel());

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { type ApiDoModoInvisivel, apiDoModoInvisivel, type CapturaDeTela } from "../ponteDoDesktop";
+import { type ApiDoModoInvisivel, apiDoModoInvisivel, type CapturaDeTela, type PermissaoDaTela } from "../ponteDoDesktop";
 
 export interface MouseDaArea {
   onMouseEnter: () => void;
@@ -29,6 +29,15 @@ export interface ModoInvisivel {
   mouseDaArea: MouseDaArea;
   /** Foto da tela do monitor da janela; lança se a captura falhar. */
   capturarTela: () => Promise<CapturaDeTela>;
+  /**
+   * A permissão de Gravação de Tela (só o Mac pede). Uma ponte sem a consulta, ou uma
+   * consulta que falha, conta como "granted": a captura tenta e o erro dela é tratado.
+   */
+  permissaoDaTela: () => Promise<PermissaoDaTela>;
+  /** A ponte sabe abrir os Ajustes da Gravação de Tela (sem isso, o botão não aparece). */
+  ajustesDaTelaDisponivel: boolean;
+  /** Abre os Ajustes do Mac na Gravação de Tela. Nunca lança: sem ponte, ou se falhar, nada acontece. */
+  abrirAjustesDaTela: () => Promise<void>;
   /** Quadro atual da tela (botão "capturar agora"); lança se falhar. */
   capturarAgora: () => Promise<CapturaDeTela>;
   /** Assina os quadros do atalho global Ctrl+Shift+S; devolve o cancelamento (no-op no navegador). */
@@ -174,6 +183,28 @@ export function useModoInvisivel(): ModoInvisivel {
     return api.capturarTela();
   }, [api]);
 
+  const permissaoDaTela = useCallback(async (): Promise<PermissaoDaTela> => {
+    if (api === null || typeof api.permissaoDaTela !== "function") {
+      return "granted";
+    }
+    try {
+      return await api.permissaoDaTela();
+    } catch {
+      return "granted";
+    }
+  }, [api]);
+
+  const abrirAjustesDaTela = useCallback(async () => {
+    if (api === null || typeof api.abrirAjustesDaTela !== "function") {
+      return;
+    }
+    try {
+      await api.abrirAjustesDaTela();
+    } catch {
+      // Sem abrir os Ajustes, o usuário ainda pode ir por conta própria: nada a avisar.
+    }
+  }, [api]);
+
   const capturarAgora = useCallback(async () => {
     if (api === null) {
       throw new Error("a captura de tela só existe no aplicativo desktop");
@@ -261,6 +292,9 @@ export function useModoInvisivel(): ModoInvisivel {
     descartarErro,
     mouseDaArea,
     capturarTela,
+    permissaoDaTela,
+    ajustesDaTelaDisponivel: api !== null && typeof api.abrirAjustesDaTela === "function",
+    abrirAjustesDaTela,
     capturarAgora,
     aoCapturarQuadro,
     alternar,
