@@ -13,6 +13,7 @@ import { PastaDeTrabalho } from "../../orquestracao/PastaDeTrabalho";
 import { caminhoParaRegraDePermissao } from "./ArgumentosDoClaudeCode";
 import { ExecucaoDoClaudeCode, FachadaClaudeCodeCli, SaidaDoClaudeCode } from "./FachadaClaudeCodeCli";
 import { MotorClaudeCodeCli } from "./MotorClaudeCodeCli";
+import { type EscolhaDePlugins, PluginsPorSessao } from "./SeletorDePlugins";
 
 const pastaDoTeste = mkdtempSync(path.join(tmpdir(), "motor-do-orquestrador-"));
 afterAll(() => rmSync(pastaDoTeste, { recursive: true, force: true }));
@@ -207,6 +208,142 @@ describe("MotorClaudeCodeCli e as instruções personalizadas", () => {
 
     expect(textoDaEntrada(fachada)).not.toContain("instrucoes-do-usuario");
     expect(textoDaEntrada(fachada)).not.toContain("Instruções personalizadas");
+  });
+});
+
+/** Seletor fixo: devolve sempre a mesma escolha e guarda o que recebeu. */
+function pluginsFixos(escolha: EscolhaDePlugins): { plugins: PluginsPorSessao; chamadas: [string, EscolhaDePlugins | null][] } {
+  const chamadas: [string, EscolhaDePlugins | null][] = [];
+  const catalogo = {
+    ler: async () => ({
+      plugins: [
+        { chave: "superpowers@oficial", nome: "superpowers", descricao: "", skills: [] },
+        { chave: "logo-design@logos", nome: "logo-design", descricao: "", skills: [] },
+      ],
+      skillsAvulsas: [{ nome: "dataviz", descricao: "", origem: "embutida" as const, plugin: null }],
+    }),
+  };
+  const seletor = {
+    selecionar: async (pedido: string, anterior: EscolhaDePlugins | null = null) => {
+      chamadas.push([pedido, anterior]);
+      return escolha;
+    },
+  };
+  return { plugins: new PluginsPorSessao(seletor, catalogo), chamadas };
+}
+
+/** Lê o --settings e a mensagem do turno enquanto os temporários existem. */
+class FachadaQueGuardaOSettings extends FachadaQueGuardaAEntrada {
+  settings: unknown = null;
+  argumentos: string[] = [];
+  ferramentasDoExecutor: string[] = [];
+
+  /** Os valores de uma opção variádica, até a próxima opção. */
+  valores(opcao: string): string[] {
+    const inicio = this.argumentos.indexOf(opcao) + 1;
+    const fim = this.argumentos.findIndex((argumento, indice) => indice >= inicio && argumento.startsWith("--"));
+    return this.argumentos.slice(inicio, fim < 0 ? undefined : fim);
+  }
+
+  override async executar(
+    execucao: ExecucaoDoClaudeCode,
+    aoReceberMensagem: (mensagem: unknown) => void,
+  ): Promise<SaidaDoClaudeCode> {
+    this.settings = JSON.parse(readFileSync(execucao.argumentos[execucao.argumentos.indexOf("--settings") + 1] ?? "", "utf8"));
+    this.argumentos = [...execucao.argumentos];
+    const agentes = JSON.parse(readFileSync(execucao.argumentos[execucao.argumentos.indexOf("--agents") + 1] ?? "", "utf8")) as {
+      executor?: { tools?: string[] };
+    };
+    this.ferramentasDoExecutor = agentes.executor?.tools ?? [];
+    return super.executar(execucao, aoReceberMensagem);
+  }
+}
+
+describe("MotorClaudeCodeCli e os plugins do turno", () => {
+  const escolha: EscolhaDePlugins = {
+    plugins: ["superpowers@oficial"],
+    skillsAvulsas: [],
+    skillsAvulsasLigadas: false,
+    motivo: "pedido de TDD",
+    origem: "modelo",
+    consumo: { custoUsd: 0.002, tokensDeEntrada: 900, tokensDeSaida: 20, duracaoMs: 1500 },
+  };
+
+  it("escolhe pelo texto do pedido, grava no --settings, avisa na mensagem e registra o evento", async () => {
+    const fachada = new FachadaQueGuardaOSettings();
+    const { plugins, chamadas } = pluginsFixos(escolha);
+    const eventos: { tipo: string }[] = [];
+
+    const resultado = await new MotorClaudeCodeCli(fachada as unknown as FachadaClaudeCodeCli, undefined, plugins).executarTurno(
+      pedidoComInstrucoes(null),
+      (evento) => eventos.push(evento),
+      new AbortController().signal,
+    );
+
+    expect(resultado.sucesso).toBe(true);
+    expect(chamadas).toEqual([["analise o projeto", null]]);
+    expect(fachada.settings).toEqual({
+      enabledPlugins: { "superpowers@oficial": true, "logo-design@logos": false },
+      skillOverrides: { dataviz: "off" },
+    });
+    const texto = textoDaEntrada(fachada);
+    expect(texto.startsWith("<skills-do-pedido>Carregadas para este pedido: superpowers (pedido de TDD).")).toBe(true);
+    expect(texto).toContain("ao delegar, diga no brief qual skill o subagente deve usar");
+    expect(texto.endsWith("\n\nanalise o projeto")).toBe(true);
+    // O prompt de sistema não muda com a escolha: o cache da conversa continua valendo.
+    expect(fachada.instrucoesIniciais).not.toContain("Carregadas");
+    // Com algo carregado, Orquestrador e executor ganham a ferramenta Skill, liberada.
+    expect(fachada.valores("--tools")).toContain("Skill");
+    expect(fachada.valores("--allowedTools")).toContain("Skill");
+    expect(fachada.ferramentasDoExecutor).toContain("Skill");
+    expect(eventos[0]).toMatchObject({
+      tipo: "plugins_escolhidos",
+      escolha: { plugins: ["superpowers@oficial"], skills: [], origem: "modelo", custoUsd: 0.002, tokensDeEntrada: 900 },
+    });
+  });
+
+  it("passa a escolha anterior da mesma sessão ao seletor", async () => {
+    const { plugins, chamadas } = pluginsFixos(escolha);
+    const motor = new MotorClaudeCodeCli(new FachadaQueGuardaAEntrada() as unknown as FachadaClaudeCodeCli, undefined, plugins);
+
+    await motor.executarTurno(pedidoComInstrucoes(null), () => undefined, new AbortController().signal);
+    await motor.executarTurno(pedidoComInstrucoes(null), () => undefined, new AbortController().signal);
+
+    expect(chamadas[1]?.[1]).toBe(escolha);
+  });
+
+  it("sem nada carregado, a mensagem não ganha a linha", async () => {
+    const fachada = new FachadaQueGuardaOSettings();
+    const { plugins } = pluginsFixos({ plugins: [], skillsAvulsas: [], skillsAvulsasLigadas: false, motivo: "nada útil", origem: "modelo" });
+
+    await new MotorClaudeCodeCli(fachada as unknown as FachadaClaudeCodeCli, undefined, plugins).executarTurno(
+      pedidoComInstrucoes(null),
+      () => undefined,
+      new AbortController().signal,
+    );
+
+    expect(textoDaEntrada(fachada)).not.toContain("skills-do-pedido");
+    expect(fachada.settings).toMatchObject({ enabledPlugins: { "superpowers@oficial": false } });
+    expect(fachada.valores("--tools")).not.toContain("Skill");
+    expect(fachada.valores("--allowedTools")).not.toContain("Skill");
+    expect(fachada.ferramentasDoExecutor).not.toContain("Skill");
+  });
+
+  it("um seletor que falha não derruba o turno: nada ligado, origem nenhum", async () => {
+    const eventos: { tipo: string; escolha?: { origem: string } }[] = [];
+    const plugins = new PluginsPorSessao(
+      { selecionar: () => Promise.reject(new Error("CLI fora do ar")) },
+      { ler: () => Promise.reject(new Error("disco")) },
+    );
+
+    const resultado = await new MotorClaudeCodeCli(
+      new FachadaQueGuardaOSettings() as unknown as FachadaClaudeCodeCli,
+      undefined,
+      plugins,
+    ).executarTurno(pedidoComInstrucoes(null), (evento) => eventos.push(evento), new AbortController().signal);
+
+    expect(resultado.sucesso).toBe(true);
+    expect(eventos[0]?.escolha?.origem).toBe("nenhum");
   });
 });
 

@@ -254,6 +254,7 @@ export class ServicoDeChat {
             alteracoesAutorizadas,
             pastaDeArtefatos,
           }),
+          textoDoUsuario: textoDaPergunta,
           instrucoes: instrucoesDoChat(),
           imagens: imagens.map((imagem) => ({
             caminho: anexos.caminhoDe(ID_DO_CHAT, imagem.arquivo),
@@ -335,6 +336,9 @@ export class ServicoDeChat {
           return;
         case "uso_da_cota":
           this.publicar({ tipo: "uso_da_cota", janelas: evento.janelas });
+          return;
+        case "plugins_escolhidos":
+          this.publicar({ tipo: "plugins_escolhidos", escolha: evento.escolha });
           return;
         default:
           return;

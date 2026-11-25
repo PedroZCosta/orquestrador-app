@@ -5,8 +5,10 @@ import {
   caminhoParaRegraDePermissao,
   COMANDOS_DE_PUSH_FORCADO,
   type ConfiguracoesDaSessao,
+  FERRAMENTA_DE_SKILLS,
   liberadasComArtefatos,
   nivelDeEsforcoDoClaudeCode,
+  type SettingsDosPlugins,
   VARIAVEL_DE_ESFORCO,
 } from "./ArgumentosDoClaudeCode";
 
@@ -53,9 +55,10 @@ export function ferramentasLiberadasDoChat(alteracoesAutorizadas: boolean, pasta
  * do Claude Code (o trailer `Co-Authored-By` nos commits e o "Generated with
  * Claude Code" nos PRs), que a política do usuário proíbe. Mesmo formato dos
  * Orquestradores com commit e push liberados (`configuracoesDaSessao`).
+ * `plugins` traz os plugins e skills escolhidos para a pergunta.
  */
-export function configuracoesDaSessaoDoChat(): ConfiguracoesDaSessao {
-  return { attribution: { commit: "", pr: "" } };
+export function configuracoesDaSessaoDoChat(plugins: SettingsDosPlugins | null = null): ConfiguracoesDaSessao {
+  return { attribution: { commit: "", pr: "" }, ...(plugins ?? {}) };
 }
 
 /** Arquivos de ambiente (`.env`, `.env.local`, `.env.production`…): podem guardar segredos. */
@@ -110,12 +113,16 @@ export interface ArquivosDoChat {
  * liberada sempre (`ferramentasLiberadasDoChat`). `--settings` entra sempre,
  * para nenhum commit sair com a linha Co-authored-by.
  *
+ * `Skill` entra, em `--tools` e liberada, só com `comSkills`: na pergunta em
+ * que o seletor carregou algum plugin ou skill.
+ *
  * `--disallowedTools` é variádica e fica por último, para não engolir as
  * opções seguintes.
  */
-export function montarArgumentosDoChat(pergunta: PerguntaAoMotorDeChat, arquivos: ArquivosDoChat): string[] {
+export function montarArgumentosDoChat(pergunta: PerguntaAoMotorDeChat, arquivos: ArquivosDoChat, comSkills = false): string[] {
   const esforco = nivelDeEsforcoDoClaudeCode(pergunta.esforco);
-  const liberadas = ferramentasLiberadasDoChat(pergunta.alteracoesAutorizadas, pergunta.pastaDeArtefatos);
+  const skills = comSkills ? [FERRAMENTA_DE_SKILLS] : [];
+  const liberadas = [...ferramentasLiberadasDoChat(pergunta.alteracoesAutorizadas, pergunta.pastaDeArtefatos), ...skills];
   return [
     "-p",
     "--input-format",
@@ -142,6 +149,7 @@ export function montarArgumentosDoChat(pergunta: PerguntaAoMotorDeChat, arquivos
     "dontAsk",
     "--tools",
     ...FERRAMENTAS_DO_CHAT,
+    ...skills,
     "--allowedTools",
     ...liberadas,
     "--disallowedTools",

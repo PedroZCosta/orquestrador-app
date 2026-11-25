@@ -18,11 +18,14 @@ import { RepositorioDeNotasEmArquivo } from "./infraestrutura/arquivos/Repositor
 import { RepositorioDeOrquestradoresEmArquivo } from "./infraestrutura/arquivos/RepositorioDeOrquestradoresEmArquivo";
 import { RepositorioDePreferenciasEmArquivo } from "./infraestrutura/arquivos/RepositorioDePreferenciasEmArquivo";
 import { RepositorioDoChatEmArquivo } from "./infraestrutura/arquivos/RepositorioDoChatEmArquivo";
+import { ambienteSemSessaoPai } from "./infraestrutura/claudecode/ArgumentosDoClaudeCode";
+import { CatalogoDePlugins } from "./infraestrutura/claudecode/CatalogoDePlugins";
 import { ConfiguracoesDeEsforcoDoClaudeCode } from "./infraestrutura/claudecode/ConfiguracoesDeEsforcoDoClaudeCode";
 import { FachadaClaudeCodeCli } from "./infraestrutura/claudecode/FachadaClaudeCodeCli";
 import { MedidorDeConsumoPorTranscricoes } from "./infraestrutura/claudecode/MedidorDeConsumoPorTranscricoes";
 import { MotorClaudeCodeCli } from "./infraestrutura/claudecode/MotorClaudeCodeCli";
 import { MotorDeChatClaudeCodeCli } from "./infraestrutura/claudecode/MotorDeChatClaudeCodeCli";
+import { executorPelaFachada, PluginsPorSessao, SeletorDePlugins } from "./infraestrutura/claudecode/SeletorDePlugins";
 import {
   Configuracao,
   lerConfiguracao,
@@ -159,9 +162,32 @@ async function iniciar(): Promise<void> {
     console.warn(`[worktrees] ${worktreesOrfaos} worktree(s) órfão(s) do servidor anterior foram removidos.`);
   }
 
+  // Antes de cada turno (e de cada pergunta do chat), o app escolhe quais
+  // plugins e skills do usuário a sessão carrega, para cortar o peso fixo do
+  // contexto. Citado pelo nome entra sempre; senão uma chamada curta ao Haiku
+  // decide. Falha ou demora repete a escolha anterior (ou nenhuma) e o turno segue.
+  // ORQUESTRADOR_SELECAO_DE_PLUGINS=desligada volta ao comportamento antigo:
+  // a sessão carrega tudo como o usuário configurou.
+  const catalogoDePlugins = new CatalogoDePlugins();
+  const seletorDePlugins = new SeletorDePlugins({
+    catalogo: catalogoDePlugins,
+    executar: executorPelaFachada(new FachadaClaudeCodeCli(configuracao.caminhoDoClaudeCode, registro), {
+      ambiente: ambienteSemSessaoPai(process.env),
+    }),
+  });
+  const pluginsPorSessao = (): PluginsPorSessao | null =>
+    configuracao.selecaoDePlugins ? new PluginsPorSessao(seletorDePlugins, catalogoDePlugins) : null;
+  if (!configuracao.selecaoDePlugins) {
+    console.warn("[seletor-de-plugins] desligado por ORQUESTRADOR_SELECAO_DE_PLUGINS; plugins como o usuário configurou.");
+  }
+
   const servico = new ServicoDeOrquestracao({
     repositorio,
-    motor: new MotorClaudeCodeCli(new FachadaClaudeCodeCli(configuracao.caminhoDoClaudeCode, registro)),
+    motor: new MotorClaudeCodeCli(
+      new FachadaClaudeCodeCli(configuracao.caminhoDoClaudeCode, registro),
+      undefined,
+      pluginsPorSessao(),
+    ),
     execucoes,
     publicador: canal,
     anexos,
@@ -194,7 +220,11 @@ async function iniciar(): Promise<void> {
   const canalDoChat = new CanalDoChat();
   const servicoDeChat = new ServicoDeChat({
     repositorio: repositorioDoChat,
-    motor: new MotorDeChatClaudeCodeCli(new FachadaClaudeCodeCli(configuracao.caminhoDoClaudeCode, registro)),
+    motor: new MotorDeChatClaudeCodeCli(
+      new FachadaClaudeCodeCli(configuracao.caminhoDoClaudeCode, registro),
+      process.env,
+      pluginsPorSessao(),
+    ),
     projetos: projetosDoChat,
     // dados/anexos/chat/: o mesmo armazém dos Orquestradores, com a chave "chat".
     anexos,

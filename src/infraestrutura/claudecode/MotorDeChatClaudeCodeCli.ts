@@ -14,6 +14,7 @@ import { configuracoesDaSessaoDoChat, montarAmbienteDoChat, montarArgumentosDoCh
 import { linhaDeEntrada } from "./ArgumentosDoClaudeCode";
 import { FachadaClaudeCodeCli, SaidaDoClaudeCode } from "./FachadaClaudeCodeCli";
 import { prepararPastaDeArtefatos } from "./MotorClaudeCodeCli";
+import { linhaDosPluginsCarregados, PluginsPorSessao } from "./SeletorDePlugins";
 
 /** Dono dos processos do chat no registro de processos (não é um Orquestrador). */
 export const DONO_DOS_PROCESSOS_DO_CHAT = "chat";
@@ -39,9 +40,14 @@ function descreverSaidaSemResultado(saida: SaidaDoClaudeCode): string {
  * cancelada.
  */
 export class MotorDeChatClaudeCodeCli implements MotorDeChat {
+  /**
+   * `plugins`: escolhe, antes de cada pergunta, os plugins e skills do usuário
+   * que a sessão carrega. Sem ele, carrega tudo o que o usuário configurou.
+   */
   constructor(
     private readonly fachada: FachadaClaudeCodeCli,
     private readonly ambienteBase: NodeJS.ProcessEnv = process.env,
+    private readonly plugins: PluginsPorSessao | null = null,
   ) {}
 
   async responder(
@@ -61,7 +67,10 @@ export class MotorDeChatClaudeCodeCli implements MotorDeChat {
     try {
       await mkdir(pastaTemporaria, { recursive: true });
       await writeFile(arquivos.instrucoes, pergunta.instrucoes, "utf8");
-      await writeFile(arquivos.configuracoes, JSON.stringify(configuracoesDaSessaoDoChat()), "utf8");
+      const plugins = this.plugins === null ? null : await this.plugins.escolher(pergunta.sessaoId, pergunta.textoDoUsuario);
+      await writeFile(arquivos.configuracoes, JSON.stringify(configuracoesDaSessaoDoChat(plugins?.settings ?? null)), "utf8");
+      const linhaDosPlugins = plugins === null ? null : linhaDosPluginsCarregados(plugins.escolha, false);
+      const textoDaEntrada = linhaDosPlugins === null ? pergunta.mensagem : `${linhaDosPlugins}\n\n${pergunta.mensagem}`;
       await mkdir(pergunta.pastaDaSessao, { recursive: true });
       // Criada antes do processo e pelo caminho real, para a regra de gravação casar.
       const pastaDeArtefatos = await prepararPastaDeArtefatos(pergunta.pastaDeArtefatos);
@@ -74,16 +83,23 @@ export class MotorDeChatClaudeCodeCli implements MotorDeChat {
       );
 
       const adaptador = new AdaptadorDeEventosDoChat(pergunta.alteracoesAutorizadas);
+      // A escolha só é anunciada quando o processo já falou: qualquer evento
+      // do motor marca a sessão do chat como iniciada, e ela só existe a partir daí.
+      let escolhaAnunciada = plugins === null;
       const inicio = Date.now();
       const saida = await this.fachada.executar(
         {
-          argumentos: montarArgumentosDoChat({ ...pergunta, pastaDeArtefatos }, arquivos),
+          argumentos: montarArgumentosDoChat({ ...pergunta, pastaDeArtefatos }, arquivos, linhaDosPlugins !== null),
           pasta: pergunta.pastaDaSessao,
           ambiente: montarAmbienteDoChat(this.ambienteBase, pergunta.esforco),
-          entrada: linhaDeEntrada(pergunta.mensagem, imagens),
+          entrada: linhaDeEntrada(textoDaEntrada, imagens),
           dono: { orquestradorId: DONO_DOS_PROCESSOS_DO_CHAT, sessaoId: pergunta.sessaoId },
         },
         (mensagem) => {
+          if (!escolhaAnunciada && plugins !== null) {
+            escolhaAnunciada = true;
+            aoObservar({ tipo: "plugins_escolhidos", escolha: plugins.registro });
+          }
           for (const evento of adaptador.traduzir(mensagem)) {
             aoObservar(evento);
           }

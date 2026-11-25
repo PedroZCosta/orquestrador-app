@@ -8,6 +8,13 @@ import { modeloDoSubagentePronto } from "../../orquestracao/SubagentesProntos";
 const FERRAMENTA_DE_SUBAGENTES = "Agent";
 
 /**
+ * A ferramenta que invoca skills. Sem ela na sessão as skills nem entram no
+ * contexto (nem a lista delas): por isso entra só no turno em que o
+ * `SeletorDePlugins` carregou algum plugin ou skill, e a lista fica só com eles.
+ */
+export const FERRAMENTA_DE_SKILLS = "Skill";
+
+/**
  * Níveis de esforço que o Claude Code aceita no `--effort` e no campo `effort`
  * da definição de agente (https://code.claude.com/docs/en/cli-reference e
  * https://code.claude.com/docs/en/sub-agents#supported-frontmatter-fields).
@@ -149,12 +156,26 @@ export function comandosProibidosDoTurno(pedido: PedidoDeTurno): readonly string
   return pedido.configuracao.permiteCommitEPush(pedido.modo) ? COMANDOS_DE_PUSH_FORCADO : COMANDOS_DE_COMMIT_E_PUSH;
 }
 
+/**
+ * Plugins e skills que o `SeletorDePlugins` escolheu para o turno
+ * (`settingsDaEscolha`): os plugins do catálogo ligados ou desligados e as
+ * skills avulsas escondidas.
+ */
+export interface SettingsDosPlugins {
+  enabledPlugins: Record<string, boolean>;
+  skillOverrides: Record<string, "off">;
+}
+
 /** Chaves de configuração do Claude Code passadas só para a sessão do turno (`--settings`). */
 export interface ConfiguracoesDaSessao {
-  attribution: { commit: string; pr: string };
+  attribution?: { commit: string; pr: string };
+  enabledPlugins?: Record<string, boolean>;
+  skillOverrides?: Record<string, "off">;
 }
 
 /**
+ * Configuração da sessão do turno, gravada sempre (pode sair `{}`).
+ *
  * Com commit e push liberados, desliga a atribuição que o Claude Code põe por
  * padrão — o trailer `Co-Authored-By` nos commits e o "Generated with Claude
  * Code" nos PRs —, que a política do usuário proíbe. Texto vazio esconde cada
@@ -162,10 +183,18 @@ export interface ConfiguracoesDaSessao {
  * `attribution`). Não usamos `attribution: false`: só existe a partir da
  * v2.1.281, e versões anteriores descartam o arquivo inteiro.
  *
- * Nulo quando commit e push estão proibidos: nada a configurar.
+ * `plugins` traz a escolha do turno (`enabledPlugins` e `skillOverrides`).
+ * Não usamos `disableAllHooks`: mataria os hooks do próprio usuário; os hooks
+ * de um plugin já saem junto com ele.
  */
-export function configuracoesDaSessao(pedido: PedidoDeTurno): ConfiguracoesDaSessao | null {
-  return pedido.configuracao.permiteCommitEPush(pedido.modo) ? { attribution: { commit: "", pr: "" } } : null;
+export function configuracoesDaSessao(
+  pedido: PedidoDeTurno,
+  plugins: SettingsDosPlugins | null = null,
+): ConfiguracoesDaSessao {
+  return {
+    ...(pedido.configuracao.permiteCommitEPush(pedido.modo) ? { attribution: { commit: "", pr: "" } } : {}),
+    ...(plugins ?? {}),
+  };
 }
 
 /**
@@ -199,7 +228,7 @@ export function ambienteSemSessaoPai(base: NodeJS.ProcessEnv): NodeJS.ProcessEnv
 export interface ArquivosDoTurno {
   agentes: string;
   instrucoes: string;
-  /** Gravado só quando `configuracoesDaSessao` não é nulo; vai em `--settings`. */
+  /** Gravado sempre com `configuracoesDaSessao`; vai em `--settings`. */
   configuracoes: string;
 }
 
@@ -239,16 +268,17 @@ export function ferramentasDoTurno(pedido: PedidoDeTurno): readonly string[] {
  * ferramentas, esforço e regra de commit do executor: nunca mais permissão
  * que o turno; só mudam a descrição, a especialidade e, se escolhido, o modelo.
  */
-export function definicaoDosAgentes(pedido: PedidoDeTurno): Record<string, DefinicaoDeAgente> {
+export function definicaoDosAgentes(pedido: PedidoDeTurno, comSkills = false): Record<string, DefinicaoDeAgente> {
   const esforco = nivelDeEsforcoDoClaudeCode(pedido.configuracao.esforcoDosSubagentes);
   const permiteCommitEPush = pedido.configuracao.permiteCommitEPush(pedido.modo);
+  const ferramentas = comFerramentasDeArtefato([...ferramentasDoTurno(pedido), ...(comSkills ? [FERRAMENTA_DE_SKILLS] : [])]);
   const prontos = Object.fromEntries(
     pedido.subagentesProntos.map((subagente): [string, DefinicaoDeAgente] => [
       subagente.nome,
       {
         description: subagente.descricao,
         prompt: instrucoesDoSubagente(pedido.pastaDeTrabalho, permiteCommitEPush, pedido.pastaDeArtefatos, subagente),
-        tools: comFerramentasDeArtefato(ferramentasDoTurno(pedido)),
+        tools: ferramentas,
         model: modeloDoSubagentePronto(subagente, pedido.configuracao.modeloDosSubagentes),
         ...(esforco === null ? {} : { effort: esforco }),
       },
@@ -260,7 +290,7 @@ export function definicaoDosAgentes(pedido: PedidoDeTurno): Record<string, Defin
       description:
         "Executa uma subtarefa delegada pelo orquestrador e devolve um resultado objetivo.",
       prompt: instrucoesDoSubagente(pedido.pastaDeTrabalho, permiteCommitEPush, pedido.pastaDeArtefatos),
-      tools: comFerramentasDeArtefato(ferramentasDoTurno(pedido)),
+      tools: ferramentas,
       model: pedido.configuracao.modeloDosSubagentes,
       ...(esforco === null ? {} : { effort: esforco }),
     },
@@ -287,9 +317,12 @@ export function definicaoDosAgentes(pedido: PedidoDeTurno): Record<string, Defin
  * libera a edição, as permitidas levam só `Write(<pasta>/**)` e
  * `Edit(<pasta>/**)`: gravar no projeto continua negado.
  *
- * `--settings` entra só quando há configuração da sessão (commit e push
- * liberados): fica acima das configurações do usuário e do projeto, abaixo
- * das gerenciadas pela organização.
+ * `--settings` entra sempre (`configuracoesDaSessao`: plugins e skills do
+ * turno e, com commit e push liberados, a atribuição): fica acima das
+ * configurações do usuário e do projeto, abaixo das gerenciadas pela organização.
+ *
+ * `Skill` (`FERRAMENTA_DE_SKILLS`) entra, em `--tools` e liberada, só com
+ * `comSkills`: no turno em que o seletor carregou algum plugin ou skill.
  *
  * `--effort` entra só com esforço escolhido para o Orquestrador. É a flag, e
  * não a chave `effortLevel` em `--settings`, porque vence as configurações do
@@ -297,11 +330,10 @@ export function definicaoDosAgentes(pedido: PedidoDeTurno): Record<string, Defin
  * `max`, que as chaves de configuração não aceitam. Vale só para este
  * processo: cada turno a recebe de novo.
  */
-export function montarArgumentos(pedido: PedidoDeTurno, arquivos: ArquivosDoTurno): string[] {
-  const doNivel = [...ferramentasDoTurno(pedido), FERRAMENTA_DE_SUBAGENTES];
+export function montarArgumentos(pedido: PedidoDeTurno, arquivos: ArquivosDoTurno, comSkills = false): string[] {
+  const doNivel = [...ferramentasDoTurno(pedido), FERRAMENTA_DE_SUBAGENTES, ...(comSkills ? [FERRAMENTA_DE_SKILLS] : [])];
   const ferramentas = comFerramentasDeArtefato(doNivel);
   const liberadas = liberadasComArtefatos(doNivel, pedido.pastaDeArtefatos);
-  const configuracoes = configuracoesDaSessao(pedido) === null ? [] : ["--settings", arquivos.configuracoes];
   const esforco = nivelDeEsforcoDoClaudeCode(pedido.configuracao.esforcoDoOrquestrador);
 
   return [
@@ -323,7 +355,8 @@ export function montarArgumentos(pedido: PedidoDeTurno, arquivos: ArquivosDoTurn
     "--append-system-prompt-file",
     arquivos.instrucoes,
     "--strict-mcp-config",
-    ...configuracoes,
+    "--settings",
+    arquivos.configuracoes,
     "--permission-mode",
     "dontAsk",
     "--tools",

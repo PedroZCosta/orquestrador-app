@@ -143,6 +143,17 @@ describe("montarArgumentos", () => {
     expect(seguinte).not.toContain("--session-id");
   });
 
+  it("Skill entra em --tools, liberada e no executor só com algo carregado pelo seletor", () => {
+    const sem = montarArgumentos(pedido(false, "edicao"), arquivos);
+    const com = montarArgumentos(pedido(false, "edicao"), arquivos, true);
+
+    expect(sem).not.toContain("Skill");
+    expect(valoresDe(com, "--tools")).toContain("Skill");
+    expect(valoresDe(com, "--allowedTools")).toContain("Skill");
+    expect(definicaoDosAgentes(pedido(false, "edicao")).executor?.tools).not.toContain("Skill");
+    expect(definicaoDosAgentes(pedido(false, "edicao"), true).executor?.tools).toContain("Skill");
+  });
+
   it("nega por padrão o que não está liberado, sem perguntar", () => {
     const leitura = montarArgumentos(pedido(false), arquivos);
     const edicao = montarArgumentos(pedido(false, "edicao"), arquivos);
@@ -182,7 +193,9 @@ describe("montarArgumentos", () => {
       const argumentos = montarArgumentos(pedido(false, nivel), arquivos);
 
       expect(valoresDe(argumentos, "--disallowedTools")).toEqual(expect.arrayContaining(COMMIT_E_PUSH));
-      expect(argumentos).not.toContain("--settings");
+      // O --settings vai sempre; sem commit e push, sem a atribuição.
+      expect(valoresDe(argumentos, "--settings")).toEqual(["configuracoes.json"]);
+      expect(configuracoesDaSessao(pedido(false, nivel))).toEqual({});
     },
   );
 
@@ -212,16 +225,25 @@ describe("montarArgumentos", () => {
 
       expect(valoresDe(montarArgumentos(ligado, arquivos), "--settings")).toEqual(["configuracoes.json"]);
       expect(configuracoesDaSessao(ligado)).toEqual({ attribution: { commit: "", pr: "" } });
-      expect(configuracoesDaSessao(pedido(true, "edicao_e_comandos", "execucao", false))).toBeNull();
+      expect(configuracoesDaSessao(pedido(true, "edicao_e_comandos", "execucao", false))).toEqual({});
     });
 
-    it("no planejamento mantém commit e push negados e não passa configurações", () => {
+    it("mescla a atribuição com os plugins e skills do turno, sem desligar os hooks do usuário", () => {
+      const plugins = { enabledPlugins: { "superpowers@oficial": true, "logo-design@logos": false }, skillOverrides: { dataviz: "off" as const } };
+      const configuracoes = configuracoesDaSessao(pedido(true, "edicao_e_comandos", "execucao", true), plugins);
+
+      expect(configuracoes).toEqual({ attribution: { commit: "", pr: "" }, ...plugins });
+      expect(configuracoes).not.toHaveProperty("disableAllHooks");
+      expect(configuracoesDaSessao(pedido(false, "leitura"), plugins)).toEqual(plugins);
+    });
+
+    it("no planejamento mantém commit e push negados e não passa a atribuição", () => {
       const planejamento = pedido(true, "edicao_e_comandos", "planejamento", true);
       const argumentos = montarArgumentos(planejamento, arquivos);
 
       expect(valoresDe(argumentos, "--disallowedTools")).toEqual(expect.arrayContaining(COMMIT_E_PUSH));
-      expect(argumentos).not.toContain("--settings");
-      expect(configuracoesDaSessao(planejamento)).toBeNull();
+      expect(valoresDe(argumentos, "--settings")).toEqual(["configuracoes.json"]);
+      expect(configuracoesDaSessao(planejamento)).toEqual({});
       expect(definicaoDosAgentes(planejamento).executor?.prompt).toContain("Nunca faça commit nem push.");
     });
 
@@ -458,7 +480,7 @@ describe("esforço de raciocínio", () => {
     expect(valoresDe(argumentos, "--effort")).toEqual(["high"]);
     expect(definicaoDosAgentes(planejamento).executor?.effort).toBe("medium");
     expect(valoresDe(argumentos, "--allowedTools")).not.toContain("Edit");
-    expect(argumentos).not.toContain("--settings");
+    expect(configuracoesDaSessao(planejamento)).toEqual({});
   });
 
   it("com commit e push liberados, o esforço vai na flag e as configurações da sessão seguem só com a atribuição", () => {
@@ -474,13 +496,13 @@ describe("esforço de raciocínio", () => {
     expect(definicaoDosAgentes(ligado).executor?.effort).toBe("max");
   });
 
-  it("com esforço escolhido e commit e push proibidos, não passa configurações da sessão", () => {
+  it("com esforço escolhido e commit e push proibidos, as configurações da sessão vão sem a atribuição", () => {
     const argumentos = montarArgumentos(
       pedido(true, "edicao_e_comandos", "execucao", false, { esforcoDoOrquestrador: "baixo" }),
       arquivos,
     );
 
     expect(valoresDe(argumentos, "--effort")).toEqual(["low"]);
-    expect(argumentos).not.toContain("--settings");
+    expect(valoresDe(argumentos, "--settings")).toEqual(["configuracoes.json"]);
   });
 });

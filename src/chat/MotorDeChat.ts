@@ -1,6 +1,6 @@
 import type { TipoDeImagem } from "../orquestracao/Anexo";
 import type { EsforcoDeRaciocinio } from "../orquestracao/EsforcoDeRaciocinio";
-import type { JanelaDaCota } from "../orquestracao/EventoDeOrquestracao";
+import type { JanelaDaCota, PluginsDoTurno } from "../orquestracao/EventoDeOrquestracao";
 import type { ModeloClaude } from "../orquestracao/ModeloClaude";
 import type { AutorizacaoPendente } from "./MensagemDoChat";
 
@@ -19,6 +19,8 @@ export interface PerguntaAoMotorDeChat {
   sessaoIniciada: boolean;
   /** Texto final enviado pelo stdin, já com o bloco `<contexto-do-app>`. */
   mensagem: string;
+  /** Só o que o usuário escreveu, sem o bloco: é por ele que o app escolhe os plugins e skills da pergunta. */
+  textoDoUsuario: string;
   /** Instruções fixas do chat, acrescentadas ao prompt de sistema (`--append-system-prompt-file`). */
   instrucoes: string;
   imagens: readonly ImagemDaPergunta[];
@@ -53,7 +55,9 @@ export type EventoDoMotorDeChat =
   /** O motor usou uma ferramenta (pesquisa na web, leitura, edição, comando…); `detalhe` é um resumo curto da entrada. */
   | { tipo: "ferramenta_do_chat"; ferramenta: string; detalhe: string }
   /** Situação da cota da assinatura do Claude. */
-  | { tipo: "uso_da_cota"; janelas: JanelaDaCota[] };
+  | { tipo: "uso_da_cota"; janelas: JanelaDaCota[] }
+  /** Plugins e skills carregados para a pergunta; chega com a primeira mensagem do processo. */
+  | { tipo: "plugins_escolhidos"; escolha: PluginsDoTurno };
 
 /** Consumo de uma resposta. */
 export interface UsoDaResposta {

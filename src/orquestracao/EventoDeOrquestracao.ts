@@ -22,6 +22,26 @@ export interface JanelaDaCota {
   situacao: string;
 }
 
+/**
+ * Plugins e skills do usuário que o app carregou para um pedido, escolhidos
+ * antes de o turno começar. Só registro: a tela não mostra.
+ */
+export interface PluginsDoTurno {
+  /** Chaves `plugin@marketplace` ligadas; os demais plugins ficaram desligados. */
+  plugins: string[];
+  /** Skills avulsas (do usuário, sincronizadas, embutidas) ligadas; as demais ficaram escondidas. */
+  skills: string[];
+  motivo: string;
+  /** `citado` no pedido, escolha do `modelo`, repetição do turno `anterior` ou `nenhum`. */
+  origem: "citado" | "modelo" | "anterior" | "nenhum";
+  /** O que a chamada ao modelo da escolha custou; zero sem chamada. */
+  custoUsd: number;
+  tokensDeEntrada: number;
+  tokensDeSaida: number;
+  /** Tempo de relógio da escolha, que o turno esperou antes de iniciar o processo. */
+  duracaoMs: number;
+}
+
 export type SituacaoFinalDoSubagente = "concluido" | "falhou" | "cancelado";
 
 /** O que o motor observa enquanto executa um turno. */
@@ -68,6 +88,8 @@ export type EventoDoMotor =
    * Chega uma vez por endereço em cada turno, já normalizado.
    */
   | { tipo: "endereco_local_detectado"; url: string }
+  /** Os plugins e skills carregados neste turno; chega antes de a sessão iniciar. */
+  | { tipo: "plugins_escolhidos"; escolha: PluginsDoTurno }
   /** O Claude está raciocinando: não muda o turno, só mostra que há vida. */
   | { tipo: "sinal_de_vida"; tokensPensando: number };
 

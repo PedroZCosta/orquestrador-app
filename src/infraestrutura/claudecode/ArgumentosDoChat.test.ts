@@ -25,6 +25,7 @@ function pergunta(alteracoes: Partial<PerguntaAoMotorDeChat> = {}): PerguntaAoMo
     sessaoId: "sessao-1",
     sessaoIniciada: false,
     mensagem: "oi",
+    textoDoUsuario: "oi",
     instrucoes: "seja breve",
     imagens: [],
     pastaDasImagens: null,
@@ -70,6 +71,16 @@ describe("montarArgumentosDoChat", () => {
     expect(valoresDe(argumentos, "--permission-mode")).toEqual(["dontAsk"]);
     expect(valoresDe(argumentos, "--append-system-prompt-file")).toEqual(["instrucoes.txt"]);
     expect(valoresDe(argumentos, "--model")).toEqual(["haiku"]);
+  });
+
+  it("Skill entra em --tools e liberada só com algo carregado pelo seletor", () => {
+    const sem = montarArgumentosDoChat(pergunta(), arquivos);
+    const com = montarArgumentosDoChat(pergunta(), arquivos, true);
+
+    expect(valoresDe(sem, "--tools")).toEqual(TODAS);
+    expect(sem).not.toContain("Skill");
+    expect(valoresDe(com, "--tools")).toEqual([...TODAS, "Skill"]);
+    expect(valoresDe(com, "--allowedTools")).toContain("Skill");
   });
 
   it("--tools traz sempre as dez ferramentas, sem Subagentes", () => {
@@ -172,6 +183,12 @@ describe("configuracoesDaSessaoDoChat", () => {
   it("desliga a atribuição Co-authored-by com textos vazios", () => {
     expect(configuracoesDaSessaoDoChat()).toEqual({ attribution: { commit: "", pr: "" } });
     expect(JSON.stringify(configuracoesDaSessaoDoChat())).toBe('{"attribution":{"commit":"","pr":""}}');
+  });
+
+  it("mescla os plugins e skills escolhidos para a pergunta", () => {
+    const plugins = { enabledPlugins: { "superpowers@oficial": false }, skillOverrides: { dataviz: "off" as const } };
+
+    expect(configuracoesDaSessaoDoChat(plugins)).toEqual({ attribution: { commit: "", pr: "" }, ...plugins });
   });
 });
 

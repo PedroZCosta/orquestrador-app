@@ -13,6 +13,12 @@ export interface Configuracao {
   permitirNavegador: boolean;
   /** Para onde a página de recusa manda baixar o aplicativo. */
   urlDeDownload: string | null;
+  /**
+   * Escolha por turno dos plugins e skills que a sessão carrega. Desligada
+   * (`ORQUESTRADOR_SELECAO_DE_PLUGINS=desligada`), a sessão carrega tudo como o
+   * usuário configurou, sem `--settings` de plugins e sem chamada ao Haiku.
+   */
+  selecaoDePlugins: boolean;
 }
 
 /**
@@ -98,6 +104,7 @@ export function lerConfiguracao(ambiente: NodeJS.ProcessEnv = process.env): Conf
     chaveDeAcesso: lerChaveDeAcesso(ambiente.ORQUESTRADOR_CHAVE_DE_ACESSO),
     permitirNavegador: ambiente.ORQUESTRADOR_PERMITIR_NAVEGADOR === "1",
     urlDeDownload: lerUrlDeDownload(ambiente.ORQUESTRADOR_URL_DE_DOWNLOAD),
+    selecaoDePlugins: !["desligada", "0"].includes((ambiente.ORQUESTRADOR_SELECAO_DE_PLUGINS ?? "").trim().toLowerCase()),
   };
 }
 

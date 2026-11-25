@@ -50,6 +50,14 @@ describe("lerConfiguracao", () => {
     expect(lerConfiguracao({ ORQUESTRADOR_PERMITIR_NAVEGADOR: "0" }).permitirNavegador).toBe(false);
   });
 
+  it("seleção de plugins ligada por padrão; desliga com \"desligada\" ou \"0\"", () => {
+    expect(lerConfiguracao({}).selecaoDePlugins).toBe(true);
+    expect(lerConfiguracao({ ORQUESTRADOR_SELECAO_DE_PLUGINS: "ligada" }).selecaoDePlugins).toBe(true);
+    expect(lerConfiguracao({ ORQUESTRADOR_SELECAO_DE_PLUGINS: "desligada" }).selecaoDePlugins).toBe(false);
+    expect(lerConfiguracao({ ORQUESTRADOR_SELECAO_DE_PLUGINS: " Desligada " }).selecaoDePlugins).toBe(false);
+    expect(lerConfiguracao({ ORQUESTRADOR_SELECAO_DE_PLUGINS: "0" }).selecaoDePlugins).toBe(false);
+  });
+
   it("aceita URL de download http(s)", () => {
     expect(lerConfiguracao({ ORQUESTRADOR_URL_DE_DOWNLOAD: "https://exemplo.com/app" }).urlDeDownload).toBe(
       "https://exemplo.com/app",

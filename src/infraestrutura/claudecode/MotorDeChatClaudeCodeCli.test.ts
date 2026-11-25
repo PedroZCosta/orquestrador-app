@@ -7,6 +7,7 @@ import { afterAll, describe, expect, it } from "vitest";
 import type { EventoDoMotorDeChat, PerguntaAoMotorDeChat } from "../../chat/MotorDeChat";
 import { ExecucaoDoClaudeCode, FachadaClaudeCodeCli, SaidaDoClaudeCode } from "./FachadaClaudeCodeCli";
 import { MotorDeChatClaudeCodeCli } from "./MotorDeChatClaudeCodeCli";
+import { PluginsPorSessao } from "./SeletorDePlugins";
 
 const pastaDoTeste = mkdtempSync(path.join(tmpdir(), "motor-de-chat-"));
 afterAll(() => rmSync(pastaDoTeste, { recursive: true, force: true }));
@@ -49,6 +50,7 @@ function pergunta(alteracoes: Partial<PerguntaAoMotorDeChat> = {}): PerguntaAoMo
     sessaoId: "sessao-chat",
     sessaoIniciada: false,
     mensagem: "Qual a versão do Node?",
+    textoDoUsuario: "Qual a versão do Node?",
     instrucoes: "Responda curto.",
     imagens: [],
     pastaDasImagens: null,
@@ -125,6 +127,53 @@ describe("MotorDeChatClaudeCodeCli", () => {
     expect(path.basename(argumentoDe(fachada.execucao, "--settings"))).toBe("configuracoes.json");
     expect(existsSync(argumentoDe(fachada.execucao, "--append-system-prompt-file"))).toBe(false);
     expect(existsSync(argumentoDe(fachada.execucao, "--settings"))).toBe(false);
+  });
+
+  it("escolhe os plugins pelo texto do usuário, mescla no --settings e anuncia só depois que o processo fala", async () => {
+    const chamadas: string[] = [];
+    let eventosAoIniciar = -1;
+    const eventos: EventoDoMotorDeChat[] = [];
+    const fachada = new FachadaFalsa(async (_execucao, aoReceber) => {
+      eventosAoIniciar = eventos.length;
+      aoReceber(RESULTADO);
+      return { codigoDeSaida: 0, erroPadrao: "" };
+    });
+    const plugins = new PluginsPorSessao(
+      {
+        selecionar: async (pedido) => {
+          chamadas.push(pedido);
+          return { plugins: [], skillsAvulsas: ["dataviz"], skillsAvulsasLigadas: true, motivo: "citado no pedido: dataviz", origem: "citado" };
+        },
+      },
+      {
+        ler: async () => ({
+          plugins: [{ chave: "superpowers@oficial", nome: "superpowers", descricao: "", skills: [] }],
+          skillsAvulsas: [
+            { nome: "dataviz", descricao: "", origem: "embutida", plugin: null },
+            { nome: "run", descricao: "", origem: "embutida", plugin: null },
+          ],
+        }),
+      },
+    );
+
+    await new MotorDeChatClaudeCodeCli(fachada, {}, plugins).responder(
+      pergunta({ mensagem: "<contexto-do-app>run</contexto-do-app>\n\nfaça um gráfico", textoDoUsuario: "faça um gráfico" }),
+      (evento) => eventos.push(evento),
+      new AbortController().signal,
+    );
+
+    expect(chamadas).toEqual(["faça um gráfico"]);
+    expect(JSON.parse(fachada.configuracoesGravadas)).toEqual({
+      attribution: { commit: "", pr: "" },
+      enabledPlugins: { "superpowers@oficial": false },
+      skillOverrides: { run: "off" },
+    });
+    const entrada = JSON.parse(fachada.execucao?.entrada ?? "{}") as { message: { content: { text: string }[] } };
+    const texto = entrada.message.content[0]?.text ?? "";
+    expect(texto.startsWith("<skills-do-pedido>Carregadas para este pedido: dataviz (citado no pedido: dataviz).")).toBe(true);
+    expect(texto).not.toContain("ao delegar");
+    expect(eventosAoIniciar).toBe(0);
+    expect(eventos[0]).toMatchObject({ tipo: "plugins_escolhidos", escolha: { skills: ["dataviz"], origem: "citado" } });
   });
 
   it("sem autorização, a edição negada volta como autorização pendente", async () => {

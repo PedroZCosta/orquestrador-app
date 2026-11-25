@@ -15,6 +15,7 @@ import {
   montarArgumentos,
 } from "./ArgumentosDoClaudeCode";
 import { FachadaClaudeCodeCli, SaidaDoClaudeCode } from "./FachadaClaudeCodeCli";
+import { linhaDosPluginsCarregados, PluginsPorSessao } from "./SeletorDePlugins";
 import { SondaDeEndereco, sondarEnderecoLocal } from "./SondaDeEnderecoLocal";
 
 /**
@@ -47,9 +48,14 @@ function descreverSaidaSemResultado(saida: SaidaDoClaudeCode): string {
  * contrário, é permanente: o motor só a cria, se faltar.
  */
 export class MotorClaudeCodeCli implements MotorDeAgentes {
+  /**
+   * `plugins`: escolhe, antes de cada turno, os plugins e skills do usuário
+   * que a sessão carrega. Sem ele, carrega tudo o que o usuário configurou.
+   */
   constructor(
     private readonly fachada: FachadaClaudeCodeCli,
     private readonly sondar: SondaDeEndereco = sondarEnderecoLocal,
+    private readonly plugins: PluginsPorSessao | null = null,
   ) {}
 
   async executarTurno(
@@ -67,12 +73,17 @@ export class MotorClaudeCodeCli implements MotorDeAgentes {
     try {
       await mkdir(pastaTemporaria, { recursive: true });
       const pedido = { ...pedidoRecebido, pastaDeArtefatos: await prepararPastaDeArtefatos(pedidoRecebido.pastaDeArtefatos) };
-      await writeFile(arquivos.agentes, JSON.stringify(definicaoDosAgentes(pedido)), "utf8");
       await writeFile(arquivos.instrucoes, instrucoesDoOrquestrador(pedido.pastaDeTrabalho), "utf8");
-      const configuracoes = configuracoesDaSessao(pedido);
-      if (configuracoes !== null) {
-        await writeFile(arquivos.configuracoes, JSON.stringify(configuracoes), "utf8");
+      // Os Subagentes rodam dentro desta sessão: herdam os mesmos plugins e skills.
+      const plugins = this.plugins === null ? null : await this.plugins.escolher(pedido.sessaoId, pedido.texto);
+      if (plugins !== null) {
+        aoObservar({ tipo: "plugins_escolhidos", escolha: plugins.registro });
       }
+      await writeFile(arquivos.configuracoes, JSON.stringify(configuracoesDaSessao(pedido, plugins?.settings ?? null)), "utf8");
+      // Com algo carregado, Orquestrador e Subagentes ganham a ferramenta Skill para usá-lo.
+      const linhaDosPlugins = plugins === null ? null : linhaDosPluginsCarregados(plugins.escolha, true);
+      const comSkills = linhaDosPlugins !== null;
+      await writeFile(arquivos.agentes, JSON.stringify(definicaoDosAgentes(pedido, comSkills)), "utf8");
 
       const imagens = await Promise.all(
         pedido.imagens.map(async (imagem) => ({
@@ -80,7 +91,7 @@ export class MotorClaudeCodeCli implements MotorDeAgentes {
           base64: (await readFile(imagem.caminho)).toString("base64"),
         })),
       );
-      const texto = mensagemParaOOrquestrador(
+      const mensagem = mensagemParaOOrquestrador(
         pedido.texto,
         pedido.configuracao,
         pedido.imagens.map((imagem) => imagem.caminho),
@@ -90,6 +101,7 @@ export class MotorClaudeCodeCli implements MotorDeAgentes {
         pedido.revogarInstrucoesAnteriores,
         pedido.subagentesProntos,
       );
+      const texto = linhaDosPlugins === null ? mensagem : `${linhaDosPlugins}\n\n${mensagem}`;
 
       const adaptador = new AdaptadorDeEventosDoClaudeCode();
       // Endereços citados num comando ou na fala de um agente: só viram prévia
@@ -123,7 +135,7 @@ export class MotorClaudeCodeCli implements MotorDeAgentes {
       const inicio = Date.now();
       const saida = await this.fachada.executar(
         {
-          argumentos: montarArgumentos(pedido, arquivos),
+          argumentos: montarArgumentos(pedido, arquivos, comSkills),
           pasta: pedido.pastaDeTrabalho.caminho,
           ambiente: montarAmbiente(process.env, pedido),
           entrada: linhaDeEntrada(texto, imagens),

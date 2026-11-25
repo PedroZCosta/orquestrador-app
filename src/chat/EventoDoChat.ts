@@ -1,4 +1,4 @@
-import type { JanelaDaCota } from "../orquestracao/EventoDeOrquestracao";
+import type { JanelaDaCota, PluginsDoTurno } from "../orquestracao/EventoDeOrquestracao";
 import type { AcaoDoApp } from "./AcaoDoApp";
 import type { AutorizacaoPendente, DadosDaMensagemDoChat } from "./MensagemDoChat";
 import type { UsoDaResposta } from "./MotorDeChat";
@@ -35,7 +35,9 @@ export type EventoDoChat =
   /** O usuário tirou a autorização; vale a partir da próxima pergunta. */
   | { tipo: "autorizacao_revogada" }
   | { tipo: "preferencias_alteradas"; preferencias: DadosDasPreferenciasDoChat }
-  | { tipo: "uso_da_cota"; janelas: JanelaDaCota[] };
+  | { tipo: "uso_da_cota"; janelas: JanelaDaCota[] }
+  /** Plugins e skills carregados para uma pergunta. Só registro: a tela não mostra. */
+  | { tipo: "plugins_escolhidos"; escolha: PluginsDoTurno };
 
 /** Evento já gravado no histórico, com a posição na sequência e o instante. */
 export type EventoDoChatRegistrado = EventoDoChat & { sequencia: number; em: string };
