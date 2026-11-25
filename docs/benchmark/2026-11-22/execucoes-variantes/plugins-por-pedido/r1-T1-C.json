@@ -1,0 +1,409 @@
+{
+ "id": "r1-T1-C",
+ "rodada": 1,
+ "tarefa": "T1",
+ "config": "C",
+ "posicao": 1,
+ "variante": "base",
+ "tentativa": 1,
+ "prompt": "Bug relatado por uma cliente neste projeto (loja-pedidos, Node sem dependências): um pedido de exatamente R$ 100,00 com o cupom BEMVINDO10 foi recusado por pedido mínimo não atingido, mas a descrição do cupom diz \"para pedidos a partir de R$ 100,00\". Corrija para que o pedido mínimo dos cupons seja inclusivo (vale para todos os cupons com mínimo), sem mudar mais nada do comportamento, e acrescente um teste que cubra o caso. Rode `npm test` ao final: tudo tem de passar.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+ "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/r1-T1-C-mwwfnapi",
+ "inicio": "2026-11-25T18:04:03.787Z",
+ "carga": {
+  "em": "2026-11-25T18:04:03.702Z",
+  "uptime": "15:04  up  7:06, 1 user, load averages: 2.20 2.52 2.65",
+  "carga1m": 2.2,
+  "processos": [
+   "28670 15.3 368272 29:04 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/ar",
+   "56504 7.6 50992 00:00 node scripts/harness.mjs --variante base --app /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/worktrees/549e8a7f --saida plugins-por-pedido",
+   "56502 1.3 2288 00:00 /bin/zsh -c source /Users/pedro/.claude/shell-snapshots/snapshot-zsh-1795628109509-sc9vt9.sh 2>/dev/null || true && setopt NO_EXTENDED_GLOB NO_BARE_GLOB_QUAL NO_EQUALS 2>/dev/null",
+   "1130 0.3 183840 07:04:15 /Applications/Orquestrador de Agentes.app/Contents/Frameworks/Orquestrador de Agentes Helper.app/Contents/MacOS/Orquestrador de Agentes Helper --type=utility --utility-sub-typ",
+   "924 0.0 4176 07:04:41 /Applications/Claude.app/Contents/Helpers/chrome-native-host chrome-extension://fcoeoabgfenejglbffodgkkbkcdhcgfn/",
+   "921 0.0 31360 07:04:42 /System/Cryptexes/App/System/Library/CoreServices/PasswordManagerBrowserExtensionHelper.app/Contents/MacOS/PasswordManagerBrowserExtensionHelper chrome-extension://pejdijmoenmkg"
+  ],
+  "pesados": [],
+  "esperouS": 0,
+  "leiturasDaEspera": [],
+  "ocupadaAoComecar": false
+ },
+ "execucao": {
+  "orqId": "1fa4d453-4b50-49c4-bcb1-3e443e78a758",
+  "sessoes": [
+   "3ef0d5d5-abbf-4edd-9b95-fee65be3ecf3"
+  ],
+  "acoes": [],
+  "estourou": false,
+  "tempoMs": 34055,
+  "worktree": "/private/tmp/bench-gosub/dados-c/worktrees/1fa4d453",
+  "pastaEfetiva": "/private/tmp/bench-gosub/dados-c/worktrees/1fa4d453",
+  "turnosDoApp": 1,
+  "contagemDeEventos": {
+   "turno_iniciado": 1,
+   "plugins_escolhidos": 1,
+   "sessao_iniciada": 1,
+   "ferramenta_do_orquestrador": 2,
+   "uso_da_cota": 1,
+   "subagente_iniciado": 1,
+   "texto_do_orquestrador": 2,
+   "progresso_do_subagente": 6,
+   "texto_do_subagente": 2,
+   "subagente_concluido": 1,
+   "turno_concluido": 1,
+   "consumo_do_turno_medido": 1
+  },
+  "fimDoTurno": "turno_concluido",
+  "resposta": "O pedido mínimo dos cupons agora é inclusivo, então um pedido de exatamente R$ 100,00 com `BEMVINDO10` passa a ser aceito. O `npm test` passou: 53 testes aprovados, 0 falhas. Não fiz commit.\n\n- **Correção:** em `src/pricing/discounts.js` (linha 19), troquei `subtotal <= coupon.minSubtotal` por `subtotal < coupon.minSubtotal`. A regra está num só lugar, então vale para todos os cupons com mínimo. Não mexi em ponto flutuante, porque `lineSubtotal` já arredonda o subtotal para centavos.\n- **Testes:** em `test/discounts.test.js` entraram dois casos no limite exato.\n  - `BEMVINDO10` com R$ 100,00 é aceito, com desconto de 10.\n  - `FRETEGRATIS` com R$ 150,00 também é aceito, com frete grátis.\n\nNada mais foi alterado.",
+  "usoDoTurno": [
+   {
+    "duracaoMs": 30700,
+    "tokensDeEntrada": 266852,
+    "tokensDeSaida": 5142,
+    "subagentesLancados": 1
+   }
+  ],
+  "consumos": [
+   {
+    "principal": {
+     "entrada": 12,
+     "criacaoDeCache": 12754,
+     "leituraDeCache": 81458,
+     "saida": 1299
+    },
+    "subagentes": {
+     "entrada": 6,
+     "criacaoDeCache": 8725,
+     "leituraDeCache": 30471,
+     "saida": 1272
+    },
+    "subagentesMedidos": 1,
+    "parcial": false,
+    "indiceDeCusto": 50915,
+    "modeloDoPrincipal": "claude-sonnet-5-5"
+   }
+  ],
+  "cotas": [
+   {
+    "em": "2026-11-25T18:04:10.705Z",
+    "janelas": [
+     {
+      "nome": "7 dias",
+      "utilizacao": 0.36,
+      "renovaEm": "2026-11-30T15:00:00.000Z",
+      "situacao": "allowed"
+     }
+    ]
+   }
+  ],
+  "falhas": [],
+  "recuperacoes": [],
+  "subagentesIniciados": 1,
+  "pluginsEscolhidos": [
+   {
+    "plugins": [],
+    "skills": [],
+    "motivo": "Correção pontual de comparação (>= em vez de >) com teste em projeto Node sem skill específica aplicável; nenhuma skill da lista cobre isso.",
+    "origem": "modelo",
+    "custoUsd": 0.0013249000000000002,
+    "tokensDeEntrada": 6448,
+    "tokensDeSaida": 71,
+    "duracaoMs": 3228
+   }
+  ],
+  "configuracaoDoOrquestrador": {
+   "motorDoOrquestrador": "claude-code",
+   "modeloDoOrquestrador": "sonnet",
+   "esforcoDoOrquestrador": "medio",
+   "motorDosSubagentes": "claude-code",
+   "modeloDosSubagentes": "sonnet",
+   "esforcoDosSubagentes": "medio",
+   "ordemDeReserva": [],
+   "navegadorDoAgente": false,
+   "quantidadeDeSubagentes": {
+    "modo": "automatica",
+    "limite": 3
+   },
+   "nivelDePermissao": "edicao_e_comandos",
+   "permitirCommitEPush": false,
+   "permitirArtefatosOnline": false,
+   "instrucoesPersonalizadas": ""
+  },
+  "versaoDoApp": "0f773b8 + alterações locais em src/ (/Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/worktrees/549e8a7f)",
+  "porta": 3317
+ },
+ "consumoDoApp": {
+  "principal": {
+   "entrada": 12,
+   "criacaoDeCache": 12754,
+   "leituraDeCache": 81458,
+   "saida": 1299
+  },
+  "subagentes": {
+   "entrada": 6,
+   "criacaoDeCache": 8725,
+   "leituraDeCache": 30471,
+   "saida": 1272
+  },
+  "indiceDeCusto": 50915,
+  "subagentesMedidos": 1,
+  "modelos": [
+   "claude-sonnet-5-5"
+  ]
+ },
+ "resposta": "O pedido mínimo dos cupons agora é inclusivo, então um pedido de exatamente R$ 100,00 com `BEMVINDO10` passa a ser aceito. O `npm test` passou: 53 testes aprovados, 0 falhas. Não fiz commit.\n\n- **Correção:** em `src/pricing/discounts.js` (linha 19), troquei `subtotal <= coupon.minSubtotal` por `subtotal < coupon.minSubtotal`. A regra está num só lugar, então vale para todos os cupons com mínimo. Não mexi em ponto flutuante, porque `lineSubtotal` já arredonda o subtotal para centavos.\n- **Testes:** em `test/discounts.test.js` entraram dois casos no limite exato.\n  - `BEMVINDO10` com R$ 100,00 é aceito, com desconto de 10.\n  - `FRETEGRATIS` com R$ 150,00 também é aceito, com frete grátis.\n\nNada mais foi alterado.",
+ "usoDaAssinatura": {
+  "antes": {
+   "em": "2026-11-25T18:04:10.705Z",
+   "janelas": [
+    {
+     "nome": "7 dias",
+     "utilizacao": 0.36,
+     "renovaEm": "2026-11-30T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "depois": {
+   "em": "2026-11-25T18:04:10.705Z",
+   "janelas": [
+    {
+     "nome": "7 dias",
+     "utilizacao": 0.36,
+     "renovaEm": "2026-11-30T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "leituras": 1
+ },
+ "fim": "2026-11-25T18:05:00.858Z",
+ "tempoDeParedeS": 34.1,
+ "sessoes": [
+  "3ef0d5d5-abbf-4edd-9b95-fee65be3ecf3"
+ ],
+ "pastaDoResultado": "/private/tmp/bench-gosub/dados-c/worktrees/1fa4d453",
+ "tentativasAnteriores": [],
+ "checagem": {
+  "sucesso": true,
+  "motivo": "todos os critérios passaram",
+  "detalhes": {
+   "suiteDoProjeto": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.197667\n      type: 'test'\n      ...\n    # Subtest: ids sequenciais\n    ok 2 - ids sequenciais\n      ---\n      duration_ms: 0.066916\n      type: 'test'\n      ...\n    1..2\nok 15 - validação\n  ---\n  duration_ms: 0.336458\n  type: 'suite'\n  ...\n1..15\n# tests 53\n# suites 14\n# pass 53\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 139.229791\n"
+   },
+   "testeOculto": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.766042\n      type: 'test'\n      ...\n    # Subtest: acima do mínimo segue igual\n    ok 4 - acima do mínimo segue igual\n      ---\n      duration_ms: 0.079875\n      type: 'test'\n      ...\n    1..4\nok 1 - T1 oculto: pedido mínimo do cupom é inclusivo\n  ---\n  duration_ms: 3.509542\n  type: 'suite'\n  ...\n1..1\n# tests 4\n# suites 1\n# pass 4\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 49.621041\n"
+   }
+  }
+ },
+ "sucesso": true,
+ "arquivoDoDiff": "r1-T1-C.diff",
+ "arquivoDaResposta": "r1-T1-C.resposta.md",
+ "medicao": {
+  "arquivos": [
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-1fa4d453/3ef0d5d5-abbf-4edd-9b95-fee65be3ecf3.jsonl",
+    "papel": "principal",
+    "tipoDeAgente": null
+   },
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-1fa4d453/3ef0d5d5-abbf-4edd-9b95-fee65be3ecf3/subagents/agent-a62bb35cacec4030c.jsonl",
+    "papel": "subagente",
+    "tipoDeAgente": "executor"
+   }
+  ],
+  "medicaoDoApp": {
+   "total": {
+    "entrada": 18,
+    "criacaoDeCache": 21479,
+    "leituraDeCache": 111929,
+    "saida": 2571
+   },
+   "principal": {
+    "entrada": 12,
+    "criacaoDeCache": 12754,
+    "leituraDeCache": 81458,
+    "saida": 1299
+   },
+   "subagentes": {
+    "entrada": 6,
+    "criacaoDeCache": 8725,
+    "leituraDeCache": 30471,
+    "saida": 1272
+   },
+   "porModelo": {
+    "claude-sonnet-5-5": {
+     "entrada": 18,
+     "criacaoDeCache": 21479,
+     "leituraDeCache": 111929,
+     "saida": 2571
+    }
+   },
+   "ferramentas": {
+    "Grep": 1,
+    "Read": 4,
+    "Agent": 1,
+    "Edit": 2,
+    "Bash": 1
+   },
+   "subagentesLancados": 1,
+   "subagentesPorTipo": {
+    "executor": 1
+   },
+   "subagentesSemChamada": [],
+   "chamadasSemSubagente": [],
+   "mensagens": 8,
+   "modeloDoPrincipal": "claude-sonnet-5-5",
+   "indiceDeCusto": 50915,
+   "indicePrincipal": 30595,
+   "indiceSubagentes": 20319
+  },
+  "custo": {
+   "usd": 0.10976740000000001,
+   "usdPrincipal": 0.07217580000000001,
+   "usdSubagentes": 0.0375916,
+   "porModelo": {
+    "claude-sonnet-5-5": {
+     "usd": 0.10976740000000001,
+     "usdPrincipal": 0.07217580000000001,
+     "usdSubagentes": 0.0375916,
+     "tokens": {
+      "entrada": 18,
+      "cache5m": 8725,
+      "cache1h": 12754,
+      "leituraDeCache": 111929,
+      "saida": 2571
+     },
+     "tabela": "claude-sonnet-5-5"
+    }
+   },
+   "modelosSemPreco": []
+  }
+ },
+ "resumo": {
+  "usd": 0.10976740000000001,
+  "usdPrincipal": 0.07217580000000001,
+  "usdSubagentes": 0.0375916,
+  "indiceDeCusto": 50915,
+  "tokens": {
+   "entrada": 18,
+   "criacaoDeCache": 21479,
+   "leituraDeCache": 111929,
+   "saida": 2571
+  },
+  "principal": {
+   "entrada": 12,
+   "criacaoDeCache": 12754,
+   "leituraDeCache": 81458,
+   "saida": 1299
+  },
+  "subagentes": {
+   "entrada": 6,
+   "criacaoDeCache": 8725,
+   "leituraDeCache": 30471,
+   "saida": 1272
+  },
+  "modeloDoPrincipal": "claude-sonnet-5-5",
+  "modelos": [
+   "claude-sonnet-5-5"
+  ],
+  "quantidadeDeSubagentes": 1,
+  "mensagensDoModelo": 8,
+  "turnosDoUsuario": 1,
+  "turnosDoAgente": null,
+  "tempoDeParedeS": 34.1
+ },
+ "cargaDepois": {
+  "em": "2026-11-25T18:05:01.367Z",
+  "uptime": "15:05  up  7:07, 1 user, load averages: 3.24 2.72 2.71",
+  "carga1m": 3.24,
+  "processos": [
+   "56504 3.7 56576 00:58 node scripts/harness.mjs --variante base --app /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/worktrees/549e8a7f --saida plugins-por-pedido",
+   "57026 1.0 440000 00:35 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "1130 0.3 187200 07:05:13 /Applications/Orquestrador de Agentes.app/Contents/Frameworks/Orquestrador de Agentes Helper.app/Contents/MacOS/Orquestrador de Agentes Helper --type=utility --utility-sub-typ",
+   "28670 0.3 380608 30:02 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "924 0.0 4176 07:05:39 /Applications/Claude.app/Contents/Helpers/chrome-native-host chrome-extension://fcoeoabgfenejglbffodgkkbkcdhcgfn/",
+   "921 0.0 30912 07:05:40 /System/Cryptexes/App/System/Library/CoreServices/PasswordManagerBrowserExtensionHelper.app/Contents/MacOS/PasswordManagerBrowserExtensionHelper chrome-extension://pejdijmoenmkg",
+   "57458 0.0 2304 00:20 /bin/zsh -c source /Users/pedro/.claude/shell-snapshots/snapshot-zsh-1795628109509-sc9vt9.sh 2>/dev/null || true && setopt NO_EXTENDED_GLOB NO_BARE_GLOB_QUAL NO_EQUALS 2>/dev/null",
+   "56526 0.0 75360 00:58 /Users/pedro/.nvm/versions/node/v22.21.0/bin/node --require /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/worktrees/6354f7b0/node_modules/tsx/dist/prefli",
+   "56525 0.0 37136 00:58 node /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/worktrees/549e8a7f/node_modules/.bin/tsx src/root.ts"
+  ],
+  "pesados": []
+ },
+ "avisos": [
+  "Outros orquestradores rodam nesta máquina: o uso da assinatura (antes/depois) e o tempo de parede ficam contaminados por eles."
+ ],
+ "transcricoes": {
+  "orquestrador": {
+   "sessao": "3ef0d5d5-abbf-4edd-9b95-fee65be3ecf3",
+   "primeiraChamada": {
+    "entrada": 2,
+    "criacaoDeCache": 9100,
+    "leituraDeCache": 7951,
+    "total": 17053
+   }
+  },
+  "executores": [
+   {
+    "arquivo": "agent-a62bb35cacec4030c.jsonl",
+    "tipo": "executor",
+    "inicio": "2026-11-25T18:04:15.660Z",
+    "primeiraChamada": {
+     "entrada": 2,
+     "criacaoDeCache": 4768,
+     "leituraDeCache": 6021,
+     "total": 10791
+    }
+   }
+  ],
+  "encontradas": 1,
+  "principal": {
+   "chamadasAoModelo": 5,
+   "chamadasDeFerramenta": 3,
+   "porFerramenta": {
+    "Grep": 1,
+    "Read": 1,
+    "Agent": 1
+   }
+  },
+  "subagentes": {
+   "chamadasAoModelo": 3,
+   "chamadasDeFerramenta": 6,
+   "porFerramenta": {
+    "Read": 3,
+    "Edit": 2,
+    "Bash": 1
+   }
+  }
+ },
+ "chamadasDoIntermediario": [
+  {
+   "em": "2026-11-25T18:04:05.481Z",
+   "variante": "base",
+   "aplicadas": [],
+   "sessao": true,
+   "detalhes": {}
+  },
+  {
+   "em": "2026-11-25T18:04:08.190Z",
+   "variante": "base",
+   "aplicadas": [],
+   "sessao": true,
+   "detalhes": {}
+  }
+ ],
+ "cargaAlta": {
+  "antes": false,
+  "depois": false,
+  "carga1mAntes": 2.2,
+  "carga1mDepois": 3.24,
+  "esperouS": 0
+ },
+ "tempoComCargaAlta": false,
+ "arquivosDoApp": [
+  "r1-T1-C.eventos.jsonl",
+  "r1-T1-C.orquestrador.json"
+ ]
+}

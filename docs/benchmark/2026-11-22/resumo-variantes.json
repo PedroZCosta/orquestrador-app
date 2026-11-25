@@ -1,5 +1,5 @@
 {
- "geradoEm": "2026-11-23T16:55:42.428Z",
+ "geradoEm": "2026-11-25T18:18:43.904Z",
  "observacao": "Só execuções que passaram no checador entram nas médias (validasApenas e somaDasMedias). somaDasMedias soma as médias das 4 tarefas (tarefa sem execução válida fica fora e reduz tarefasComMedia). Diferenças: variante menos referência; pct relativo à referência. Linha de base recalculada de execucoes/ (config C = app 45b1b81 sem variante, Sonnet 5.5). Tokens totais = entrada + criação de cache + leitura de cache + saída. Primeira chamada = tokens de entrada (entrada + criação + leitura de cache) da primeira resposta do Orquestrador e do primeiro executor. Chamadas ao modelo = mensagens do modelo medidas pelo app; chamadas de ferramenta = blocos tool_use nas transcrições (Orquestrador + subagentes). US$ = equivalente de API (ver DECISOES.md).",
  "conferenciaDaLinhaDeBase": {
   "A": {
@@ -52,6 +52,10 @@
    "gastoUsdTodas": 7.9631734000000005,
    "somaDasMedias": {
     "usd": 2.6543911333333337,
+    "usdDoSeletor": 0,
+    "usdComSeletor": 2.6543911333333337,
+    "tempoDoSeletorS": 0,
+    "chamadasAoSeletor": 0,
     "indiceDeCusto": 598250.6666666666,
     "tokensTotais": 1840640.6666666667,
     "entrada": 74,
@@ -89,6 +93,16 @@
        "min": 0.295428,
        "max": 0.31653780000000004
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.3087172000000001,
+       "desvioPadrao": 0.011568712265416595,
+       "min": 0.295428,
+       "max": 0.31653780000000004
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 65963,
@@ -205,6 +219,16 @@
        "min": 0.9197456000000002,
        "max": 0.9363054000000001
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.9277346666666668,
+       "desvioPadrao": 0.008295209225410327,
+       "min": 0.9197456000000002,
+       "max": 0.9363054000000001
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 217741.66666666666,
@@ -321,6 +345,16 @@
        "min": 0.840914,
        "max": 0.9824858
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.8998339333333334,
+       "desvioPadrao": 0.0737092065729467,
+       "min": 0.840914,
+       "max": 0.9824858
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 212215.33333333334,
@@ -437,6 +471,16 @@
        "min": 0.4881692,
        "max": 0.536832
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.5181053333333333,
+       "desvioPadrao": 0.026196490856092384,
+       "min": 0.4881692,
+       "max": 0.536832
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 102330.66666666667,
@@ -546,6 +590,10 @@
    "gastoUsdTodas": 2.3383882000000002,
    "somaDasMedias": {
     "usd": 0.7794627333333334,
+    "usdDoSeletor": 0,
+    "usdComSeletor": 0.7794627333333334,
+    "tempoDoSeletorS": 0,
+    "chamadasAoSeletor": 0,
     "indiceDeCusto": 331993,
     "tokensTotais": 959947.6666666667,
     "entrada": 50.66666666666667,
@@ -583,6 +631,16 @@
        "min": 0.1273614,
        "max": 0.14762299999999998
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.13927720000000002,
+       "desvioPadrao": 0.010592062294001092,
+       "min": 0.1273614,
+       "max": 0.14762299999999998
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 61228.333333333336,
@@ -699,6 +757,16 @@
        "min": 0.24931110000000006,
        "max": 0.3025165
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.2752481666666667,
+       "desvioPadrao": 0.02662767076733022,
+       "min": 0.24931110000000006,
+       "max": 0.3025165
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 120459,
@@ -815,6 +883,16 @@
        "min": 0.17390480000000003,
        "max": 0.213541
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.18814503333333335,
+       "desvioPadrao": 0.02204755944006804,
+       "min": 0.17390480000000003,
+       "max": 0.213541
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 79644,
@@ -931,6 +1009,16 @@
        "min": 0.16998549999999998,
        "max": 0.18123689999999998
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.17679233333333333,
+       "desvioPadrao": 0.0059861279925619145,
+       "min": 0.16998549999999998,
+       "max": 0.18123689999999998
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 70661.66666666667,
@@ -1040,6 +1128,10 @@
    "gastoUsdTodas": 3.2181457000000004,
    "somaDasMedias": {
     "usd": 1.0727152333333336,
+    "usdDoSeletor": 0,
+    "usdComSeletor": 1.0727152333333336,
+    "tempoDoSeletorS": 0,
+    "chamadasAoSeletor": 0,
     "indiceDeCusto": 503680.3333333333,
     "tokensTotais": 1429622.3333333333,
     "entrada": 90,
@@ -1077,6 +1169,16 @@
        "min": 0.12184419999999999,
        "max": 0.1968805
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.1672777,
+       "desvioPadrao": 0.03994458506844202,
+       "min": 0.12184419999999999,
+       "max": 0.1968805
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 77052.66666666667,
@@ -1199,6 +1301,16 @@
        "min": 0.4021118000000001,
        "max": 0.4773218
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.4467708000000001,
+       "desvioPadrao": 0.03954001483307761,
+       "min": 0.4021118000000001,
+       "max": 0.4773218
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 221769.66666666666,
@@ -1321,6 +1433,16 @@
        "min": 0.24531549999999996,
        "max": 0.3084476
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.2815496,
+       "desvioPadrao": 0.03258508224648207,
+       "min": 0.24531549999999996,
+       "max": 0.3084476
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 135939.33333333334,
@@ -1443,6 +1565,16 @@
        "min": 0.1728285,
        "max": 0.18485620000000003
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.17711713333333334,
+       "desvioPadrao": 0.006715319014263851,
+       "min": 0.1728285,
+       "max": 0.18485620000000003
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 68918.66666666667,
@@ -1554,6 +1686,10 @@
    "gastoUsdTodas": 2.1346137999999995,
    "somaDasMedias": {
     "usd": 0.7115379333333333,
+    "usdDoSeletor": 0,
+    "usdComSeletor": 0.7115379333333333,
+    "tempoDoSeletorS": 0,
+    "chamadasAoSeletor": 0,
     "indiceDeCusto": 335784.3333333334,
     "tokensTotais": 837456,
     "entrada": 85.33333333333333,
@@ -1591,6 +1727,16 @@
        "min": 0.09979930000000001,
        "max": 0.1233496
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.11194716666666667,
+       "desvioPadrao": 0.011792833021090958,
+       "min": 0.09979930000000001,
+       "max": 0.1233496
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 52370.333333333336,
@@ -1702,6 +1848,13 @@
        "valor": -0.055330533333333334,
        "pct": -33.07705290862639
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.055330533333333334,
+       "pct": -33.07705290862639
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": -24682.333333333336,
        "pct": -32.03306829095251
@@ -1815,6 +1968,16 @@
        "min": 0.2186067,
        "max": 0.31768029999999997
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.27722739999999996,
+       "desvioPadrao": 0.05197543912147351,
+       "min": 0.2186067,
+       "max": 0.31768029999999997
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 134904,
@@ -1926,6 +2089,13 @@
        "valor": -0.16954340000000012,
        "pct": -37.94863048346044
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.16954340000000012,
+       "pct": -37.94863048346044
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": -86865.66666666666,
        "pct": -39.16931831675206
@@ -2039,6 +2209,16 @@
        "min": 0.164712,
        "max": 0.22607769999999996
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.19411336666666665,
+       "desvioPadrao": 0.030763027853631903,
+       "min": 0.164712,
+       "max": 0.22607769999999996
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 95767,
@@ -2150,6 +2330,13 @@
        "valor": -0.08743623333333336,
        "pct": -31.05535697203383
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.08743623333333336,
+       "pct": -31.05535697203383
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": -40172.33333333334,
        "pct": -29.55166275152152
@@ -2263,6 +2450,16 @@
        "min": 0.1221719,
        "max": 0.1320093
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.12825,
+       "desvioPadrao": 0.005312836791206741,
+       "min": 0.1221719,
+       "max": 0.1320093
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 52743,
@@ -2368,6 +2565,13 @@
        "valor": -0.04886713333333334,
        "pct": -27.590291471896002
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.04886713333333334,
+       "pct": -27.590291471896002
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": -16175.666666666672,
        "pct": -23.470661069086272
@@ -2470,6 +2674,22 @@
      "valor": -0.36117730000000037,
      "pct": -33.66944821671687
     },
+    "usdDoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
+    "usdComSeletor": {
+     "valor": -0.36117730000000037,
+     "pct": -33.66944821671687
+    },
+    "tempoDoSeletorS": {
+     "valor": 0,
+     "pct": null
+    },
+    "chamadasAoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
     "indiceDeCusto": {
      "valor": -167895.99999999994,
      "pct": -33.33384070981528
@@ -2536,6 +2756,22 @@
      "valor": -0.06792480000000012,
      "pct": -8.714310138923912
     },
+    "usdDoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
+    "usdComSeletor": {
+     "valor": -0.06792480000000012,
+     "pct": -8.714310138923912
+    },
+    "tempoDoSeletorS": {
+     "valor": 0,
+     "pct": null
+    },
+    "chamadasAoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
     "indiceDeCusto": {
      "valor": 3791.333333333372,
      "pct": 1.1419919496294717
@@ -2601,6 +2837,22 @@
     "usd": {
      "valor": -1.9428532000000005,
      "pct": -73.19393044988824
+    },
+    "usdDoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
+    "usdComSeletor": {
+     "valor": -1.9428532000000005,
+     "pct": -73.19393044988824
+    },
+    "tempoDoSeletorS": {
+     "valor": 0,
+     "pct": null
+    },
+    "chamadasAoSeletor": {
+     "valor": 0,
+     "pct": null
     },
     "indiceDeCusto": {
      "valor": -262466.33333333326,
@@ -2680,6 +2932,10 @@
    "gastoUsdTodas": 3.2125262,
    "somaDasMedias": {
     "usd": 1.0708420666666667,
+    "usdDoSeletor": 0,
+    "usdComSeletor": 1.0708420666666667,
+    "tempoDoSeletorS": 0,
+    "chamadasAoSeletor": 0,
     "indiceDeCusto": 509211.99999999994,
     "tokensTotais": 1441864.6666666667,
     "entrada": 96,
@@ -2717,6 +2973,16 @@
        "min": 0.1767936,
        "max": 0.1934503
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.18559936666666665,
+       "desvioPadrao": 0.00836930067229833,
+       "min": 0.1767936,
+       "max": 0.1934503
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 88296.33333333333,
@@ -2828,6 +3094,13 @@
        "valor": 0.018321666666666653,
        "pct": 10.952844680831127
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": 0.018321666666666653,
+       "pct": 10.952844680831127
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": 11243.666666666657,
        "pct": 14.59218370119138
@@ -2941,6 +3214,16 @@
        "min": 0.3942342000000001,
        "max": 0.5111841
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.44865383333333336,
+       "desvioPadrao": 0.05889530165729122,
+       "min": 0.3942342000000001,
+       "max": 0.5111841
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 224278,
@@ -3052,6 +3335,13 @@
        "valor": 0.0018830333333332838,
        "pct": 0.4214763662560945
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": 0.0018830333333332838,
+       "pct": 0.4214763662560945
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": 2508.333333333343,
        "pct": 1.1310533902292061
@@ -3165,6 +3455,16 @@
        "min": 0.2373725,
        "max": 0.3090323
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.2668268,
+       "desvioPadrao": 0.03749302015162288,
+       "min": 0.2373725,
+       "max": 0.3090323
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 129802.33333333333,
@@ -3276,6 +3576,13 @@
        "valor": -0.014722800000000036,
        "pct": -5.229202953937792
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.014722800000000036,
+       "pct": -5.229202953937792
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": -6137.000000000015,
        "pct": -4.514513827246478
@@ -3389,6 +3696,16 @@
        "min": 0.1624258,
        "max": 0.1764598
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.16976206666666668,
+       "desvioPadrao": 0.007038755757471151,
+       "min": 0.1624258,
+       "max": 0.1764598
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 66835.33333333333,
@@ -3494,6 +3811,13 @@
        "valor": -0.00735506666666666,
        "pct": -4.152656791720126
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.00735506666666666,
+       "pct": -4.152656791720126
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": -2083.333333333343,
        "pct": -3.0228868811546112
@@ -3596,6 +3920,22 @@
      "valor": -0.0018731666666669256,
      "pct": -0.17461919141823737
     },
+    "usdDoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
+    "usdComSeletor": {
+     "valor": -0.0018731666666669256,
+     "pct": -0.17461919141823737
+    },
+    "tempoDoSeletorS": {
+     "valor": 0,
+     "pct": null
+    },
+    "chamadasAoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
     "indiceDeCusto": {
      "valor": 5531.666666666628,
      "pct": 1.0982494849577136
@@ -3662,6 +4002,22 @@
      "valor": 0.2913793333333333,
      "pct": 37.382073686481995
     },
+    "usdDoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
+    "usdComSeletor": {
+     "valor": 0.2913793333333333,
+     "pct": 37.382073686481995
+    },
+    "tempoDoSeletorS": {
+     "valor": 0,
+     "pct": null
+    },
+    "chamadasAoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
     "indiceDeCusto": {
      "valor": 177218.99999999994,
      "pct": 53.38034235661594
@@ -3727,6 +4083,22 @@
     "usd": {
      "valor": -1.583549066666667,
      "pct": -59.65771384558825
+    },
+    "usdDoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
+    "usdComSeletor": {
+     "valor": -1.583549066666667,
+     "pct": -59.65771384558825
+    },
+    "tempoDoSeletorS": {
+     "valor": 0,
+     "pct": null
+    },
+    "chamadasAoSeletor": {
+     "valor": 0,
+     "pct": null
     },
     "indiceDeCusto": {
      "valor": -89038.66666666669,
@@ -3806,6 +4178,10 @@
    "gastoUsdTodas": 2.9177969,
    "somaDasMedias": {
     "usd": 0.9725989666666667,
+    "usdDoSeletor": 0,
+    "usdComSeletor": 0.9725989666666667,
+    "tempoDoSeletorS": 0,
+    "chamadasAoSeletor": 0,
     "indiceDeCusto": 447842,
     "tokensTotais": 1234069.6666666667,
     "entrada": 82,
@@ -3843,6 +4219,16 @@
        "min": 0.12664050000000002,
        "max": 0.2030593
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.1739953,
+       "desvioPadrao": 0.04136270387486774,
+       "min": 0.12664050000000002,
+       "max": 0.2030593
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 78972.33333333333,
@@ -3954,6 +4340,13 @@
        "valor": 0.00671759999999999,
        "pct": 4.01583713788508
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": 0.00671759999999999,
+       "pct": 4.01583713788508
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": 1919.666666666657,
        "pct": 2.4913695394491953
@@ -4067,6 +4460,16 @@
        "min": 0.32237530000000003,
        "max": 0.4097323
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.37522459999999996,
+       "desvioPadrao": 0.04647711350944675,
+       "min": 0.32237530000000003,
+       "max": 0.4097323
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 184174.66666666666,
@@ -4178,6 +4581,13 @@
        "valor": -0.07154620000000012,
        "pct": -16.01407254010336
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.07154620000000012,
+       "pct": -16.01407254010336
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": -37595,
        "pct": -16.95227330458479
@@ -4291,6 +4701,16 @@
        "min": 0.23818640000000005,
        "max": 0.26158180000000003
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.24640253333333337,
+       "desvioPadrao": 0.013160551077114271,
+       "min": 0.23818640000000005,
+       "max": 0.26158180000000003
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 116603,
@@ -4402,6 +4822,13 @@
        "valor": -0.03514706666666664,
        "pct": -12.483436903006307
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.03514706666666664,
+       "pct": -12.483436903006307
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": -19336.333333333343,
        "pct": -14.224237282317118
@@ -4515,6 +4942,16 @@
        "min": 0.1629891,
        "max": 0.1860421
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.17697653333333332,
+       "desvioPadrao": 0.012289376748368209,
+       "min": 0.1629891,
+       "max": 0.1860421
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 68092,
@@ -4620,6 +5057,13 @@
        "valor": -0.0001406000000000185,
        "pct": -0.07938249527526518
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.0001406000000000185,
+       "pct": -0.07938249527526518
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": -826.6666666666715,
        "pct": -1.1994815144421513
@@ -4722,6 +5166,22 @@
      "valor": -0.10011626666666695,
      "pct": -9.332977061914903
     },
+    "usdDoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
+    "usdComSeletor": {
+     "valor": -0.10011626666666695,
+     "pct": -9.332977061914903
+    },
+    "tempoDoSeletorS": {
+     "valor": 0,
+     "pct": null
+    },
+    "chamadasAoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
     "indiceDeCusto": {
      "valor": -55838.333333333314,
      "pct": -11.086065831436736
@@ -4788,6 +5248,22 @@
      "valor": 0.1931362333333333,
      "pct": 24.778122811259475
     },
+    "usdDoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
+    "usdComSeletor": {
+     "valor": 0.1931362333333333,
+     "pct": 24.778122811259475
+    },
+    "tempoDoSeletorS": {
+     "valor": 0,
+     "pct": null
+    },
+    "chamadasAoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
     "indiceDeCusto": {
      "valor": 115849,
      "pct": 34.89501284665641
@@ -4853,6 +5329,22 @@
     "usd": {
      "valor": -1.6817921666666669,
      "pct": -63.35886770969975
+    },
+    "usdDoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
+    "usdComSeletor": {
+     "valor": -1.6817921666666669,
+     "pct": -63.35886770969975
+    },
+    "tempoDoSeletorS": {
+     "valor": 0,
+     "pct": null
+    },
+    "chamadasAoSeletor": {
+     "valor": 0,
+     "pct": null
     },
     "indiceDeCusto": {
      "valor": -150408.66666666663,
@@ -4932,6 +5424,10 @@
    "gastoUsdTodas": 2.593349,
    "somaDasMedias": {
     "usd": 0.8644496666666667,
+    "usdDoSeletor": 0,
+    "usdComSeletor": 0.8644496666666667,
+    "tempoDoSeletorS": 0,
+    "chamadasAoSeletor": 0,
     "indiceDeCusto": 393594.3333333333,
     "tokensTotais": 953831.3333333333,
     "entrada": 69.33333333333333,
@@ -4969,6 +5465,16 @@
        "min": 0.1592902,
        "max": 0.16948970000000002
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.16295406666666665,
+       "desvioPadrao": 0.005673864018755961,
+       "min": 0.1592902,
+       "max": 0.16948970000000002
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 72464.33333333333,
@@ -5080,6 +5586,13 @@
        "valor": -0.004323633333333354,
        "pct": -2.584703958347917
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.004323633333333354,
+       "pct": -2.584703958347917
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": -4588.333333333343,
        "pct": -5.954801477777117
@@ -5193,6 +5706,16 @@
        "min": 0.2805179000000001,
        "max": 0.32498960000000005
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.3057318,
+       "desvioPadrao": 0.022826286834042857,
+       "min": 0.2805179000000001,
+       "max": 0.32498960000000005
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 149305,
@@ -5304,6 +5827,13 @@
        "valor": -0.14103900000000008,
        "pct": -31.568535812994057
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.14103900000000008,
+       "pct": -31.568535812994057
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": -72464.66666666666,
        "pct": -32.675643948901936
@@ -5417,6 +5947,16 @@
        "min": 0.1971167,
        "max": 0.23455930000000003
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.2150097,
+       "desvioPadrao": 0.018776190144968185,
+       "min": 0.1971167,
+       "max": 0.23455930000000003
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 100843.33333333333,
@@ -5528,6 +6068,13 @@
        "valor": -0.06653990000000001,
        "pct": -23.6334557037197
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.06653990000000001,
+       "pct": -23.6334557037197
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": -35096.000000000015,
        "pct": -25.81739893776146
@@ -5641,6 +6188,16 @@
        "min": 0.17402629999999997,
        "max": 0.18594689999999997
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.1807541,
+       "desvioPadrao": 0.006106745847012142,
+       "min": 0.17402629999999997,
+       "max": 0.18594689999999997
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 70981.66666666667,
@@ -5746,6 +6303,13 @@
        "valor": 0.003636966666666658,
        "pct": 2.0534245322398648
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": 0.003636966666666658,
+       "pct": 2.0534245322398648
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": 2063,
        "pct": 2.9933835051945286
@@ -5848,6 +6412,22 @@
      "valor": -0.20826556666666696,
      "pct": -19.414804618697058
     },
+    "usdDoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
+    "usdComSeletor": {
+     "valor": -0.20826556666666696,
+     "pct": -19.414804618697058
+    },
+    "tempoDoSeletorS": {
+     "valor": 0,
+     "pct": null
+    },
+    "chamadasAoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
     "indiceDeCusto": {
      "valor": -110086,
      "pct": -21.856322892628327
@@ -5914,6 +6494,22 @@
      "valor": 0.08498693333333329,
      "pct": 10.903270894028624
     },
+    "usdDoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
+    "usdComSeletor": {
+     "valor": 0.08498693333333329,
+     "pct": 10.903270894028624
+    },
+    "tempoDoSeletorS": {
+     "valor": 0,
+     "pct": null
+    },
+    "chamadasAoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
     "indiceDeCusto": {
      "valor": 61601.333333333314,
      "pct": 18.555009693979486
@@ -5979,6 +6575,22 @@
     "usd": {
      "valor": -1.7899414666666669,
      "pct": -67.4332220368327
+    },
+    "usdDoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
+    "usdComSeletor": {
+     "valor": -1.7899414666666669,
+     "pct": -67.4332220368327
+    },
+    "tempoDoSeletorS": {
+     "valor": 0,
+     "pct": null
+    },
+    "chamadasAoSeletor": {
+     "valor": 0,
+     "pct": null
     },
     "indiceDeCusto": {
      "valor": -204656.3333333333,
@@ -6058,6 +6670,10 @@
    "gastoUsdTodas": 1.7508733000000003,
    "somaDasMedias": {
     "usd": 0.5836244333333334,
+    "usdDoSeletor": 0,
+    "usdComSeletor": 0.5836244333333334,
+    "tempoDoSeletorS": 0,
+    "chamadasAoSeletor": 0,
     "indiceDeCusto": 274618.6666666667,
     "tokensTotais": 688158.3333333333,
     "entrada": 78,
@@ -6095,6 +6711,16 @@
        "min": 0.0580427,
        "max": 0.14731890000000003
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.10700126666666669,
+       "desvioPadrao": 0.04526101267386021,
+       "min": 0.0580427,
+       "max": 0.14731890000000003
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 47900,
@@ -6206,6 +6832,13 @@
        "valor": -0.06027643333333331,
        "pct": -36.03375305455139
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.06027643333333331,
+       "pct": -36.03375305455139
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": -29152.66666666667,
        "pct": -37.834727761963684
@@ -6319,6 +6952,16 @@
        "min": 0.1882021,
        "max": 0.1994038
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.19262693333333333,
+       "desvioPadrao": 0.00595974549148982,
+       "min": 0.1882021,
+       "max": 0.1994038
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 96087.66666666667,
@@ -6430,6 +7073,13 @@
        "valor": -0.2541438666666668,
        "pct": -56.88461883960786
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.2541438666666668,
+       "pct": -56.88461883960786
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": -125681.99999999999,
        "pct": -56.67231316576207
@@ -6543,6 +7193,16 @@
        "min": 0.1331273,
        "max": 0.2024214
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.16536923333333334,
+       "desvioPadrao": 0.034896587687671315,
+       "min": 0.1331273,
+       "max": 0.2024214
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 81678,
@@ -6654,6 +7314,13 @@
        "valor": -0.11618036666666667,
        "pct": -41.26461790983424
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.11618036666666667,
+       "pct": -41.26461790983424
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": -54261.33333333334,
        "pct": -39.91584481312743
@@ -6776,6 +7443,16 @@
        "min": 0.1180779,
        "max": 0.11910989999999999
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.118627,
+       "desvioPadrao": 0.0005191751438580199,
+       "min": 0.1180779,
+       "max": 0.11910989999999999
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "n": 3,
        "media": 48953,
@@ -6881,6 +7558,13 @@
        "valor": -0.05849013333333335,
        "pct": -33.02341915350181
       },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.05849013333333335,
+       "pct": -33.02341915350181
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
       "indiceDeCusto": {
        "valor": -19965.66666666667,
        "pct": -28.969896883282715
@@ -6983,6 +7667,22 @@
      "valor": -0.48909080000000027,
      "pct": -45.5937218753023
     },
+    "usdDoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
+    "usdComSeletor": {
+     "valor": -0.48909080000000027,
+     "pct": -45.5937218753023
+    },
+    "tempoDoSeletorS": {
+     "valor": 0,
+     "pct": null
+    },
+    "chamadasAoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
     "indiceDeCusto": {
      "valor": -229061.66666666663,
      "pct": -45.47758796750054
@@ -7049,6 +7749,22 @@
      "valor": -0.19583830000000002,
      "pct": -25.124780393606162
     },
+    "usdDoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
+    "usdComSeletor": {
+     "valor": -0.19583830000000002,
+     "pct": -25.124780393606162
+    },
+    "tempoDoSeletorS": {
+     "valor": 0,
+     "pct": null
+    },
+    "chamadasAoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
     "indiceDeCusto": {
      "valor": -57374.333333333314,
      "pct": -17.281790077903242
@@ -7114,6 +7830,22 @@
     "usd": {
      "valor": -2.0707667,
      "pct": -78.01286984407497
+    },
+    "usdDoSeletor": {
+     "valor": 0,
+     "pct": null
+    },
+    "usdComSeletor": {
+     "valor": -2.0707667,
+     "pct": -78.01286984407497
+    },
+    "tempoDoSeletorS": {
+     "valor": 0,
+     "pct": null
+    },
+    "chamadasAoSeletor": {
+     "valor": 0,
+     "pct": null
     },
     "indiceDeCusto": {
      "valor": -323631.99999999994,
@@ -7184,6 +7916,1324 @@
     "primeiraChamadaDoExecutor": {
      "valor": -9510.83333333333,
      "pct": -45.427647989131
+    }
+   }
+  },
+  "plugins-por-pedido": {
+   "execucoes": 12,
+   "validas": 12,
+   "gastoUsdTodas": 2.3811045,
+   "somaDasMedias": {
+    "usd": 0.7937015,
+    "usdDoSeletor": 0.0024325533333333337,
+    "usdComSeletor": 0.7961340533333333,
+    "tempoDoSeletorS": 13.961,
+    "chamadasAoSeletor": 4,
+    "indiceDeCusto": 381138.00000000006,
+    "tokensTotais": 943599.3333333334,
+    "entrada": 92.66666666666667,
+    "criacaoDeCache": 139263.66666666666,
+    "leituraDeCache": 778418.3333333334,
+    "saida": 25824.666666666668,
+    "usdPrincipal": 0.43738856666666664,
+    "usdSubagentes": 0.3563129333333333,
+    "primeiraChamadaDoOrquestrador": 71018,
+    "primeiraChamadaDoExecutor": 34478.666666666664,
+    "chamadasAoModelo": 41.333333333333336,
+    "chamadasDeFerramenta": 61.33333333333333,
+    "chamadasDeFerramentaDoOrquestrador": 17,
+    "quantidadeDeSubagentes": 3.666666666666667,
+    "tempoDeParedeS": 204.1,
+    "tarefasComMedia": 4
+   },
+   "mediaEntreTarefas": {
+    "primeiraChamadaDoOrquestrador": 17754.5,
+    "primeiraChamadaDoExecutor": 11492.888888888889
+   },
+   "porTarefa": {
+    "T1": {
+     "execucoes": 3,
+     "validas": 3,
+     "falhas": [],
+     "errosDeApiRepetidos": [],
+     "cargaAlta": [],
+     "gastoUsdTodas": 0.3207667,
+     "validasApenas": {
+      "usd": {
+       "n": 3,
+       "media": 0.10692223333333334,
+       "desvioPadrao": 0.005562813141148401,
+       "min": 0.1005123,
+       "max": 0.11048699999999999
+      },
+      "usdDoSeletor": {
+       "n": 3,
+       "media": 0.0005114066666666667,
+       "desvioPadrao": 0.0007045058924759491,
+       "min": 0.00010466,
+       "max": 0.0013249000000000002
+      },
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.10743364,
+       "desvioPadrao": 0.005908722769702435,
+       "min": 0.10061696,
+       "max": 0.11109230000000002
+      },
+      "tempoDoSeletorS": {
+       "n": 3,
+       "media": 2.8240000000000003,
+       "desvioPadrao": 0.3655789928319187,
+       "min": 2.516,
+       "max": 3.228
+      },
+      "chamadasAoSeletor": {
+       "n": 3,
+       "media": 1,
+       "desvioPadrao": 0,
+       "min": 1,
+       "max": 1
+      },
+      "indiceDeCusto": {
+       "n": 3,
+       "media": 50087,
+       "desvioPadrao": 3223.761312504386,
+       "min": 46530,
+       "max": 52816
+      },
+      "tokensTotais": {
+       "n": 3,
+       "media": 145242,
+       "desvioPadrao": 19314.13655849,
+       "min": 132288,
+       "max": 167441
+      },
+      "entrada": {
+       "n": 3,
+       "media": 19.333333333333332,
+       "desvioPadrao": 2.3094010767585034,
+       "min": 18,
+       "max": 22
+      },
+      "criacaoDeCache": {
+       "n": 3,
+       "media": 20766.666666666668,
+       "desvioPadrao": 724.8064109355914,
+       "min": 20030,
+       "max": 21479
+      },
+      "leituraDeCache": {
+       "n": 3,
+       "media": 122075.66666666667,
+       "desvioPadrao": 19137.662718663774,
+       "min": 110148,
+       "max": 144150
+      },
+      "saida": {
+       "n": 3,
+       "media": 2380.3333333333335,
+       "desvioPadrao": 253.99671913891592,
+       "min": 2092,
+       "max": 2571
+      },
+      "usdPrincipal": {
+       "n": 3,
+       "media": 0.07121113333333333,
+       "desvioPadrao": 0.0029705936819654985,
+       "min": 0.0678781,
+       "max": 0.07357949999999999
+      },
+      "usdSubagentes": {
+       "n": 3,
+       "media": 0.0357111,
+       "desvioPadrao": 0.0026865374387862163,
+       "min": 0.0326342,
+       "max": 0.0375916
+      },
+      "primeiraChamadaDoOrquestrador": {
+       "n": 3,
+       "media": 17053,
+       "desvioPadrao": 1,
+       "min": 17052,
+       "max": 17054
+      },
+      "primeiraChamadaDoExecutor": {
+       "n": 3,
+       "media": 10707.666666666666,
+       "desvioPadrao": 76.05480480109941,
+       "min": 10642,
+       "max": 10791
+      },
+      "chamadasAoModelo": {
+       "n": 3,
+       "media": 8.666666666666666,
+       "desvioPadrao": 1.1547005383792517,
+       "min": 8,
+       "max": 10
+      },
+      "chamadasDeFerramenta": {
+       "n": 3,
+       "media": 9,
+       "desvioPadrao": 1,
+       "min": 8,
+       "max": 10
+      },
+      "chamadasDeFerramentaDoOrquestrador": {
+       "n": 3,
+       "media": 3.3333333333333335,
+       "desvioPadrao": 0.5773502691896258,
+       "min": 3,
+       "max": 4
+      },
+      "quantidadeDeSubagentes": {
+       "n": 3,
+       "media": 1,
+       "desvioPadrao": 0,
+       "min": 1,
+       "max": 1
+      },
+      "tempoDeParedeS": {
+       "n": 3,
+       "media": 27.2,
+       "desvioPadrao": 6.085228015448559,
+       "min": 22.6,
+       "max": 34.1
+      }
+     },
+     "contraCBase": {
+      "usd": {
+       "valor": -0.06035546666666666,
+       "pct": -36.08099983839248
+      },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.059844060000000004,
+       "pct": -35.77527668063347
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
+      "indiceDeCusto": {
+       "valor": -26965.66666666667,
+       "pct": -34.99640938232724
+      },
+      "tokensTotais": {
+       "valor": -117293,
+       "pct": -44.67709067362447
+      },
+      "entrada": {
+       "valor": -0.6666666666666679,
+       "pct": -3.3333333333333397
+      },
+      "criacaoDeCache": {
+       "valor": -14079.333333333332,
+       "pct": -40.40444623007901
+      },
+      "leituraDeCache": {
+       "valor": -103407.99999999999,
+       "pct": -45.86052796137488
+      },
+      "saida": {
+       "valor": 195,
+       "pct": 8.923123856009761
+      },
+      "usdPrincipal": {
+       "valor": -0.05423223333333334,
+       "pct": -43.23244406971433
+      },
+      "usdSubagentes": {
+       "valor": -0.006123233333333332,
+       "pct": -14.636861270248517
+      },
+      "primeiraChamadaDoOrquestrador": {
+       "valor": -11310.333333333332,
+       "pct": -39.8766012457398
+      },
+      "primeiraChamadaDoExecutor": {
+       "valor": -9660.333333333334,
+       "pct": -47.428973553286205
+      },
+      "chamadasAoModelo": {
+       "valor": -0.6666666666666679,
+       "pct": -7.142857142857155
+      },
+      "chamadasDeFerramenta": {
+       "valor": -0.3333333333333339,
+       "pct": -3.5714285714285774
+      },
+      "chamadasDeFerramentaDoOrquestrador": {
+       "valor": -1.9999999999999996,
+       "pct": -37.49999999999999
+      },
+      "quantidadeDeSubagentes": {
+       "valor": 0.33333333333333337,
+       "pct": 50.000000000000014
+      },
+      "tempoDeParedeS": {
+       "valor": 6.966666666666669,
+       "pct": 34.43163097199343
+      }
+     },
+     "contraB": {
+      "usd": {
+       "valor": -0.03235496666666668,
+       "pct": -23.230626884132274
+      },
+      "indiceDeCusto": {
+       "valor": -11141.333333333336,
+       "pct": -18.19636878351526
+      },
+      "tokensTotais": {
+       "valor": -79953.66666666666,
+       "pct": -35.504087556450905
+      },
+      "tempoDeParedeS": {
+       "valor": 4.699999999999999,
+       "pct": 20.888888888888886
+      }
+     },
+     "contraA": {
+      "usd": {
+       "valor": -0.20179496666666674,
+       "pct": -65.3656377638391
+      },
+      "indiceDeCusto": {
+       "valor": -15876,
+       "pct": -24.068038142595093
+      },
+      "tokensTotais": {
+       "valor": -83336.33333333334,
+       "pct": -36.45854448146879
+      },
+      "tempoDeParedeS": {
+       "valor": -5.166666666666668,
+       "pct": -15.962924819773432
+      }
+     }
+    },
+    "T2": {
+     "execucoes": 3,
+     "validas": 3,
+     "falhas": [],
+     "errosDeApiRepetidos": [],
+     "cargaAlta": [],
+     "gastoUsdTodas": 0.9858049999999999,
+     "validasApenas": {
+      "usd": {
+       "n": 3,
+       "media": 0.3286016666666666,
+       "desvioPadrao": 0.07018100732921503,
+       "min": 0.26620809999999995,
+       "max": 0.40458299999999997
+      },
+      "usdDoSeletor": {
+       "n": 3,
+       "media": 0.00068816,
+       "desvioPadrao": 0.0008240969461780573,
+       "min": 0.00011449,
+       "max": 0.0016324999999999998
+      },
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.3292898266666666,
+       "desvioPadrao": 0.07014877597299207,
+       "min": 0.26632258999999997,
+       "max": 0.40490048999999995
+      },
+      "tempoDoSeletorS": {
+       "n": 3,
+       "media": 4.019666666666667,
+       "desvioPadrao": 1.1833707505821383,
+       "min": 2.665,
+       "max": 4.852
+      },
+      "chamadasAoSeletor": {
+       "n": 3,
+       "media": 1,
+       "desvioPadrao": 0,
+       "min": 1,
+       "max": 1
+      },
+      "indiceDeCusto": {
+       "n": 3,
+       "media": 166375.33333333334,
+       "desvioPadrao": 35112.91378301341,
+       "min": 133918,
+       "max": 203647
+      },
+      "tokensTotais": {
+       "n": 3,
+       "media": 404399,
+       "desvioPadrao": 140223.0099840964,
+       "min": 275654,
+       "max": 553807
+      },
+      "entrada": {
+       "n": 3,
+       "media": 30.666666666666668,
+       "desvioPadrao": 6.429100507328636,
+       "min": 26,
+       "max": 38
+      },
+      "criacaoDeCache": {
+       "n": 3,
+       "media": 57834.666666666664,
+       "desvioPadrao": 11339.770779576336,
+       "min": 45292,
+       "max": 67362
+      },
+      "leituraDeCache": {
+       "n": 3,
+       "media": 334411.6666666667,
+       "desvioPadrao": 127831.03611538684,
+       "min": 219266,
+       "max": 471965
+      },
+      "saida": {
+       "n": 3,
+       "media": 12122,
+       "desvioPadrao": 2012.079521291343,
+       "min": 10854,
+       "max": 14442
+      },
+      "usdPrincipal": {
+       "n": 3,
+       "media": 0.11925749999999997,
+       "desvioPadrao": 0.05392622858192477,
+       "min": 0.0848538,
+       "max": 0.1814074
+      },
+      "usdSubagentes": {
+       "n": 3,
+       "media": 0.20934416666666664,
+       "desvioPadrao": 0.024240486984863415,
+       "min": 0.1813543,
+       "max": 0.22350259999999997
+      },
+      "primeiraChamadaDoOrquestrador": {
+       "n": 3,
+       "media": 19643,
+       "desvioPadrao": 1855.9038229391092,
+       "min": 17500,
+       "max": 20721
+      },
+      "primeiraChamadaDoExecutor": {
+       "n": 3,
+       "media": 12815,
+       "desvioPadrao": 1138.119940955258,
+       "min": 11572,
+       "max": 13806
+      },
+      "chamadasAoModelo": {
+       "n": 3,
+       "media": 13.666666666666666,
+       "desvioPadrao": 2.8867513459481287,
+       "min": 12,
+       "max": 17
+      },
+      "chamadasDeFerramenta": {
+       "n": 3,
+       "media": 21.333333333333332,
+       "desvioPadrao": 9.865765724632496,
+       "min": 10,
+       "max": 28
+      },
+      "chamadasDeFerramentaDoOrquestrador": {
+       "n": 3,
+       "media": 4,
+       "desvioPadrao": 3.4641016151377544,
+       "min": 2,
+       "max": 8
+      },
+      "quantidadeDeSubagentes": {
+       "n": 3,
+       "media": 1,
+       "desvioPadrao": 0,
+       "min": 1,
+       "max": 1
+      },
+      "tempoDeParedeS": {
+       "n": 3,
+       "media": 81.6,
+       "desvioPadrao": 14.299999999999997,
+       "min": 72.8,
+       "max": 98.1
+      }
+     },
+     "contraCBase": {
+      "usd": {
+       "valor": -0.11816913333333345,
+       "pct": -26.449609807385226
+      },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.11748097333333346,
+       "pct": -26.29558004536855
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
+      "indiceDeCusto": {
+       "valor": -55394.333333333314,
+       "pct": -24.978318345310218
+      },
+      "tokensTotais": {
+       "valor": -219643,
+       "pct": -35.196829700565026
+      },
+      "entrada": {
+       "valor": -3.333333333333332,
+       "pct": -9.803921568627448
+      },
+      "criacaoDeCache": {
+       "valor": -21714.333333333336,
+       "pct": -27.29680239014109
+      },
+      "leituraDeCache": {
+       "valor": -196199.6666666667,
+       "pct": -36.976154548778325
+      },
+      "saida": {
+       "valor": -1725.666666666666,
+       "pct": -12.461786582577085
+      },
+      "usdPrincipal": {
+       "valor": -0.10056113333333334,
+       "pct": -45.747319873853584
+      },
+      "usdSubagentes": {
+       "valor": -0.017608000000000013,
+       "pct": -7.758463053521564
+      },
+      "primeiraChamadaDoOrquestrador": {
+       "valor": -9142.333333333332,
+       "pct": -31.760387234239655
+      },
+      "primeiraChamadaDoExecutor": {
+       "valor": -8837.333333333332,
+       "pct": -40.814692796773244
+      },
+      "chamadasAoModelo": {
+       "valor": -2.333333333333334,
+       "pct": -14.583333333333337
+      },
+      "chamadasDeFerramenta": {
+       "valor": -9.333333333333336,
+       "pct": -30.43478260869566
+      },
+      "chamadasDeFerramentaDoOrquestrador": {
+       "valor": -4,
+       "pct": -50
+      },
+      "quantidadeDeSubagentes": {
+       "valor": 0,
+       "pct": 0
+      },
+      "tempoDeParedeS": {
+       "valor": -8.36666666666666,
+       "pct": -9.29974064468321
+      }
+     },
+     "contraB": {
+      "usd": {
+       "valor": 0.05335349999999994,
+       "pct": 19.383780333989485
+      },
+      "indiceDeCusto": {
+       "valor": 45916.33333333334,
+       "pct": 38.11781048600216
+      },
+      "tokensTotais": {
+       "valor": 65361.333333333314,
+       "pct": 19.278487247729597
+      },
+      "tempoDeParedeS": {
+       "valor": 28.999999999999993,
+       "pct": 55.133079847908725
+      }
+     },
+     "contraA": {
+      "usd": {
+       "valor": -0.5991330000000001,
+       "pct": -64.58021043373033
+      },
+      "indiceDeCusto": {
+       "valor": -51366.333333333314,
+       "pct": -23.590493321596686
+      },
+      "tokensTotais": {
+       "valor": -301574.6666666666,
+       "pct": -42.71755178781456
+      },
+      "tempoDeParedeS": {
+       "valor": -58.900000000000034,
+       "pct": -41.9217081850534
+      }
+     }
+    },
+    "T3": {
+     "execucoes": 3,
+     "validas": 3,
+     "falhas": [],
+     "errosDeApiRepetidos": [],
+     "cargaAlta": [],
+     "gastoUsdTodas": 0.7083683999999999,
+     "validasApenas": {
+      "usd": {
+       "n": 3,
+       "media": 0.23612279999999997,
+       "desvioPadrao": 0.057959443750695144,
+       "min": 0.170632,
+       "max": 0.2808060999999999
+      },
+      "usdDoSeletor": {
+       "n": 3,
+       "media": 0.00062664,
+       "desvioPadrao": 0.0007047563874843562,
+       "min": 0.00021451,
+       "max": 0.0014404
+      },
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.23674943999999998,
+       "desvioPadrao": 0.0572689074751186,
+       "min": 0.17207240000000001,
+       "max": 0.2810206099999999
+      },
+      "tempoDoSeletorS": {
+       "n": 3,
+       "media": 3.6606666666666663,
+       "desvioPadrao": 0.10051036430803213,
+       "min": 3.561,
+       "max": 3.762
+      },
+      "chamadasAoSeletor": {
+       "n": 3,
+       "media": 1,
+       "desvioPadrao": 0,
+       "min": 1,
+       "max": 1
+      },
+      "indiceDeCusto": {
+       "n": 3,
+       "media": 115367,
+       "desvioPadrao": 29082.046024996245,
+       "min": 82672,
+       "max": 138351
+      },
+      "tokensTotais": {
+       "n": 3,
+       "media": 271421,
+       "desvioPadrao": 62351.62368375021,
+       "min": 206101,
+       "max": 330305
+      },
+      "entrada": {
+       "n": 3,
+       "media": 32,
+       "desvioPadrao": 7.211102550927978,
+       "min": 24,
+       "max": 38
+      },
+      "criacaoDeCache": {
+       "n": 3,
+       "media": 38503.333333333336,
+       "desvioPadrao": 10082.131983530733,
+       "min": 26964,
+       "max": 45608
+      },
+      "leituraDeCache": {
+       "n": 3,
+       "media": 223923,
+       "desvioPadrao": 50558.50451704441,
+       "min": 172780,
+       "max": 273876
+      },
+      "saida": {
+       "n": 3,
+       "media": 8962.666666666666,
+       "desvioPadrao": 2332.7859596056674,
+       "min": 6333,
+       "max": 10783
+      },
+      "usdPrincipal": {
+       "n": 3,
+       "media": 0.12486513333333331,
+       "desvioPadrao": 0.02367496742496879,
+       "min": 0.09932999999999999,
+       "max": 0.1460868
+      },
+      "usdSubagentes": {
+       "n": 3,
+       "media": 0.11125766666666666,
+       "desvioPadrao": 0.03477755506822372,
+       "min": 0.071302,
+       "max": 0.13471930000000001
+      },
+      "primeiraChamadaDoOrquestrador": {
+       "n": 3,
+       "media": 17137.333333333332,
+       "desvioPadrao": 1.1547005383792517,
+       "min": 17136,
+       "max": 17138
+      },
+      "primeiraChamadaDoExecutor": {
+       "n": 3,
+       "media": 10956,
+       "desvioPadrao": 232.2003445303215,
+       "min": 10815,
+       "max": 11224
+      },
+      "chamadasAoModelo": {
+       "n": 3,
+       "media": 13.666666666666666,
+       "desvioPadrao": 2.5166114784235836,
+       "min": 11,
+       "max": 16
+      },
+      "chamadasDeFerramenta": {
+       "n": 3,
+       "media": 26.333333333333332,
+       "desvioPadrao": 16.802777548171413,
+       "min": 8,
+       "max": 41
+      },
+      "chamadasDeFerramentaDoOrquestrador": {
+       "n": 3,
+       "media": 5,
+       "desvioPadrao": 1,
+       "min": 4,
+       "max": 6
+      },
+      "quantidadeDeSubagentes": {
+       "n": 3,
+       "media": 1.6666666666666667,
+       "desvioPadrao": 0.5773502691896257,
+       "min": 1,
+       "max": 2
+      },
+      "tempoDeParedeS": {
+       "n": 3,
+       "media": 71.13333333333333,
+       "desvioPadrao": 15.751296242955158,
+       "min": 53.1,
+       "max": 82.2
+      }
+     },
+     "contraCBase": {
+      "usd": {
+       "valor": -0.045426800000000045,
+       "pct": -16.13456385659935
+      },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.04480016000000003,
+       "pct": -15.911995612851173
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
+      "indiceDeCusto": {
+       "valor": -20572.333333333343,
+       "pct": -15.133466399227114
+      },
+      "tokensTotais": {
+       "valor": -105023.33333333331,
+       "pct": -27.89876856516191
+      },
+      "entrada": {
+       "valor": 5.333333333333332,
+       "pct": 19.999999999999996
+      },
+      "criacaoDeCache": {
+       "valor": -16605,
+       "pct": -30.13155905035536
+      },
+      "leituraDeCache": {
+       "valor": -90264.66666666669,
+       "pct": -28.729538502996622
+      },
+      "saida": {
+       "valor": 1840.999999999999,
+       "pct": 25.850690381464997
+      },
+      "usdPrincipal": {
+       "valor": -0.03518763333333334,
+       "pct": -21.985020356828162
+      },
+      "usdSubagentes": {
+       "valor": -0.010239166666666674,
+       "pct": -8.42751731526611
+      },
+      "primeiraChamadaDoOrquestrador": {
+       "valor": -11292.333333333336,
+       "pct": -39.720245283682544
+      },
+      "primeiraChamadaDoExecutor": {
+       "valor": -9832.333333333332,
+       "pct": -47.29736230257355
+      },
+      "chamadasAoModelo": {
+       "valor": 1.3333333333333321,
+       "pct": 10.8108108108108
+      },
+      "chamadasDeFerramenta": {
+       "valor": 7.333333333333332,
+       "pct": 38.59649122807017
+      },
+      "chamadasDeFerramentaDoOrquestrador": {
+       "valor": -0.666666666666667,
+       "pct": -11.764705882352946
+      },
+      "quantidadeDeSubagentes": {
+       "valor": 0.6666666666666667,
+       "pct": 66.66666666666667
+      },
+      "tempoDeParedeS": {
+       "valor": 20.599999999999994,
+       "pct": 40.765171503957774
+      }
+     },
+     "contraB": {
+      "usd": {
+       "valor": 0.047977766666666616,
+       "pct": 25.50041625689115
+      },
+      "indiceDeCusto": {
+       "valor": 35723,
+       "pct": 44.85334739591181
+      },
+      "tokensTotais": {
+       "valor": 62648,
+       "pct": 30.00771172517519
+      },
+      "tempoDeParedeS": {
+       "valor": 28.099999999999994,
+       "pct": 65.29821843532144
+      }
+     },
+     "contraA": {
+      "usd": {
+       "valor": -0.6637111333333334,
+       "pct": -73.75929143666436
+      },
+      "indiceDeCusto": {
+       "valor": -96848.33333333334,
+       "pct": -45.636821718820194
+      },
+      "tokensTotais": {
+       "valor": -382143.3333333334,
+       "pct": -58.470652978309204
+      },
+      "tempoDeParedeS": {
+       "valor": -136.5,
+       "pct": -65.74088938834484
+      }
+     }
+    },
+    "T4": {
+     "execucoes": 3,
+     "validas": 3,
+     "falhas": [],
+     "errosDeApiRepetidos": [],
+     "cargaAlta": [],
+     "gastoUsdTodas": 0.3661644,
+     "validasApenas": {
+      "usd": {
+       "n": 3,
+       "media": 0.1220548,
+       "desvioPadrao": 0.0019303878548105283,
+       "min": 0.1205629,
+       "max": 0.124235
+      },
+      "usdDoSeletor": {
+       "n": 3,
+       "media": 0.0006063466666666668,
+       "desvioPadrao": 0.0006990310834528988,
+       "min": 0.00018047,
+       "max": 0.0014131000000000002
+      },
+      "usdComSeletor": {
+       "n": 3,
+       "media": 0.12266114666666668,
+       "desvioPadrao": 0.001531374392052226,
+       "min": 0.12159197000000001,
+       "max": 0.12441547
+      },
+      "tempoDoSeletorS": {
+       "n": 3,
+       "media": 3.456666666666667,
+       "desvioPadrao": 0.23755069634360845,
+       "min": 3.229,
+       "max": 3.703
+      },
+      "chamadasAoSeletor": {
+       "n": 3,
+       "media": 1,
+       "desvioPadrao": 0,
+       "min": 1,
+       "max": 1
+      },
+      "indiceDeCusto": {
+       "n": 3,
+       "media": 49308.666666666664,
+       "desvioPadrao": 1860.6746984181125,
+       "min": 47795,
+       "max": 51386
+      },
+      "tokensTotais": {
+       "n": 3,
+       "media": 122537.33333333333,
+       "desvioPadrao": 15309.182745441813,
+       "min": 112311,
+       "max": 140138
+      },
+      "entrada": {
+       "n": 3,
+       "media": 10.666666666666666,
+       "desvioPadrao": 1.1547005383792517,
+       "min": 10,
+       "max": 12
+      },
+      "criacaoDeCache": {
+       "n": 3,
+       "media": 22159,
+       "desvioPadrao": 287.78637910783755,
+       "min": 21968,
+       "max": 22490
+      },
+      "leituraDeCache": {
+       "n": 3,
+       "media": 98008,
+       "desvioPadrao": 15357.652392211512,
+       "min": 87629,
+       "max": 115650
+      },
+      "saida": {
+       "n": 3,
+       "media": 2359.6666666666665,
+       "desvioPadrao": 154.09845337748635,
+       "min": 2182,
+       "max": 2457
+      },
+      "usdPrincipal": {
+       "n": 3,
+       "media": 0.1220548,
+       "desvioPadrao": 0.0019303878548105283,
+       "min": 0.1205629,
+       "max": 0.124235
+      },
+      "usdSubagentes": {
+       "n": 3,
+       "media": 0,
+       "desvioPadrao": 0,
+       "min": 0,
+       "max": 0
+      },
+      "primeiraChamadaDoOrquestrador": {
+       "n": 3,
+       "media": 17184.666666666668,
+       "desvioPadrao": 12.503332889007368,
+       "min": 17176,
+       "max": 17199
+      },
+      "primeiraChamadaDoExecutor": null,
+      "chamadasAoModelo": {
+       "n": 3,
+       "media": 5.333333333333333,
+       "desvioPadrao": 0.5773502691896258,
+       "min": 5,
+       "max": 6
+      },
+      "chamadasDeFerramenta": {
+       "n": 3,
+       "media": 4.666666666666667,
+       "desvioPadrao": 0.5773502691896258,
+       "min": 4,
+       "max": 5
+      },
+      "chamadasDeFerramentaDoOrquestrador": {
+       "n": 3,
+       "media": 4.666666666666667,
+       "desvioPadrao": 0.5773502691896258,
+       "min": 4,
+       "max": 5
+      },
+      "quantidadeDeSubagentes": {
+       "n": 3,
+       "media": 0,
+       "desvioPadrao": 0,
+       "min": 0,
+       "max": 0
+      },
+      "tempoDeParedeS": {
+       "n": 3,
+       "media": 24.166666666666668,
+       "desvioPadrao": 0.9451631252505203,
+       "min": 23.1,
+       "max": 24.9
+      }
+     },
+     "contraCBase": {
+      "usd": {
+       "valor": -0.05506233333333334,
+       "pct": -31.08808972743838
+      },
+      "usdDoSeletor": null,
+      "usdComSeletor": {
+       "valor": -0.054455986666666664,
+       "pct": -30.745747541081098
+      },
+      "tempoDoSeletorS": null,
+      "chamadasAoSeletor": null,
+      "indiceDeCusto": {
+       "valor": -19610.000000000007,
+       "pct": -28.453829634932003
+      },
+      "tokensTotais": {
+       "valor": -44063.66666666667,
+       "pct": -26.448620756578094
+      },
+      "entrada": {
+       "valor": 1.3333333333333321,
+       "pct": 14.28571428571427
+      },
+      "criacaoDeCache": {
+       "valor": -12646.666666666664,
+       "pct": -36.33507953685702
+      },
+      "leituraDeCache": {
+       "valor": -31283.33333333333,
+       "pct": -24.196001794397144
+      },
+      "saida": {
+       "valor": -135,
+       "pct": -5.411544628540888
+      },
+      "usdPrincipal": {
+       "valor": -0.05506233333333334,
+       "pct": -31.08808972743838
+      },
+      "usdSubagentes": {
+       "valor": 0,
+       "pct": null
+      },
+      "primeiraChamadaDoOrquestrador": {
+       "valor": -11283.333333333332,
+       "pct": -39.63514589480586
+      },
+      "primeiraChamadaDoExecutor": null,
+      "chamadasAoModelo": {
+       "valor": 0.6666666666666661,
+       "pct": 14.28571428571427
+      },
+      "chamadasDeFerramenta": {
+       "valor": -1,
+       "pct": -17.64705882352941
+      },
+      "chamadasDeFerramentaDoOrquestrador": {
+       "valor": -1,
+       "pct": -17.64705882352941
+      },
+      "quantidadeDeSubagentes": {
+       "valor": 0,
+       "pct": null
+      },
+      "tempoDeParedeS": {
+       "valor": 3.2333333333333343,
+       "pct": 15.44585987261147
+      }
+     },
+     "contraB": {
+      "usd": {
+       "valor": -0.054737533333333324,
+       "pct": -30.961485886454348
+      },
+      "indiceDeCusto": {
+       "valor": -21353.000000000007,
+       "pct": -30.21864754581693
+      },
+      "tokensTotais": {
+       "valor": -64404.000000000015,
+       "pct": -34.45145000927208
+      },
+      "tempoDeParedeS": {
+       "valor": -17.600000000000005,
+       "pct": -42.13886671987231
+      }
+     },
+     "contraA": {
+      "usd": {
+       "valor": -0.3960505333333333,
+       "pct": -76.44208770932036
+      },
+      "indiceDeCusto": {
+       "valor": -53022.00000000001,
+       "pct": -51.814379527805286
+      },
+      "tokensTotais": {
+       "valor": -129987.00000000001,
+       "pct": -51.4750393691433
+      },
+      "tempoDeParedeS": {
+       "valor": -18.133333333333336,
+       "pct": -42.868400315208824
+      }
+     }
+    }
+   },
+   "concluida": "em andamento ou interrompida",
+   "contraCBase": {
+    "usd": {
+     "valor": -0.2790137333333337,
+     "pct": -26.010046717275753
+    },
+    "usdDoSeletor": {
+     "valor": 0.0024325533333333337,
+     "pct": null
+    },
+    "usdComSeletor": {
+     "valor": -0.2765811800000003,
+     "pct": -25.783280725916192
+    },
+    "tempoDoSeletorS": {
+     "valor": 13.961,
+     "pct": null
+    },
+    "chamadasAoSeletor": {
+     "valor": 4,
+     "pct": null
+    },
+    "indiceDeCusto": {
+     "valor": -122542.33333333326,
+     "pct": -24.329386164902196
+    },
+    "tokensTotais": {
+     "valor": -486022.9999999999,
+     "pct": -33.996600967108556
+    },
+    "entrada": {
+     "valor": 2.6666666666666714,
+     "pct": 2.962962962962968
+    },
+    "criacaoDeCache": {
+     "valor": -65045.33333333334,
+     "pct": -31.83674401682419
+    },
+    "leituraDeCache": {
+     "valor": -421155.6666666666,
+     "pct": -35.10876916861041
+    },
+    "saida": {
+     "valor": 175.33333333333212,
+     "pct": 0.683578520559334
+    },
+    "usdPrincipal": {
+     "valor": -0.24504333333333334,
+     "pct": -35.90736794885077
+    },
+    "usdSubagentes": {
+     "valor": -0.03397040000000001,
+     "pct": -8.704035529743352
+    },
+    "primeiraChamadaDoOrquestrador": {
+     "valor": -43028.33333333333,
+     "pct": -37.72881781965809
+    },
+    "primeiraChamadaDoExecutor": {
+     "valor": -28329.999999999993,
+     "pct": -45.105240253468196
+    },
+    "chamadasAoModelo": {
+     "valor": -1,
+     "pct": -2.3622047244094486
+    },
+    "chamadasDeFerramenta": {
+     "valor": -3.333333333333343,
+     "pct": -5.1546391752577465
+    },
+    "chamadasDeFerramentaDoOrquestrador": {
+     "valor": -7.666666666666668,
+     "pct": -31.081081081081084
+    },
+    "quantidadeDeSubagentes": {
+     "valor": 1.0000000000000004,
+     "pct": 37.500000000000014
+    },
+    "tempoDeParedeS": {
+     "valor": 22.433333333333337,
+     "pct": 12.348623853211011
+    }
+   },
+   "contraB": {
+    "usd": {
+     "valor": 0.014238766666666569,
+     "pct": 1.8267411715471238
+    },
+    "usdDoSeletor": {
+     "valor": 0.0024325533333333337,
+     "pct": null
+    },
+    "usdComSeletor": {
+     "valor": 0.016671319999999934,
+     "pct": 2.1388219458172
+    },
+    "tempoDoSeletorS": {
+     "valor": 13.961,
+     "pct": null
+    },
+    "chamadasAoSeletor": {
+     "valor": 4,
+     "pct": null
+    },
+    "indiceDeCusto": {
+     "valor": 49145.00000000006,
+     "pct": 14.803022955303291
+    },
+    "tokensTotais": {
+     "valor": -16348.333333333372,
+     "pct": -1.7030442284527356
+    },
+    "entrada": {
+     "valor": 42,
+     "pct": 82.89473684210526
+    },
+    "criacaoDeCache": {
+     "valor": 8184,
+     "pct": 6.243531287588464
+    },
+    "leituraDeCache": {
+     "valor": -33009,
+     "pct": -4.068016770448124
+    },
+    "saida": {
+     "valor": 8434.666666666668,
+     "pct": 48.50297105616255
+    },
+    "usdPrincipal": {
+     "valor": -0.34207416666666673,
+     "pct": -43.885891145020324
+    },
+    "usdSubagentes": {
+     "valor": 0.3563129333333333,
+     "pct": null
+    },
+    "primeiraChamadaDoOrquestrador": {
+     "valor": -52255.66666666666,
+     "pct": -42.38996703810762
+    },
+    "primeiraChamadaDoExecutor": {
+     "valor": 34478.666666666664,
+     "pct": null
+    },
+    "chamadasAoModelo": {
+     "valor": 16,
+     "pct": 63.1578947368421
+    },
+    "chamadasDeFerramenta": {
+     "valor": 35.99999999999999,
+     "pct": 142.10526315789468
+    },
+    "chamadasDeFerramentaDoOrquestrador": {
+     "valor": -8.333333333333336,
+     "pct": -32.894736842105274
+    },
+    "quantidadeDeSubagentes": {
+     "valor": 3.666666666666667,
+     "pct": null
+    },
+    "tempoDeParedeS": {
+     "valor": 44.19999999999999,
+     "pct": 27.642276422764215
+    }
+   },
+   "contraA": {
+    "usd": {
+     "valor": -1.8606896333333336,
+     "pct": -70.09854764684643
+    },
+    "usdDoSeletor": {
+     "valor": 0.0024325533333333337,
+     "pct": null
+    },
+    "usdComSeletor": {
+     "valor": -1.8582570800000004,
+     "pct": -70.00690503612543
+    },
+    "tempoDoSeletorS": {
+     "valor": 13.961,
+     "pct": null
+    },
+    "chamadasAoSeletor": {
+     "valor": 4,
+     "pct": null
+    },
+    "indiceDeCusto": {
+     "valor": -217112.66666666657,
+     "pct": -36.291253610526674
+    },
+    "tokensTotais": {
+     "valor": -897041.3333333334,
+     "pct": -48.735277318296056
+    },
+    "entrada": {
+     "valor": 18.66666666666667,
+     "pct": 25.225225225225234
+    },
+    "criacaoDeCache": {
+     "valor": -55025,
+     "pct": -28.32126080437013
+    },
+    "leituraDeCache": {
+     "valor": -828943.9999999999,
+     "pct": -51.57169499430433
+    },
+    "saida": {
+     "valor": -13090.999999999996,
+     "pct": -33.63940829314671
+    },
+    "usdPrincipal": {
+     "valor": -2.217002566666667,
+     "pct": -83.52207550823896
+    },
+    "usdSubagentes": {
+     "valor": 0.3563129333333333,
+     "pct": null
+    },
+    "primeiraChamadaDoOrquestrador": {
+     "valor": -52694.33333333333,
+     "pct": -42.59424417398427
+    },
+    "primeiraChamadaDoExecutor": {
+     "valor": 34478.666666666664,
+     "pct": null
+    },
+    "chamadasAoModelo": {
+     "valor": 4.333333333333336,
+     "pct": 11.711711711711718
+    },
+    "chamadasDeFerramenta": {
+     "valor": 25.33333333333333,
+     "pct": 70.37037037037037
+    },
+    "chamadasDeFerramentaDoOrquestrador": {
+     "valor": -19,
+     "pct": -52.77777777777778
+    },
+    "quantidadeDeSubagentes": {
+     "valor": 3.666666666666667,
+     "pct": null
+    },
+    "tempoDeParedeS": {
+     "valor": -218.70000000000002,
+     "pct": -51.72658467360455
+    }
+   },
+   "primeiraChamadaContraCBase": {
+    "primeiraChamadaDoOrquestrador": {
+     "valor": -10757.083333333332,
+     "pct": -37.72881781965809
+    },
+    "primeiraChamadaDoExecutor": {
+     "valor": -9443.33333333333,
+     "pct": -45.105240253468196
     }
    }
   }

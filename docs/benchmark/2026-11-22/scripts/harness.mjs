@@ -6,6 +6,12 @@
 //                                            BENCH_VARIANTE=v1 no servidor; saída em execucoes-variantes/v1/ (retomável);
 //                                            carga (uptime) acima de 6 espera em blocos de 60 s (até 10 min); até 2 repetições
 //                                            por erro de API; ao fim analisar-variantes.mjs e encerra a instância
+// Opções (em qualquer posição):
+//   --app <pasta>   código do app que a instância sobe (padrão /tmp/bench-gosub/app-45b1b81; também BENCH_APP).
+//                   A medição pelas transcrições continua com o código de 45b1b81 (medir.ts), igual à linha de base.
+//   --saida <nome>  pasta em execucoes-variantes/ (padrão: o nome da variante). Com --saida, --variante base é aceita
+//                   (intermediário repassa intacto), p.ex. para medir o código atual sem variante:
+//                   node harness.mjs --variante base --app <worktree> --saida plugins-por-pedido
 // Execuções em sequência, nunca em paralelo. Uma execução que já tem JSON na pasta de saída é pulada.
 import { execFileSync, execSync, spawn, spawnSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
@@ -22,12 +28,36 @@ const RAIZ = path.join(aqui, '..');
 const FIXTURE = path.join(RAIZ, 'fixture');
 const TAREFAS = JSON.parse(readFileSync(path.join(RAIZ, 'tarefas.json'), 'utf8'));
 const BASE = realpathSync('/tmp') + '/bench-gosub';
-const APP = path.join(BASE, 'app-45b1b81');
+const ARGS = process.argv.slice(2);
+function opcao(nome) {
+  const i = ARGS.indexOf(nome);
+  if (i < 0) return null;
+  const valor = ARGS[i + 1] ?? null;
+  ARGS.splice(i, 2);
+  return valor;
+}
+const APP_PADRAO = path.join(BASE, 'app-45b1b81');
+const APP = path.resolve(opcao('--app') ?? process.env.BENCH_APP ?? APP_PADRAO);
+const SAIDA_NOMEADA = opcao('--saida');
+// Rótulo do código que a instância roda: o commit da pasta (com "+ alterações locais" se houver).
+let rotuloDoApp = null;
+function versaoDoApp() {
+  if (rotuloDoApp !== null) return rotuloDoApp;
+  if (APP === APP_PADRAO) return (rotuloDoApp = '45b1b81 (0.2.2)');
+  try {
+    const commit = execFileSync('git', ['-C', APP, 'rev-parse', '--short', 'HEAD'], { encoding: 'utf8' }).trim();
+    const sujo = execFileSync('git', ['-C', APP, 'status', '--porcelain', '--', 'src'], { encoding: 'utf8' }).trim() !== '';
+    rotuloDoApp = `${commit}${sujo ? ' + alterações locais em src/' : ''} (${APP})`;
+  } catch { rotuloDoApp = APP; }
+  return rotuloDoApp;
+}
 const PROJETOS = path.join(BASE, 'projetos');
 const DADOS_C = path.join(BASE, 'dados-c');
 const PORTA_C = 3317;
 const CHAVE = readFileSync(path.join(BASE, 'chave'), 'utf8').trim();
 const TSX = path.join(APP, 'node_modules', '.bin', 'tsx');
+// medir.ts importa o código de 45b1b81: roda sempre a partir da cópia padrão.
+const TSX_DA_MEDICAO = path.join(APP_PADRAO, 'node_modules', '.bin', 'tsx');
 const CLAUDE = '/opt/homebrew/bin/claude';
 const LIMITE_MS = 40 * 60_000;
 const SEMENTE = 20261122;
@@ -206,15 +236,17 @@ async function servidorNoAr() {
   try { await api('GET', '/orquestradores'); return true; } catch { return false; }
 }
 const varianteDoServidor = () => (existsSync(ARQ_VARIANTE_DO_SERVIDOR) ? readFileSync(ARQ_VARIANTE_DO_SERVIDOR, 'utf8').trim() : null);
+// Identidade da instância: a variante e, fora da cópia padrão, a pasta do app.
+const identidade = () => (APP === APP_PADRAO ? VARIANTE : `${VARIANTE}|${APP}`);
 export async function garantirServidor() {
   if (await servidorNoAr()) {
-    if (VARIANTE === null || varianteDoServidor() === VARIANTE) return;
-    // Instância no ar com outra variante (ou sem variante): reinicia.
-    log(`instância na porta ${PORTA_C} com variante "${varianteDoServidor() ?? 'nenhuma'}"; reiniciando com "${VARIANTE}"`);
+    if (VARIANTE === null || varianteDoServidor() === identidade()) return;
+    // Instância no ar com outra variante (ou sem variante, ou outro app): reinicia.
+    log(`instância na porta ${PORTA_C} com variante "${varianteDoServidor() ?? 'nenhuma'}"; reiniciando com "${identidade()}"`);
     await encerrarServidorEEsperar();
     if (await servidorNoAr()) throw new Error(`porta ${PORTA_C} ainda responde e não é uma instância subida por este harness; derrube antes`);
   }
-  log('subindo a instância isolada do app (45b1b81) na porta', PORTA_C, VARIANTE ? `com BENCH_VARIANTE=${VARIANTE}` : '');
+  log(`subindo a instância isolada do app (${versaoDoApp()}) na porta`, PORTA_C, VARIANTE ? `com BENCH_VARIANTE=${VARIANTE}` : '');
   const fd = openSync(path.join(BASE, VARIANTE ? `servidor-variante-${VARIANTE}.log` : 'servidor-c.log'), 'a');
   const filho = spawn(TSX, ['src/root.ts'], {
     cwd: APP,
@@ -228,7 +260,7 @@ export async function garantirServidor() {
   filho.unref();
   closeSync(fd);
   writeFileSync(path.join(BASE, 'servidor-c.pid'), String(filho.pid));
-  if (VARIANTE) writeFileSync(ARQ_VARIANTE_DO_SERVIDOR, VARIANTE); else rmSync(ARQ_VARIANTE_DO_SERVIDOR, { force: true });
+  if (VARIANTE) writeFileSync(ARQ_VARIANTE_DO_SERVIDOR, identidade()); else rmSync(ARQ_VARIANTE_DO_SERVIDOR, { force: true });
   for (let i = 0; i < 60; i += 1) {
     await dormir(1000);
     if (await servidorNoAr()) { log('instância isolada no ar, PID', filho.pid); return; }
@@ -399,6 +431,8 @@ async function rodarApp(id, prompt, dir) {
     usoDoTurno: fins.filter((e) => tipoDe(e) === 'turno_concluido').map((e) => corpoDe(e).uso),
     consumos, cotas, falhas, recuperacoes,
     subagentesIniciados: contagem.subagente_iniciado ?? 0,
+    // Escolha de plugins por turno (app com o seletor); vazio em versões sem ele.
+    pluginsEscolhidos: evs.filter((e) => tipoDe(e) === 'plugins_escolhidos').map((e) => corpoDe(e).escolha),
   };
 }
 
@@ -418,8 +452,8 @@ function limparPastas(...pastas) {
 
 // ---------------- medição pelas transcrições ----------------
 function medir(dir, sessoes) {
-  const r = spawnSync(TSX, [path.join(aqui, 'medir.ts'), JSON.stringify({ pasta: dir, sessoes })], {
-    cwd: APP, encoding: 'utf8', env: ambienteLimpo(), maxBuffer: 50e6, timeout: 180_000,
+  const r = spawnSync(TSX_DA_MEDICAO, [path.join(aqui, 'medir.ts'), JSON.stringify({ pasta: dir, sessoes })], {
+    cwd: APP_PADRAO, encoding: 'utf8', env: ambienteLimpo(), maxBuffer: 50e6, timeout: 180_000,
   });
   if (r.status !== 0) return { erro: (r.stderr || r.stdout || '').slice(-1500) };
   return JSON.parse(r.stdout);
@@ -463,7 +497,7 @@ async function executar(item, pastaSaida) {
           if (SINAIS_DE_LIMITE.test(motivo)) falhaTransitoria = { tipo: 'limite', texto: motivo.slice(0, 500) };
           else if (SINAIS_TRANSITORIOS.test(motivo)) falhaTransitoria = { tipo: 'transitorio', texto: motivo.slice(0, 500) };
         }
-        registro.execucao = { ...bruto, configuracaoDoOrquestrador: CONFIGURACAO_C, versaoDoApp: '45b1b81 (0.2.2)', porta: PORTA_C };
+        registro.execucao = { ...bruto, configuracaoDoOrquestrador: CONFIGURACAO_C, versaoDoApp: versaoDoApp(), porta: PORTA_C };
         registro.consumoDoApp = somarConsumos(bruto.consumos);
         registro.resposta = bruto.resposta;
         registro.usoDaAssinatura = { antes: bruto.cotas[0] ?? null, depois: bruto.cotas.at(-1) ?? null, leituras: bruto.cotas.length };
@@ -583,7 +617,7 @@ async function executar(item, pastaSaida) {
 
 // ---------------- principal ----------------
 async function principal() {
-  const args = process.argv.slice(2);
+  const args = ARGS;
   if (args[0] === '--fumaca') {
     const tarefa = args[1] ?? 'T1';
     const cfgs = (args[2] ?? 'A,B,C').split(',');
@@ -599,14 +633,17 @@ async function principal() {
   }
   if (args[0] === '--variante') {
     VARIANTE = (args[1] ?? '').trim().toLowerCase();
-    if (!/^[a-z0-9,-]+$/.test(VARIANTE) || VARIANTE === 'base') throw new Error('uso: node harness.mjs --variante <v1|v2|v3|v5|vr|combinação>');
+    if (!/^[a-z0-9,-]+$/.test(VARIANTE) || (VARIANTE === 'base' && SAIDA_NOMEADA === null)) {
+      throw new Error('uso: node harness.mjs --variante <v1|v2|v3|v5|vr|combinação> [--app <pasta>] [--saida <nome>] (base só com --saida)');
+    }
+    if (SAIDA_NOMEADA !== null && !/^[a-z0-9+-]+$/.test(SAIDA_NOMEADA)) throw new Error('--saida: só letras minúsculas, números, + e -');
     MAX_TENTATIVAS = 3; // 1 + até 2 repetições por erro de API
-    const saida = path.join(RAIZ, 'execucoes-variantes', VARIANTE.replace(/,/g, '+'));
+    const saida = path.join(RAIZ, 'execucoes-variantes', SAIDA_NOMEADA ?? VARIANTE.replace(/,/g, '+'));
     mkdirSync(saida, { recursive: true });
     const lista = [];
     for (let r = 1; r <= RODADAS; r += 1) for (const t of IDS_DAS_TAREFAS) lista.push({ id: `r${r}-${t}-C`, rodada: r, tarefa: t, config: 'C', posicao: 1 });
     rmSync(path.join(saida, 'FIM'), { force: true });
-    log(`variante ${VARIANTE}: ${lista.length} execuções em ${saida}; já feitas: ${lista.filter((i) => existsSync(path.join(saida, `${i.id}.json`))).length}`);
+    log(`variante ${VARIANTE} (app ${versaoDoApp()}): ${lista.length} execuções em ${saida}; já feitas: ${lista.filter((i) => existsSync(path.join(saida, `${i.id}.json`))).length}`);
     let situacao = 'interrompido por erro do harness; rode de novo para retomar';
     try {
       for (const [n, item] of lista.entries()) {

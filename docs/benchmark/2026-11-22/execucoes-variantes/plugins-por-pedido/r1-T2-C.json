@@ -1,0 +1,415 @@
+{
+ "id": "r1-T2-C",
+ "rodada": 1,
+ "tarefa": "T2",
+ "config": "C",
+ "posicao": 1,
+ "variante": "base",
+ "tentativa": 1,
+ "prompt": "Implemente o cancelamento de pedidos neste projeto (loja-pedidos, Node sem dependências). Requisitos:\n1. Novo método assíncrono `OrderService#cancelOrder(orderId, reason)`, que devolve o pedido atualizado. `reason` é obrigatório (texto não vazio); sem ele, lança o erro de validação do projeto (código `VALIDATION_ERROR`). Pedido inexistente: `ORDER_NOT_FOUND`, como nos outros métodos.\n2. Só cancela pedido `pending` ou `paid`; em qualquer outro status (inclusive um pedido já cancelado) lança `DomainError` com o código `ORDER_NOT_CANCELLABLE`.\n3. Novo status `cancelled` (em `ORDER_STATUSES`); o pedido guarda `cancelReason` e `cancelledAt` (ISO, do relógio da loja) e ganha a entrada correspondente no histórico.\n4. Pedido pendente: desfaz a reserva de estoque; não há estorno.\n5. Pedido pago: estorna o valor total pelo gateway (`refund` com o `paymentId` do pagamento), uma única vez, e devolve os itens ao estoque físico. Se o gateway recusar o estorno, lança `REFUND_FAILED` e o pedido continua `paid`, sem mexer no estoque.\n6. Emite o evento `order.cancelled` com `{ orderId, email, name, reason, refunded }`, e o cliente recebe uma mensagem com o assunto `Pedido <id> cancelado` (corpo no padrão das outras mensagens).\n7. O relatório de vendas (`salesReport`) deixa de contar pedidos cancelados.\n8. Testes novos cobrindo esses casos e o README atualizado. Rode `npm test` ao final: tudo tem de passar.\n\nNão faça perguntas: decida o que for preciso e siga até o fim. Não faça commit.",
+ "pastaDeTrabalho": "/private/tmp/bench-gosub/projetos/r1-T2-C-mwwfoj94",
+ "inicio": "2026-11-25T18:05:01.522Z",
+ "carga": {
+  "em": "2026-11-25T18:05:01.432Z",
+  "uptime": "15:05  up  7:07, 1 user, load averages: 3.24 2.72 2.71",
+  "carga1m": 3.24,
+  "processos": [
+   "56504 4.3 61056 00:58 node scripts/harness.mjs --variante base --app /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/worktrees/549e8a7f --saida plugins-por-pedido",
+   "57026 0.6 440000 00:35 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "28670 0.2 380608 30:02 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "1130 0.2 187200 07:05:13 /Applications/Orquestrador de Agentes.app/Contents/Frameworks/Orquestrador de Agentes Helper.app/Contents/MacOS/Orquestrador de Agentes Helper --type=utility --utility-sub-typ",
+   "924 0.0 4176 07:05:39 /Applications/Claude.app/Contents/Helpers/chrome-native-host chrome-extension://fcoeoabgfenejglbffodgkkbkcdhcgfn/",
+   "921 0.0 30912 07:05:40 /System/Cryptexes/App/System/Library/CoreServices/PasswordManagerBrowserExtensionHelper.app/Contents/MacOS/PasswordManagerBrowserExtensionHelper chrome-extension://pejdijmoenmkg",
+   "57458 0.0 2304 00:20 /bin/zsh -c source /Users/pedro/.claude/shell-snapshots/snapshot-zsh-1795628109509-sc9vt9.sh 2>/dev/null || true && setopt NO_EXTENDED_GLOB NO_BARE_GLOB_QUAL NO_EQUALS 2>/dev/null",
+   "56526 0.0 75488 00:58 /Users/pedro/.nvm/versions/node/v22.21.0/bin/node --require /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/worktrees/6354f7b0/node_modules/tsx/dist/prefli",
+   "56525 0.0 37136 00:58 node /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/worktrees/549e8a7f/node_modules/.bin/tsx src/root.ts"
+  ],
+  "pesados": [],
+  "esperouS": 0,
+  "leiturasDaEspera": [],
+  "ocupadaAoComecar": false
+ },
+ "execucao": {
+  "orqId": "f12cba0a-c937-4439-88cd-bc5befea153a",
+  "sessoes": [
+   "b8b8d870-e571-4b50-9a78-18e24f2cf330"
+  ],
+  "acoes": [],
+  "estourou": false,
+  "tempoMs": 72780,
+  "worktree": "/private/tmp/bench-gosub/dados-c/worktrees/f12cba0a",
+  "pastaEfetiva": "/private/tmp/bench-gosub/dados-c/worktrees/f12cba0a",
+  "turnosDoApp": 1,
+  "contagemDeEventos": {
+   "turno_iniciado": 1,
+   "plugins_escolhidos": 1,
+   "sessao_iniciada": 1,
+   "texto_do_orquestrador": 4,
+   "ferramenta_do_orquestrador": 1,
+   "uso_da_cota": 1,
+   "subagente_iniciado": 1,
+   "progresso_do_subagente": 26,
+   "texto_do_subagente": 1,
+   "subagente_concluido": 1,
+   "turno_concluido": 1,
+   "consumo_do_turno_medido": 1
+  },
+  "fimDoTurno": "turno_concluido",
+  "resposta": "O cancelamento de pedidos está implementado. O executor rodou `npm test` e passaram os 61 testes, sem falhas. Eu não rodei os testes de novo. Não houve commit nem push.\n\n- **Validação e erros:** `OrderService#cancelOrder(orderId, reason)` devolve o pedido atualizado. Sem `reason` lança `VALIDATION_ERROR`. Pedido inexistente lança `ORDER_NOT_FOUND`. Qualquer status diferente de `pending` ou `paid`, inclusive `cancelled`, lança `ORDER_NOT_CANCELLABLE`.\n- **Status e histórico:** `cancelled` entrou em `ORDER_STATUSES`. O pedido guarda `cancelReason` e `cancelledAt` e ganha a entrada no histórico.\n- **Pedido pendente:** desfaz a reserva de estoque, sem estorno.\n- **Pedido pago:** estorna o valor total pelo gateway com o `paymentId`, uma única vez, e devolve os itens ao estoque físico. O estorno vem antes de qualquer mudança de estoque ou de estado. Se o gateway recusar, lança `REFUND_FAILED`, o pedido continua `paid` e o estoque não muda.\n- **Evento e mensagem:** emite `order.cancelled` com `{ orderId, email, name, reason, refunded }`. O cliente recebe a mensagem com o assunto `Pedido <id> cancelado`. No caso de pedido pago, o corpo acrescenta que o estorno foi solicitado.\n- **Relatório:** `salesReport` deixa de contar pedidos cancelados.\n- **Testes e README:** os testes novos estão em `test/cancelOrder.test.js` e cobrem todos os casos pedidos. O README foi atualizado.\n\nDuas coisas além do pedido:\n- **`PaymentService#refund`:** o `FakePaymentGateway` já tinha `refund`, mas faltava o método no `PaymentService`, que o `OrderService` usa. O executor adicionou, sem novas tentativas.\n- **Cancelamentos simultâneos:** dois cancelamentos ao mesmo tempo no mesmo pedido pago poderiam estornar duas vezes. Há uma proteção: só o primeiro passa e o segundo recebe `ORDER_NOT_CANCELLABLE`. Um teste cobre isso.\n\nArquivos alterados: `src/orders/order.js`, `src/orders/orderService.js`, `src/payments/paymentService.js`, `src/notifications/templates.js`, `src/reports/salesReport.js` e `README.md`. O arquivo novo é `test/cancelOrder.test.js`.\n\nNão ficou nada pendente.",
+  "usoDoTurno": [
+   {
+    "duracaoMs": 67815,
+    "tokensDeEntrada": 745764,
+    "tokensDeSaida": 21708,
+    "subagentesLancados": 1
+   }
+  ],
+  "consumos": [
+   {
+    "principal": {
+     "entrada": 10,
+     "criacaoDeCache": 15395,
+     "leituraDeCache": 73313,
+     "saida": 2258
+    },
+    "subagentes": {
+     "entrada": 18,
+     "criacaoDeCache": 45455,
+     "leituraDeCache": 238691,
+     "saida": 8596
+    },
+    "subagentesMedidos": 1,
+    "parcial": false,
+    "indiceDeCusto": 161561,
+    "modeloDoPrincipal": "claude-sonnet-5-5"
+   }
+  ],
+  "cotas": [
+   {
+    "em": "2026-11-25T18:05:08.827Z",
+    "janelas": [
+     {
+      "nome": "7 dias",
+      "utilizacao": 0.36,
+      "renovaEm": "2026-11-30T15:00:00.000Z",
+      "situacao": "allowed"
+     }
+    ]
+   }
+  ],
+  "falhas": [],
+  "recuperacoes": [],
+  "subagentesIniciados": 1,
+  "pluginsEscolhidos": [
+   {
+    "plugins": [
+     "superpowers@claude-plugins-official"
+    ],
+    "skills": [],
+    "motivo": "Feature nova com vários casos de teste e exigência de npm test passando antes de concluir.",
+    "origem": "modelo",
+    "custoUsd": 0.0016324999999999998,
+    "tokensDeEntrada": 6881,
+    "tokensDeSaida": 513,
+    "duracaoMs": 4852
+   }
+  ],
+  "configuracaoDoOrquestrador": {
+   "motorDoOrquestrador": "claude-code",
+   "modeloDoOrquestrador": "sonnet",
+   "esforcoDoOrquestrador": "medio",
+   "motorDosSubagentes": "claude-code",
+   "modeloDosSubagentes": "sonnet",
+   "esforcoDosSubagentes": "medio",
+   "ordemDeReserva": [],
+   "navegadorDoAgente": false,
+   "quantidadeDeSubagentes": {
+    "modo": "automatica",
+    "limite": 3
+   },
+   "nivelDePermissao": "edicao_e_comandos",
+   "permitirCommitEPush": false,
+   "permitirArtefatosOnline": false,
+   "instrucoesPersonalizadas": ""
+  },
+  "versaoDoApp": "0f773b8 + alterações locais em src/ (/Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/worktrees/549e8a7f)",
+  "porta": 3317
+ },
+ "consumoDoApp": {
+  "principal": {
+   "entrada": 10,
+   "criacaoDeCache": 15395,
+   "leituraDeCache": 73313,
+   "saida": 2258
+  },
+  "subagentes": {
+   "entrada": 18,
+   "criacaoDeCache": 45455,
+   "leituraDeCache": 238691,
+   "saida": 8596
+  },
+  "indiceDeCusto": 161561,
+  "subagentesMedidos": 1,
+  "modelos": [
+   "claude-sonnet-5-5"
+  ]
+ },
+ "resposta": "O cancelamento de pedidos está implementado. O executor rodou `npm test` e passaram os 61 testes, sem falhas. Eu não rodei os testes de novo. Não houve commit nem push.\n\n- **Validação e erros:** `OrderService#cancelOrder(orderId, reason)` devolve o pedido atualizado. Sem `reason` lança `VALIDATION_ERROR`. Pedido inexistente lança `ORDER_NOT_FOUND`. Qualquer status diferente de `pending` ou `paid`, inclusive `cancelled`, lança `ORDER_NOT_CANCELLABLE`.\n- **Status e histórico:** `cancelled` entrou em `ORDER_STATUSES`. O pedido guarda `cancelReason` e `cancelledAt` e ganha a entrada no histórico.\n- **Pedido pendente:** desfaz a reserva de estoque, sem estorno.\n- **Pedido pago:** estorna o valor total pelo gateway com o `paymentId`, uma única vez, e devolve os itens ao estoque físico. O estorno vem antes de qualquer mudança de estoque ou de estado. Se o gateway recusar, lança `REFUND_FAILED`, o pedido continua `paid` e o estoque não muda.\n- **Evento e mensagem:** emite `order.cancelled` com `{ orderId, email, name, reason, refunded }`. O cliente recebe a mensagem com o assunto `Pedido <id> cancelado`. No caso de pedido pago, o corpo acrescenta que o estorno foi solicitado.\n- **Relatório:** `salesReport` deixa de contar pedidos cancelados.\n- **Testes e README:** os testes novos estão em `test/cancelOrder.test.js` e cobrem todos os casos pedidos. O README foi atualizado.\n\nDuas coisas além do pedido:\n- **`PaymentService#refund`:** o `FakePaymentGateway` já tinha `refund`, mas faltava o método no `PaymentService`, que o `OrderService` usa. O executor adicionou, sem novas tentativas.\n- **Cancelamentos simultâneos:** dois cancelamentos ao mesmo tempo no mesmo pedido pago poderiam estornar duas vezes. Há uma proteção: só o primeiro passa e o segundo recebe `ORDER_NOT_CANCELLABLE`. Um teste cobre isso.\n\nArquivos alterados: `src/orders/order.js`, `src/orders/orderService.js`, `src/payments/paymentService.js`, `src/notifications/templates.js`, `src/reports/salesReport.js` e `README.md`. O arquivo novo é `test/cancelOrder.test.js`.\n\nNão ficou nada pendente.",
+ "usoDaAssinatura": {
+  "antes": {
+   "em": "2026-11-25T18:05:08.827Z",
+   "janelas": [
+    {
+     "nome": "7 dias",
+     "utilizacao": 0.36,
+     "renovaEm": "2026-11-30T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "depois": {
+   "em": "2026-11-25T18:05:08.827Z",
+   "janelas": [
+    {
+     "nome": "7 dias",
+     "utilizacao": 0.36,
+     "renovaEm": "2026-11-30T15:00:00.000Z",
+     "situacao": "allowed"
+    }
+   ]
+  },
+  "leituras": 1
+ },
+ "fim": "2026-11-25T18:06:36.570Z",
+ "tempoDeParedeS": 72.8,
+ "sessoes": [
+  "b8b8d870-e571-4b50-9a78-18e24f2cf330"
+ ],
+ "pastaDoResultado": "/private/tmp/bench-gosub/dados-c/worktrees/f12cba0a",
+ "tentativasAnteriores": [],
+ "checagem": {
+  "sucesso": true,
+  "motivo": "todos os critérios passaram",
+  "detalhes": {
+   "suiteDoProjeto": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.209208\n      type: 'test'\n      ...\n    # Subtest: ids sequenciais\n    ok 2 - ids sequenciais\n      ---\n      duration_ms: 0.069208\n      type: 'test'\n      ...\n    1..2\nok 16 - validação\n  ---\n  duration_ms: 0.353208\n  type: 'suite'\n  ...\n1..16\n# tests 61\n# suites 15\n# pass 61\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 153.215917\n"
+   },
+   "testeOculto": {
+    "ok": true,
+    "status": 0,
+    "fim": "      duration_ms: 0.473959\n      type: 'test'\n      ...\n    # Subtest: o relatório de vendas ignora os cancelados\n    ok 7 - o relatório de vendas ignora os cancelados\n      ---\n      duration_ms: 7.346542\n      type: 'test'\n      ...\n    1..7\nok 1 - T2 oculto: cancelamento de pedidos\n  ---\n  duration_ms: 12.25175\n  type: 'suite'\n  ...\n1..1\n# tests 7\n# suites 1\n# pass 7\n# fail 0\n# cancelled 0\n# skipped 0\n# todo 0\n# duration_ms 59.369417\n"
+   }
+  }
+ },
+ "sucesso": true,
+ "arquivoDoDiff": "r1-T2-C.diff",
+ "arquivoDaResposta": "r1-T2-C.resposta.md",
+ "medicao": {
+  "arquivos": [
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-f12cba0a/b8b8d870-e571-4b50-9a78-18e24f2cf330.jsonl",
+    "papel": "principal",
+    "tipoDeAgente": null
+   },
+   {
+    "caminho": "/Users/pedro/.claude/projects/-private-tmp-bench-gosub-dados-c-worktrees-f12cba0a/b8b8d870-e571-4b50-9a78-18e24f2cf330/subagents/agent-a91a378382d053fbb.jsonl",
+    "papel": "subagente",
+    "tipoDeAgente": "executor"
+   }
+  ],
+  "medicaoDoApp": {
+   "total": {
+    "entrada": 28,
+    "criacaoDeCache": 60850,
+    "leituraDeCache": 312004,
+    "saida": 10854
+   },
+   "principal": {
+    "entrada": 10,
+    "criacaoDeCache": 15395,
+    "leituraDeCache": 73313,
+    "saida": 2258
+   },
+   "subagentes": {
+    "entrada": 18,
+    "criacaoDeCache": 45455,
+    "leituraDeCache": 238691,
+    "saida": 8596
+   },
+   "porModelo": {
+    "claude-sonnet-5-5": {
+     "entrada": 28,
+     "criacaoDeCache": 60850,
+     "leituraDeCache": 312004,
+     "saida": 10854
+    }
+   },
+   "ferramentas": {
+    "Bash": 5,
+    "Agent": 1,
+    "Skill": 2,
+    "Glob": 1,
+    "Read": 19
+   },
+   "subagentesLancados": 1,
+   "subagentesPorTipo": {
+    "executor": 1
+   },
+   "subagentesSemChamada": [],
+   "chamadasSemSubagente": [],
+   "mensagens": 12,
+   "modeloDoPrincipal": "claude-sonnet-5-5",
+   "indiceDeCusto": 161561,
+   "indicePrincipal": 37875,
+   "indiceSubagentes": 123686
+  },
+  "custo": {
+   "usd": 0.3150139,
+   "usdPrincipal": 0.09151129999999999,
+   "usdSubagentes": 0.22350259999999997,
+   "porModelo": {
+    "claude-sonnet-5-5": {
+     "usd": 0.3150139,
+     "usdPrincipal": 0.09151129999999999,
+     "usdSubagentes": 0.22350259999999997,
+     "tokens": {
+      "entrada": 28,
+      "cache5m": 45455,
+      "cache1h": 15395,
+      "leituraDeCache": 312004,
+      "saida": 10854
+     },
+     "tabela": "claude-sonnet-5-5"
+    }
+   },
+   "modelosSemPreco": []
+  }
+ },
+ "resumo": {
+  "usd": 0.3150139,
+  "usdPrincipal": 0.09151129999999999,
+  "usdSubagentes": 0.22350259999999997,
+  "indiceDeCusto": 161561,
+  "tokens": {
+   "entrada": 28,
+   "criacaoDeCache": 60850,
+   "leituraDeCache": 312004,
+   "saida": 10854
+  },
+  "principal": {
+   "entrada": 10,
+   "criacaoDeCache": 15395,
+   "leituraDeCache": 73313,
+   "saida": 2258
+  },
+  "subagentes": {
+   "entrada": 18,
+   "criacaoDeCache": 45455,
+   "leituraDeCache": 238691,
+   "saida": 8596
+  },
+  "modeloDoPrincipal": "claude-sonnet-5-5",
+  "modelos": [
+   "claude-sonnet-5-5"
+  ],
+  "quantidadeDeSubagentes": 1,
+  "mensagensDoModelo": 12,
+  "turnosDoUsuario": 1,
+  "turnosDoAgente": null,
+  "tempoDeParedeS": 72.8
+ },
+ "cargaDepois": {
+  "em": "2026-11-25T18:06:37.104Z",
+  "uptime": "15:06  up  7:08, 1 user, load averages: 2.30 2.61 2.67",
+  "carga1m": 2.3,
+  "processos": [
+   "59749 26.8 4016 00:01 /bin/zsh /private/tmp/claude-501/-Users-pedro-Library-Application-Support-Orquestrador-de-Agentes-dados-worktrees-89355f65/b706e5ae-37c0-47ba-9aac-7469830885c8/scratchpad/pro.sh ",
+   "57026 7.2 465824 02:11 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "56504 2.5 61952 02:34 node scripts/harness.mjs --variante base --app /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/worktrees/549e8a7f --saida plugins-por-pedido",
+   "59747 1.1 2272 00:01 /bin/zsh -c source /Users/pedro/.claude/shell-snapshots/snapshot-zsh-1795629911654-5ziuzs.sh 2>/dev/null || true && setopt NO_EXTENDED_GLOB NO_BARE_GLOB_QUAL NO_EQUALS 2>/dev/null",
+   "1130 0.3 187616 07:06:49 /Applications/Orquestrador de Agentes.app/Contents/Frameworks/Orquestrador de Agentes Helper.app/Contents/MacOS/Orquestrador de Agentes Helper --type=utility --utility-sub-typ",
+   "28670 0.1 389264 31:38 /opt/homebrew/bin/claude -p --input-format stream-json --output-format stream-json --verbose --add-dir /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/art",
+   "924 0.0 4176 07:07:15 /Applications/Claude.app/Contents/Helpers/chrome-native-host chrome-extension://fcoeoabgfenejglbffodgkkbkcdhcgfn/",
+   "921 0.0 31008 07:07:16 /System/Cryptexes/App/System/Library/CoreServices/PasswordManagerBrowserExtensionHelper.app/Contents/MacOS/PasswordManagerBrowserExtensionHelper chrome-extension://pejdijmoenmkg",
+   "59591 0.0 2288 00:04 /bin/zsh -c source /Users/pedro/.claude/shell-snapshots/snapshot-zsh-1795628109509-sc9vt9.sh 2>/dev/null || true && setopt NO_EXTENDED_GLOB NO_BARE_GLOB_QUAL NO_EQUALS 2>/dev/null",
+   "56526 0.0 78944 02:34 /Users/pedro/.nvm/versions/node/v22.21.0/bin/node --require /Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/worktrees/6354f7b0/node_modules/tsx/dist/prefli"
+  ],
+  "pesados": []
+ },
+ "avisos": [
+  "Outros orquestradores rodam nesta máquina: o uso da assinatura (antes/depois) e o tempo de parede ficam contaminados por eles."
+ ],
+ "transcricoes": {
+  "orquestrador": {
+   "sessao": "b8b8d870-e571-4b50-9a78-18e24f2cf330",
+   "primeiraChamada": {
+    "entrada": 2,
+    "criacaoDeCache": 12132,
+    "leituraDeCache": 8574,
+    "total": 20708
+   }
+  },
+  "executores": [
+   {
+    "arquivo": "agent-a91a378382d053fbb.jsonl",
+    "tipo": "executor",
+    "inicio": "2026-11-25T18:05:15.801Z",
+    "primeiraChamada": {
+     "entrada": 2,
+     "criacaoDeCache": 13065,
+     "leituraDeCache": 0,
+     "total": 13067
+    }
+   }
+  ],
+  "encontradas": 1,
+  "principal": {
+   "chamadasAoModelo": 4,
+   "chamadasDeFerramenta": 2,
+   "porFerramenta": {
+    "Bash": 1,
+    "Agent": 1
+   }
+  },
+  "subagentes": {
+   "chamadasAoModelo": 8,
+   "chamadasDeFerramenta": 26,
+   "porFerramenta": {
+    "Skill": 2,
+    "Glob": 1,
+    "Read": 19,
+    "Bash": 4
+   }
+  }
+ },
+ "chamadasDoIntermediario": [
+  {
+   "em": "2026-11-25T18:05:01.651Z",
+   "variante": "base",
+   "aplicadas": [],
+   "sessao": true,
+   "detalhes": {}
+  },
+  {
+   "em": "2026-11-25T18:05:06.510Z",
+   "variante": "base",
+   "aplicadas": [],
+   "sessao": true,
+   "detalhes": {}
+  }
+ ],
+ "cargaAlta": {
+  "antes": false,
+  "depois": false,
+  "carga1mAntes": 3.24,
+  "carga1mDepois": 2.3,
+  "esperouS": 0
+ },
+ "tempoComCargaAlta": false,
+ "arquivosDoApp": [
+  "r1-T2-C.eventos.jsonl",
+  "r1-T2-C.orquestrador.json"
+ ]
+}

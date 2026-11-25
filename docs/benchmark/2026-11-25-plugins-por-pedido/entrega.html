@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plugins por pedido: entrega de 25/11/2026</title>
+<style>
+:root{--fundo:#fbfaf8;--texto:#1f2328;--sut:#5b636d;--borda:#e3e0da;--real:#e8772e;--real2:#fde9da;--ok:#1a7f37;--card:#fff}
+@media (prefers-color-scheme:dark){:root{--fundo:#16181b;--texto:#e6e6e6;--sut:#9aa3ad;--borda:#2e3238;--real:#f0914d;--real2:#3a2a1e;--ok:#4ac26b;--card:#1d2024}}
+*{box-sizing:border-box}body{margin:0;background:var(--fundo);color:var(--texto);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+main{max-width:1180px;margin:0 auto;padding:32px 24px 64px}h1{font-size:26px;margin:0 0 4px}h2{font-size:19px;margin:36px 0 10px;border-bottom:1px solid var(--borda);padding-bottom:6px}
+h3{font-size:16px;margin:0 0 6px}h4{font-size:13px;margin:10px 0 4px;color:var(--sut);text-transform:uppercase;letter-spacing:.04em}
+.sut{color:var(--sut);font-size:13px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:18px 0}
+.card{background:var(--card);border:1px solid var(--borda);border-radius:10px;padding:12px 14px}.card b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+table{border-collapse:collapse;width:100%;background:var(--card);border:1px solid var(--borda);border-radius:8px;overflow:hidden;font-size:13.5px}
+th,td{padding:7px 9px;border-bottom:1px solid var(--borda);text-align:left;vertical-align:top}thead th{font-size:12px;color:var(--sut);font-weight:600}
+td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}tr.destaque{background:var(--real2)}
+.barra{display:inline-block;width:70px;height:8px;background:var(--borda);border-radius:4px;margin-right:8px;vertical-align:middle}.barra span{display:block;height:100%;background:var(--real);border-radius:4px}
+.tabela{overflow-x:auto}pre{background:var(--card);border:1px solid var(--borda);border-radius:6px;padding:8px 10px;font-size:12px;white-space:pre-wrap;word-break:break-word;margin:0}
+.prova{background:var(--card);border:1px solid var(--borda);border-radius:10px;padding:14px 16px;margin:12px 0}.duas{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:800px){.duas{grid-template-columns:1fr}}.ok{color:var(--ok)}.pedido{margin:2px 0}q{font-style:italic}ul{padding-left:20px}code{font-size:13px}
+</style></head><body><main>
+<h1>Plugins e skills por pedido</h1>
+<p class="sut">Go SubAgents, worktree 549e8a7f, 25/11/2026. Código medido: 0f773b8 + alterações locais em src/ (/Users/pedro/Library/Application Support/Orquestrador de Agentes/dados/worktrees/549e8a7f). Só contam execuções que passaram no checador.</p>
+<div class="cards">
+<div class="card"><span class="sut">US$ (soma das médias, com seletor)</span><b>0.7961</b><span class="sut">-25.8% vs C base</span></div>
+<div class="card"><span class="sut">Tempo (soma das médias)</span><b>204.1 s</b><span class="sut">+12.3% vs C base</span></div>
+<div class="card"><span class="sut">1a chamada do Orquestrador</span><b>17.755</b><span class="sut">C base 28.512 tokens</span></div>
+<div class="card"><span class="sut">Válidas</span><b>12/12</b><span class="sut">seletor: 12 chamadas, US$ 0.0073</span></div>
+</div>
+
+<h2>O que mudou</h2>
+<ul>
+<li><code>SeletorDePlugins.ts</code>: a escolha agora é <strong>cumulativa</strong> na sessão (<code>acumular</code>): anterior ∪ citado ∪ modelo, nunca remove o que já foi carregado; origem, motivo e consumo são os do turno, e o motivo diz o que foi mantido ("mantidas da sessão: ..."). <code>ehMensagemDeContinuacao</code>: mensagem que começa com "Plano aprovado.", "continue", "continua", "prossiga", "ok" ou "sim", ou com menos de 40 caracteres sem citação, repete a escolha anterior sem chamar o Haiku (origem "anterior"); no primeiro turno da sessão o Haiku é consultado mesmo assim. <code>aindaNoCatalogo</code> reaproveitado por <code>repetir</code>.</li>
+<li><code>Configuracao.ts</code>: <code>selecaoDePlugins</code>, lida de <code>ORQUESTRADOR_SELECAO_DE_PLUGINS</code> (<code>desligada</code> ou <code>0</code> desliga). <code>root.ts</code>: desligada, os motores recebem <code>null</code> (comportamento antigo: tudo como o usuário configurou, sem <code>--settings</code> de plugins e sem Haiku). <code>.env.example</code> documenta.</li>
+<li><strong>Correção achada pelas provas</strong>: a sessão não tinha a ferramenta <code>Skill</code> (fora de <code>--tools</code>), então as skills escolhidas nem entravam no contexto e o agente respondia "não consegui acionar a skill". Agora <code>FERRAMENTA_DE_SKILLS</code> entra em <code>--tools</code>, <code>--allowedTools</code> e nas ferramentas dos subagentes (<code>montarArgumentos</code>, <code>definicaoDosAgentes</code>, <code>montarArgumentosDoChat</code> com <code>comSkills</code>) só no turno em que algo foi carregado. Sem nada carregado, os argumentos ficam iguais aos de antes. <code>MotorClaudeCodeCli</code> grava <code>agentes.json</code> depois da escolha.</li>
+<li>Harness (<code>2026-11-22/scripts/harness.mjs</code>): opções <code>--app &lt;pasta&gt;</code> (ou <code>BENCH_APP</code>) e <code>--saida &lt;nome&gt;</code>; com <code>--saida</code>, <code>--variante base</code> é aceita. A medição continua com o código de 45b1b81. Registra <code>pluginsEscolhidos</code>. <code>analisar-variantes.mjs</code> soma o custo e o tempo do seletor (<code>usdDoSeletor</code>, <code>usdComSeletor</code>, <code>tempoDoSeletorS</code>, <code>chamadasAoSeletor</code>).</li>
+</ul>
+
+<h2>Antes e depois (soma das médias de T1 a T4)</h2>
+<p class="sut">US$ = equivalente de API; na linha desta entrega inclui o seletor (US$ 0.00243 e 14.0 s na soma das médias; sem ele, US$ 0.7937). Primeira chamada = média entre tarefas dos tokens de entrada da primeira resposta.</p>
+<div class="tabela"><table><thead><tr><th>Configuração</th><th>US$</th><th>Índice</th><th>Tokens</th><th>1a chamada orq.</th><th>1a chamada exec.</th><th>Tempo (s)</th><th>Válidas</th><th>vs C base</th><th>vs B</th><th>vs A</th></tr></thead><tbody>
+<tr><th scope="row">A (Claude Code puro, Opus)</th>
+<td class="n"><div class="barra"><span style="width:100.0%"></span></div>2.6544</td>
+<td class="n">598.251</td><td class="n">1.840.641</td><td class="n">30.928</td><td class="n">-</td>
+<td class="n">422.8</td><td class="n">12/12</td><td class="n">+147.4%</td><td class="n">+240.5%</td><td class="n">+0.0%</td></tr>
+<tr><th scope="row">B (Claude Code puro, Sonnet)</th>
+<td class="n"><div class="barra"><span style="width:29.4%"></span></div>0.7795</td>
+<td class="n">331.993</td><td class="n">959.948</td><td class="n">30.818</td><td class="n">-</td>
+<td class="n">159.9</td><td class="n">12/12</td><td class="n">-27.3%</td><td class="n">+0.0%</td><td class="n">-70.6%</td></tr>
+<tr><th scope="row">C base (app 45b1b81)</th>
+<td class="n"><div class="barra"><span style="width:40.4%"></span></div>1.0727</td>
+<td class="n">503.680</td><td class="n">1.429.622</td><td class="n">28.512</td><td class="n">20.936</td>
+<td class="n">181.7</td><td class="n">12/12</td><td class="n">+0.0%</td><td class="n">+37.6%</td><td class="n">-59.6%</td></tr>
+<tr><th scope="row">V1 (sem peso do usuário)</th>
+<td class="n"><div class="barra"><span style="width:26.8%"></span></div>0.7115</td>
+<td class="n">335.784</td><td class="n">837.456</td><td class="n">17.519</td><td class="n">11.304</td>
+<td class="n">149.5</td><td class="n">12/12</td><td class="n">-33.7%</td><td class="n">-8.7%</td><td class="n">-73.2%</td></tr>
+<tr><th scope="row">VR (recomendadas)</th>
+<td class="n"><div class="barra"><span style="width:22.0%"></span></div>0.5836</td>
+<td class="n">274.619</td><td class="n">688.158</td><td class="n">17.329</td><td class="n">11.425</td>
+<td class="n">119.3</td><td class="n">12/12</td><td class="n">-45.6%</td><td class="n">-25.1%</td><td class="n">-78.0%</td></tr>
+<tr class="destaque"><th scope="row">Plugins por pedido (esta entrega)</th>
+<td class="n"><div class="barra"><span style="width:30.0%"></span></div>0.7961</td>
+<td class="n">381.138</td><td class="n">943.599</td><td class="n">17.755</td><td class="n">11.493</td>
+<td class="n">204.1</td><td class="n">12/12</td><td class="n">-25.8%</td><td class="n">+2.1%</td><td class="n">-70.0%</td></tr>
+</tbody></table></div>
+
+<h3 style="margin-top:22px">Por tarefa, contra C base</h3>
+<div class="tabela"><table><thead><tr><th>Tarefa</th><th>Válidas</th><th>US$ (c/ seletor)</th><th>US$ C base</th><th>vs C base</th><th>1a chamada orq.</th><th>C base</th><th>Tempo (s)</th><th>C base</th></tr></thead><tbody>
+<tr><th scope="row">T1</th><td class="n">3/3</td><td class="n">0.1074</td><td class="n">0.1673</td><td class="n">-35.8%</td><td class="n">17.053</td><td class="n">28.363</td><td class="n">27.2</td><td class="n">20.2</td></tr>
+<tr><th scope="row">T2</th><td class="n">3/3</td><td class="n">0.3293</td><td class="n">0.4468</td><td class="n">-26.3%</td><td class="n">19.643</td><td class="n">28.785</td><td class="n">81.6</td><td class="n">90.0</td></tr>
+<tr><th scope="row">T3</th><td class="n">3/3</td><td class="n">0.2367</td><td class="n">0.2815</td><td class="n">-15.9%</td><td class="n">17.137</td><td class="n">28.430</td><td class="n">71.1</td><td class="n">50.5</td></tr>
+<tr><th scope="row">T4</th><td class="n">3/3</td><td class="n">0.1227</td><td class="n">0.1771</td><td class="n">-30.7%</td><td class="n">17.185</td><td class="n">28.468</td><td class="n">24.2</td><td class="n">20.9</td></tr>
+</tbody></table></div>
+
+<h3 style="margin-top:22px">O que o seletor escolheu em cada execução</h3>
+<div class="tabela"><table><thead><tr><th>Execução</th><th>Checador</th><th>Escolha por turno</th><th>Skill chamada</th></tr></thead><tbody>
+<tr><th scope="row">r1-T1-C</th><td>passou</td><td>nada <span class="sut">(modelo, US$ 0.00132, 3.2 s)</span></td><td class="n">0</td></tr>
+<tr><th scope="row">r1-T2-C</th><td>passou</td><td>superpowers <span class="sut">(modelo, US$ 0.00163, 4.9 s)</span></td><td class="n">2</td></tr>
+<tr><th scope="row">r1-T3-C</th><td>passou</td><td>nada <span class="sut">(modelo, US$ 0.00144, 3.6 s)</span></td><td class="n">0</td></tr>
+<tr><th scope="row">r1-T4-C</th><td>passou</td><td>nada <span class="sut">(modelo, US$ 0.00141, 3.2 s)</span></td><td class="n">0</td></tr>
+<tr><th scope="row">r2-T1-C</th><td>passou</td><td>nada <span class="sut">(modelo, US$ 0.00010, 2.7 s)</span></td><td class="n">0</td></tr>
+<tr><th scope="row">r2-T2-C</th><td>passou</td><td>superpowers <span class="sut">(modelo, US$ 0.00032, 4.5 s)</span></td><td class="n">1</td></tr>
+<tr><th scope="row">r2-T3-C</th><td>passou</td><td>nada <span class="sut">(modelo, US$ 0.00023, 3.8 s)</span><br>nada <span class="sut">(anterior, US$ 0.00000, 0.0 s)</span></td><td class="n">0</td></tr>
+<tr><th scope="row">r2-T4-C</th><td>passou</td><td>nada <span class="sut">(modelo, US$ 0.00023, 3.7 s)</span></td><td class="n">0</td></tr>
+<tr><th scope="row">r3-T1-C</th><td>passou</td><td>nada <span class="sut">(modelo, US$ 0.00010, 2.5 s)</span></td><td class="n">0</td></tr>
+<tr><th scope="row">r3-T2-C</th><td>passou</td><td>nada <span class="sut">(modelo, US$ 0.00011, 2.7 s)</span></td><td class="n">0</td></tr>
+<tr><th scope="row">r3-T3-C</th><td>passou</td><td>nada <span class="sut">(modelo, US$ 0.00021, 3.7 s)</span><br>nada <span class="sut">(anterior, US$ 0.00000, 0.0 s)</span></td><td class="n">0</td></tr>
+<tr><th scope="row">r3-T4-C</th><td>passou</td><td>nada <span class="sut">(modelo, US$ 0.00018, 3.4 s)</span></td><td class="n">0</td></tr>
+</tbody></table></div>
+
+<h2>Provas de comportamento</h2>
+<p class="sut">Instância isolada na porta 3317, PASTA_DADOS=/private/tmp/bench-gosub/dados-c, projeto /private/tmp/bench-gosub/projetos/prova-plugins-mwwfk7oo, config C (Sonnet, esforço médio, edição e comandos). Claude Code real, sem intermediário.</p>
+<section class="prova"><h3>1. sem citar, skill útil</h3>
+<p class="pedido">Pedido: <q>crie um gráfico de barras em HTML com estes dados: jan 10, fev 14, mar 9</q></p>
+<p><strong>Esperado:</strong> dataviz carregada pelo modelo e invocada com a ferramenta Skill, sem perguntar.</p>
+<p class="ok"><strong>Resultado:</strong> carregou dataviz (origem modelo); Skill chamada 1 vez(es): dataviz; sem perguntar.</p>
+<div class="duas"><div><h4>Evento plugins_escolhidos</h4><pre>{
+ "plugins": [],
+ "skills": [
+  "dataviz"
+ ],
+ "motivo": "Pedido de criar um gráfico de barras em HTML, que é exatamente o escopo da skill dataviz.",
+ "origem": "modelo",
+ "custoUsd": 0.0000926,
+ "tokensDeEntrada": 6242,
+ "tokensDeSaida": 60,
+ "duracaoMs": 2407
+}</pre></div>
+<div><h4>Transcrição (ferramenta Skill no turno)</h4><pre>orquestrador: Skill({"skill":"dataviz"})</pre>
+<h4>Primeira chamada do turno</h4><pre>Orquestrador: {"entrada":2,"criacaoDeCache":18396,"leituraDeCache":0,"total":18398}
+Executor: null
+Custo do turno: US$ 0.1241 + seletor US$ 0.00009 | 39 s</pre></div></div>
+<details><summary>Resposta do agente (início)</summary><pre>Criei o artefato **grafico-de-barras.html**, um gráfico de barras com Jan 10, Fev 14 e Mar 9. Não abri a página para conferir o visual.
+
+- **Estilo:** é uma única série, então uso uma cor só e não há legenda. As barras têm topo arredondado e o valor aparece acima de cada uma. A grade é discreta e o tema claro ou escuro segue o do sistema.
+- **Interação:** ao passar o mouse ou focar com o teclado numa barra, aparece um tooltip com mês e valor.
+- **Acessibilidade:** há um botão "Ver como tabela" que mostra os mesmos dados em tabela.
+
+Não rodei o validador de paleta, porque com uma cor só não há pares de cores para comparar.</pre></details></section>
+<section class="prova"><h3>3. continuação na mesma sessão</h3>
+<p class="pedido">Pedido: <q>Plano aprovado. continue</q></p>
+<p><strong>Esperado:</strong> mesma sessão: escolha repetida (cumulativa), sem chamada ao Haiku.</p>
+<p class="ok"><strong>Resultado:</strong> origem anterior, mesma escolha (dataviz), custo do seletor US$ 0.00000 (sem chamada ao Haiku); cache da conversa preservado (23.471 tokens lidos do cache na primeira chamada).</p>
+<div class="duas"><div><h4>Evento plugins_escolhidos</h4><pre>{
+ "plugins": [],
+ "skills": [
+  "dataviz"
+ ],
+ "motivo": "mensagem sem tarefa nova; mantida a escolha do turno anterior",
+ "origem": "anterior",
+ "custoUsd": 0,
+ "tokensDeEntrada": 0,
+ "tokensDeSaida": 0,
+ "duracaoMs": 4
+}</pre></div>
+<div><h4>Transcrição (ferramenta Skill no turno)</h4><pre>nenhuma chamada à ferramenta Skill</pre>
+<h4>Primeira chamada do turno</h4><pre>Orquestrador: {"entrada":4,"criacaoDeCache":1914,"leituraDeCache":23471,"total":25389}
+Executor: null
+Custo do turno: US$ 0.0113 + seletor US$ 0.00000 | 21 s</pre></div></div>
+<details><summary>Resposta do agente (início)</summary><pre>O gráfico já está pronto, e não havia outro plano pendente. O artefato **grafico-de-barras.html** mostra Jan 10, Fev 14 e Mar 9, com tooltip e tabela alternativa.
+
+Ainda não conferi o visual abrindo a página. Se quiser, posso mudar algo, como cores, título, eixo ou mais meses.</pre></details></section>
+<section class="prova"><h3>2. citando o plugin</h3>
+<p class="pedido">Pedido: <q>use o logo-design para esboçar um ícone simples em SVG de uma xícara</q></p>
+<p><strong>Esperado:</strong> origem "citado", plugin carregado e usado.</p>
+<p class="ok"><strong>Resultado:</strong> origem citado, plugin logo-design@logo-design-skill; Skill chamada: logo-design:logo-design.</p>
+<div class="duas"><div><h4>Evento plugins_escolhidos</h4><pre>{
+ "plugins": [
+  "logo-design@logo-design-skill"
+ ],
+ "skills": [],
+ "motivo": "citado no pedido: logo-design",
+ "origem": "citado",
+ "custoUsd": 0,
+ "tokensDeEntrada": 0,
+ "tokensDeSaida": 0,
+ "duracaoMs": 4
+}</pre></div>
+<div><h4>Transcrição (ferramenta Skill no turno)</h4><pre>orquestrador: Skill({"skill":"logo-design:logo-design","args":"esboçar um ícone simples em SVG de uma xícara"})</pre>
+<h4>Primeira chamada do turno</h4><pre>Orquestrador: {"entrada":2,"criacaoDeCache":9648,"leituraDeCache":8574,"total":18224}
+Executor: null
+Custo do turno: US$ 0.1034 + seletor US$ 0.00000 | 39 s</pre></div></div>
+<details><summary>Resposta do agente (início)</summary><pre>Fiz o esboço do ícone da xícara e gravei como o artefato **icone-xicara.html**. Não usei subagentes e não alterei nada no projeto.
+
+- **Desenho:** o corpo é sólido, em forma de "U". A asa é um anel e o pires é uma linha só. O traço tem a mesma espessura em todo o desenho e as pontas são arredondadas.
+- **Cor e formato:** usa uma cor só (`#3b2a20`) em um `viewBox` de 256×256. No código, `currentColor` deixa o ícone herdar a cor do contexto.
+- **Visualização:** o artefato mostra o ícone em 256 px, em versão invertida sobre fundo escuro e em 32 px e 16 px. Também traz o código SVG para copiar.
+- **Não verifiquei na prática:** não renderizei o desenho em PNG nem rodei os scripts de auditoria do skill. Só dá para confirmar que o ícone se mantém legível em 16 px olhando a página do artefato.
+- **Possível problema:** uma xícara desenhada é bem literal e muito comum em logos de café. Como ícone </pre></details></section>
+<section class="prova"><h3>4. pedido comum</h3>
+<p class="pedido">Pedido: <q>corrija o typo em README</q></p>
+<p><strong>Esperado:</strong> nada carregado.</p>
+<p class="ok"><strong>Resultado:</strong> nada carregado (origem modelo); nenhuma chamada à ferramenta Skill.</p>
+<div class="duas"><div><h4>Evento plugins_escolhidos</h4><pre>{
+ "plugins": [],
+ "skills": [],
+ "motivo": "Correção de typo num README é tarefa direta de edição, sem necessidade de skill especializada.",
+ "origem": "modelo",
+ "custoUsd": 0.00008634,
+ "tokensDeEntrada": 6216,
+ "tokensDeSaida": 48,
+ "duracaoMs": 2491
+}</pre></div>
+<div><h4>Transcrição (ferramenta Skill no turno)</h4><pre>nenhuma chamada à ferramenta Skill</pre>
+<h4>Primeira chamada do turno</h4><pre>Orquestrador: {"entrada":2,"criacaoDeCache":8873,"leituraDeCache":7951,"total":16826}
+Executor: {"entrada":2,"criacaoDeCache":4475,"leituraDeCache":6021,"total":10498}
+Custo do turno: US$ 0.0720 + seletor US$ 0.00009 | 33 s</pre></div></div>
+<details><summary>Resposta do agente (início)</summary><pre>Corrigi o README. O subagente executor alterou a linha 3 de `README.md`:
+
+- Antes: "Este projeto e um exenplo simples para as provas da escolha de plugins."
+- Depois: "Este projeto é um exemplo simples para as provas da escolha de plugins."
+
+Além do typo "exenplo", corrigi também o acento de "é". Não mexi em mais nada e não fiz commit. Também não reli o arquivo depois da edição, então a confirmação vem só do relato do subagente.</pre></details></section>
+<p class="sut">Primeira rodada das provas, antes da correção da ferramenta Skill (dados/provas-sem-ferramenta-skill.json): a escolha saiu igual, mas nenhuma Skill foi chamada e, na prova 2, o agente respondeu "Não consegui acionar a skill logo-design, porque ela não está disponível como ferramenta aqui".</p>
+
+<h2>Riscos</h2>
+<ul>
+<li>Cumulativa: numa sessão longa que muda de assunto, o que foi carregado fica até o fim da sessão (custo de contexto pequeno por skill; preferido a invalidar o cache a cada turno).</li>
+<li>Continuação: mensagem que começa com "ok", "sim", "continue" ou "Plano aprovado." não consulta o Haiku mesmo se trouxer tarefa nova depois; citar a skill pelo nome continua funcionando. Mensagem curta (menos de 40 caracteres) idem, exceto no primeiro turno da sessão.</li>
+<li>A ferramenta Skill entra só quando algo foi carregado: com o seletor desligado, as skills continuam fora da sessão, como antes desta feature.</li>
+<li>Escolha em memória: reiniciar o app zera a escolha das sessões (o primeiro turno depois consulta o Haiku de novo).</li>
+<li>O seletor depende do Haiku: falha ou 8 s esgotados repetem a escolha anterior (ou nenhuma) e o turno segue.</li>
+<li>Benchmark com 3 rodadas por tarefa em máquina compartilhada: o tempo de parede tem ruído; ver carga registrada em cada execução.</li>
+</ul>
+
+<h2>Como desligar</h2>
+<pre>ORQUESTRADOR_SELECAO_DE_PLUGINS=desligada   # no .env (ou "0"); reinicie o servidor</pre>
+<p class="sut">Desligada: sem chamada ao Haiku, sem <code>--settings</code> de plugins e sem a ferramenta Skill; a sessão carrega tudo como o usuário configurou.</p>
+
+<h2>Custo desta validação</h2>
+<p>Benchmark: US$ 2.3884 (12 execuções, com seletor). Provas: US$ 0.5667 (duas rodadas de 4 provas). Valores em equivalente de API.</p>
+</main></body></html>

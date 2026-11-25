@@ -20,8 +20,16 @@ function transcricoesDe(r) {
   if (r.transcricoes && !r.transcricoes.erro) return r.transcricoes;
   try { return analisarTranscricoes(r.sessoes ?? []); } catch { return null; }
 }
+// Seletor de plugins (app com a escolha por turno): a chamada ao Haiku roda sem transcrição, então o custo dele não
+// está em resumo.usd; vem dos eventos plugins_escolhidos. Execuções sem o seletor ficam sem valor (e com 0 no "com seletor").
+const seletor = (r) => (Array.isArray(r.execucao?.pluginsEscolhidos) && r.execucao.pluginsEscolhidos.length > 0 ? r.execucao.pluginsEscolhidos : null);
+const somaDoSeletor = (r, k) => seletor(r)?.reduce((a, e) => a + (e?.[k] ?? 0), 0);
 const METRICAS = {
   usd: (r) => r.resumo?.usd,
+  usdDoSeletor: (r) => somaDoSeletor(r, 'custoUsd'),
+  usdComSeletor: (r) => (typeof r.resumo?.usd === 'number' ? r.resumo.usd + (somaDoSeletor(r, 'custoUsd') ?? 0) : undefined),
+  tempoDoSeletorS: (r) => (seletor(r) ? somaDoSeletor(r, 'duracaoMs') / 1000 : undefined),
+  chamadasAoSeletor: (r) => seletor(r)?.filter((e) => e?.origem === 'modelo').length,
   indiceDeCusto: (r) => r.resumo?.indiceDeCusto,
   tokensTotais: (r) => soma(r.resumo?.tokens),
   entrada: (r) => r.resumo?.tokens.entrada,
@@ -136,8 +144,8 @@ const f2 = (x, d = 3) => (typeof x === 'number' ? x.toFixed(d) : '-');
 const pct = (d) => (d?.pct === null || d?.pct === undefined ? '-' : `${d.pct >= 0 ? '+' : ''}${d.pct.toFixed(1)}%`);
 const k = (x) => (typeof x === 'number' ? Math.round(x).toLocaleString('pt-BR') : '-');
 console.log(`resumo-variantes.json: ${Object.keys(variantes).length} variante(s)`);
-console.log('| Variante | US$ | Índice | Tokens totais | 1a chamada orq. | 1a chamada exec. | Chamadas ao modelo | Ferramentas | Subagentes | Tempo (s) | Válidas | vs C base (US$) | vs B (US$) | vs A (US$) |');
-console.log('|---|---|---|---|---|---|---|---|---|---|---|---|---|---|');
-const linha = (nome, a, cmp) => console.log(`| ${nome} | ${f2(a.somaDasMedias.usd, 4)} | ${k(a.somaDasMedias.indiceDeCusto)} | ${k(a.somaDasMedias.tokensTotais)} | ${k(a.mediaEntreTarefas.primeiraChamadaDoOrquestrador)} | ${k(a.mediaEntreTarefas.primeiraChamadaDoExecutor)} | ${f2(a.somaDasMedias.chamadasAoModelo, 1)} | ${f2(a.somaDasMedias.chamadasDeFerramenta, 1)} | ${f2(a.somaDasMedias.quantidadeDeSubagentes, 2)} | ${f2(a.somaDasMedias.tempoDeParedeS, 1)} | ${a.validas}/${a.execucoes} | ${cmp ? pct(cmp.c.usd) : '-'} | ${cmp ? pct(cmp.b.usd) : '-'} | ${cmp ? pct(cmp.a.usd) : '-'} |`);
+console.log('| Variante | US$ | US$ c/ seletor | Seletor US$ / s | Índice | Tokens totais | 1a chamada orq. | 1a chamada exec. | Chamadas ao modelo | Ferramentas | Subagentes | Tempo (s) | Válidas | vs C base (US$) | vs B (US$) | vs A (US$) |');
+console.log('|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|');
+const linha = (nome, a, cmp) => console.log(`| ${nome} | ${f2(a.somaDasMedias.usd, 4)} | ${f2(a.somaDasMedias.usdComSeletor, 4)} | ${a.somaDasMedias.usdDoSeletor ? `${f2(a.somaDasMedias.usdDoSeletor, 4)} / ${f2(a.somaDasMedias.tempoDoSeletorS, 1)}` : '-'} | ${k(a.somaDasMedias.indiceDeCusto)} | ${k(a.somaDasMedias.tokensTotais)} | ${k(a.mediaEntreTarefas.primeiraChamadaDoOrquestrador)} | ${k(a.mediaEntreTarefas.primeiraChamadaDoExecutor)} | ${f2(a.somaDasMedias.chamadasAoModelo, 1)} | ${f2(a.somaDasMedias.chamadasDeFerramenta, 1)} | ${f2(a.somaDasMedias.quantidadeDeSubagentes, 2)} | ${f2(a.somaDasMedias.tempoDeParedeS, 1)} | ${a.validas}/${a.execucoes} | ${cmp ? pct(cmp.c.usd) : '-'} | ${cmp ? pct(cmp.b.usd) : '-'} | ${cmp ? pct(cmp.a.usd) : '-'} |`);
 for (const c of ['A', 'B', 'C']) linha(`${c} (base)`, base[c], null);
 for (const [v, a] of Object.entries(variantes)) linha(v, a, { c: a.contraCBase, b: a.contraB, a: a.contraA });

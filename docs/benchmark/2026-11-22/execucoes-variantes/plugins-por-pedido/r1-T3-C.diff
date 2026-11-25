@@ -1,0 +1,223 @@
+ src/cart/cart.js               |  5 +++--
+ src/money.js                   |  5 +++--
+ src/notifications/notifier.js  |  5 +++--
+ src/notifications/templates.js |  6 ++----
+ src/pricing/discounts.js       |  5 +++--
+ src/pricing/pricing.js         |  7 ++++---
+ src/pricing/shipping.js        |  3 ++-
+ src/pricing/tax.js             |  3 ++-
+ src/reports/salesReport.js     | 17 +++++++----------
+ 9 files changed, 29 insertions(+), 27 deletions(-)
+
+diff --git a/src/cart/cart.js b/src/cart/cart.js
+index 46c6e25..7ea8f0d 100644
+--- a/src/cart/cart.js
++++ b/src/cart/cart.js
+@@ -1,3 +1,4 @@
++import { round2, sumMoney } from '../money.js';
+ import { DomainError } from '../util/errors.js';
+ import { requirePositiveInt } from '../util/validation.js';
+ 
+@@ -56,10 +57,10 @@ export class Cart {
+   summary() {
+     const lines = [...this.lines].map(([sku, quantity]) => {
+       const product = this.catalog.get(sku);
+-      const lineTotal = Math.round(product.price * quantity * 100) / 100;
++      const lineTotal = round2(product.price * quantity);
+       return { sku, name: product.name, quantity, unitPrice: product.price, lineTotal };
+     });
+-    const subtotal = Math.round(lines.reduce((sum, line) => sum + line.lineTotal, 0) * 100) / 100;
++    const subtotal = sumMoney(lines.map((line) => line.lineTotal));
+     const itemCount = lines.reduce((sum, line) => sum + line.quantity, 0);
+     return { lines, itemCount, subtotal };
+   }
+diff --git a/src/money.js b/src/money.js
+index 6b69ef9..2e604fb 100644
+--- a/src/money.js
++++ b/src/money.js
+@@ -6,8 +6,9 @@ export function round2(value) {
+   return Math.round(value * 100) / 100;
+ }
+ 
+-export function formatBRL(value) {
+-  const [integer, decimals] = round2(value).toFixed(2).split('.');
++/** `round: false` formata sem arredondar antes (apenas toFixed(2)). */
++export function formatBRL(value, { round = true } = {}) {
++  const [integer, decimals] = (round ? round2(value) : value).toFixed(2).split('.');
+   const grouped = integer.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+   return `R$ ${grouped},${decimals}`;
+ }
+diff --git a/src/notifications/notifier.js b/src/notifications/notifier.js
+index 4341934..ede6da5 100644
+--- a/src/notifications/notifier.js
++++ b/src/notifications/notifier.js
+@@ -1,3 +1,4 @@
++import { formatBRL, round2 } from '../money.js';
+ import { TEMPLATES } from './templates.js';
+ 
+ /**
+@@ -53,7 +54,7 @@ export class Notifier {
+ /** Alerta interno de estoque baixo, para a equipe de compras. */
+ export function lowStockAlert({ sku, available }, unitCost) {
+   const reposition = Math.max(0, 20 - available);
+-  const estimate = Math.round(reposition * unitCost * 100) / 100;
+-  const formatted = `R$ ${estimate.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d),)/g, '.')}`;
++  const estimate = round2(reposition * unitCost);
++  const formatted = formatBRL(estimate, { round: false });
+   return `Estoque baixo de ${sku}: ${available} disponíveis. Repor ${reposition} unidades (custo estimado ${formatted}).`;
+ }
+diff --git a/src/notifications/templates.js b/src/notifications/templates.js
+index f8aeb6e..ab844a8 100644
+--- a/src/notifications/templates.js
++++ b/src/notifications/templates.js
+@@ -1,9 +1,7 @@
++import { formatBRL } from '../money.js';
+ import { STORE } from '../config.js';
+ 
+-function price(value) {
+-  const [integer, decimals] = (Math.round(value * 100) / 100).toFixed(2).split('.');
+-  return `R$ ${integer.replace(/\B(?=(\d{3})+(?!\d))/g, '.')},${decimals}`;
+-}
++const price = formatBRL;
+ 
+ function signature() {
+   return `\n\n${STORE.name}\nDúvidas: ${STORE.supportEmail}`;
+diff --git a/src/pricing/discounts.js b/src/pricing/discounts.js
+index 630cf16..19825f4 100644
+--- a/src/pricing/discounts.js
++++ b/src/pricing/discounts.js
+@@ -1,3 +1,4 @@
++import { percentOf, round2 } from '../money.js';
+ import { findCoupon } from './coupons.js';
+ 
+ /**
+@@ -43,11 +44,11 @@ function percentDiscount(coupon, lines) {
+     return { ok: false, code: coupon.code, reason: 'NOT_APPLICABLE' };
+   }
+   const base = lineSubtotal(eligible);
+-  const amount = Math.round(((base * coupon.value) / 100) * 100) / 100;
++  const amount = percentOf(base, coupon.value);
+   return { ok: true, code: coupon.code, amount, freeShipping: false };
+ }
+ 
+ export function lineSubtotal(lines) {
+   const raw = lines.reduce((sum, line) => sum + line.unitPrice * line.quantity, 0);
+-  return Math.round(raw * 100) / 100;
++  return round2(raw);
+ }
+diff --git a/src/pricing/pricing.js b/src/pricing/pricing.js
+index 0437e42..5119214 100644
+--- a/src/pricing/pricing.js
++++ b/src/pricing/pricing.js
+@@ -1,3 +1,4 @@
++import { round2 } from '../money.js';
+ import { DomainError } from '../util/errors.js';
+ import { evaluateCoupon, lineSubtotal } from './discounts.js';
+ import { computeShipping } from './shipping.js';
+@@ -43,15 +44,15 @@ export function computeTotals({ items, products, state, couponCode, now = new Da
+     coupon = result.code;
+   }
+ 
+-  const discountedSubtotal = Math.round((subtotal - discount) * 100) / 100;
++  const discountedSubtotal = round2(subtotal - discount);
+   const shipping = computeShipping({ lines, state, discountedSubtotal, freeShipping });
+   const tax = computeTax(discountedSubtotal, state);
+-  const total = Math.round((discountedSubtotal + tax + shipping) * 100) / 100;
++  const total = round2(discountedSubtotal + tax + shipping);
+ 
+   return {
+     lines: lines.map((line) => ({
+       ...line,
+-      lineTotal: Math.round(line.unitPrice * line.quantity * 100) / 100,
++      lineTotal: round2(line.unitPrice * line.quantity),
+     })),
+     subtotal,
+     discount,
+diff --git a/src/pricing/shipping.js b/src/pricing/shipping.js
+index c4761c8..8df2dfd 100644
+--- a/src/pricing/shipping.js
++++ b/src/pricing/shipping.js
+@@ -1,3 +1,4 @@
++import { round2 } from '../money.js';
+ import { SHIPPING, STATES } from '../config.js';
+ import { DomainError, ValidationError } from '../util/errors.js';
+ 
+@@ -29,7 +30,7 @@ export function computeShipping({ lines, state, discountedSubtotal, freeShipping
+   const region = regionOf(state);
+   const billableKg = Math.ceil(weight);
+   const raw = SHIPPING.baseByRegion[region] + SHIPPING.perKgByRegion[region] * billableKg;
+-  return Math.round(raw * 100) / 100;
++  return round2(raw);
+ }
+ 
+ /** Prazo estimado em dias úteis, por região. */
+diff --git a/src/pricing/tax.js b/src/pricing/tax.js
+index 2133330..0dfc1a8 100644
+--- a/src/pricing/tax.js
++++ b/src/pricing/tax.js
+@@ -1,3 +1,4 @@
++import { round2 } from '../money.js';
+ import { STATES } from '../config.js';
+ import { ValidationError } from '../util/errors.js';
+ 
+@@ -14,7 +15,7 @@ export function taxRateFor(state) {
+  */
+ export function computeTax(taxableAmount, state) {
+   const rate = taxRateFor(state);
+-  return Math.round(taxableAmount * rate * 100) / 100;
++  return round2(taxableAmount * rate);
+ }
+ 
+ /** Alíquota como texto para a nota ("18%", "19,5%"). */
+diff --git a/src/reports/salesReport.js b/src/reports/salesReport.js
+index 04f3ac7..26df1a0 100644
+--- a/src/reports/salesReport.js
++++ b/src/reports/salesReport.js
+@@ -1,3 +1,4 @@
++import { formatBRL, round2, sumMoney } from '../money.js';
+ /**
+  * Relatório de vendas de um período.
+  *
+@@ -14,16 +15,16 @@ export function salesReport(orders, { from, to } = {}) {
+       return created >= start && created < end;
+     });
+ 
+-  const revenue = Math.round(counted.reduce((sum, order) => sum + order.totals.total, 0) * 100) / 100;
+-  const discounts = Math.round(counted.reduce((sum, order) => sum + order.totals.discount, 0) * 100) / 100;
+-  const averageTicket = counted.length === 0 ? 0 : Math.round((revenue / counted.length) * 100) / 100;
++  const revenue = sumMoney(counted.map((order) => order.totals.total));
++  const discounts = sumMoney(counted.map((order) => order.totals.discount));
++  const averageTicket = counted.length === 0 ? 0 : round2(revenue / counted.length);
+ 
+   const bySku = {};
+   for (const order of counted) {
+     for (const line of order.lines) {
+       const entry = bySku[line.sku] ?? { sku: line.sku, name: line.name, quantity: 0, revenue: 0 };
+       entry.quantity += line.quantity;
+-      entry.revenue = Math.round((entry.revenue + line.lineTotal) * 100) / 100;
++      entry.revenue = round2(entry.revenue + line.lineTotal);
+       bySku[line.sku] = entry;
+     }
+   }
+@@ -33,7 +34,7 @@ export function salesReport(orders, { from, to } = {}) {
+     const state = order.customer.state;
+     const entry = byState[state] ?? { state, orders: 0, revenue: 0 };
+     entry.orders += 1;
+-    entry.revenue = Math.round((entry.revenue + order.totals.total) * 100) / 100;
++    entry.revenue = round2(entry.revenue + order.totals.total);
+     byState[state] = entry;
+   }
+ 
+@@ -54,11 +55,7 @@ export function salesReport(orders, { from, to } = {}) {
+ 
+ /** O relatório em texto, para o e-mail diário. */
+ export function formatReport(report) {
+-  const brl = (value) => {
+-    const fixed = value.toFixed(2);
+-    const [integer, decimals] = fixed.split('.');
+-    return 'R$ ' + integer.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ',' + decimals;
+-  };
++  const brl = (value) => formatBRL(value, { round: false });
+   const lines = [
+     `Pedidos: ${report.orderCount}`,
+     `Receita: ${brl(report.revenue)}`,
